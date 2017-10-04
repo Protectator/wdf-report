@@ -1,0 +1,9 @@
+[server]
+port = 5555
+listen = 0.0.0.0
+
+[database]
+host = 128.178.94.70
+name = shoulder_test
+user = exampleusername
+password = examplepassword
