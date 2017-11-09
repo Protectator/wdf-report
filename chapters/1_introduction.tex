@@ -1,34 +1,26 @@
 \section{Contexte}
 
-	En janvier 2014, l'ONG Internet Society a publié le document Digital footprints qui aborde la question de la capacité que les webtrackers ont de définir le profile personnel des usagers d'Internet. [1]
-	En 2016, Michal Kosinski chercheur à Stanford révèle les possibilités de définir un profile précis simplement en analysant les préférences (likes) enregistrées dans un profile Facebook. L'étude révèle que ce type d'analyse permet de mieux connaître une personne que ses proches et même de prévoir de probables comportements avec une grande précision. De plus, lors d'événements politiques majeurs ces techniques de profiling auraient été utilisées, comme dans le cadre des campagnes pour le Brexit ou pour l'élection du président américain Trump. [2]
-
-	Bla contexte \gls{mot}.
-
-	Bla liste
-	\begin{enumerate}
-		\item Truc 1
-		\item Truc 2
-	\end{enumerate}
+	En janvier 2014, l'ONG Internet Society a publié le document Digital footprints\cite{digital-footprints} qui aborde la question de la capacité que les web trackers ont de définir le profil personnel des utilisateurs d'Internet.
+	
+	En 2016, Michal Kosinski\cite{michal-kosinski}, chercheur à Stanford, révèle les possibilités de définir un profil précis simplement en analysant les préférences (likes) enregistrées dans un profil Facebook\cite{mining-big-data}. L'étude révèle que ce type d'analyse permet de mieux connaître une personne que ses proches et même de prévoir de probables comportements avec une grande précision. De plus, lors d'événements politiques majeurs ces techniques de profiling auraient été utilisées, comme dans le cadre des campagnes pour le Brexit ou pour l'élection du président américain Trump.\cite{motherboard-data}
 
 \section{Objectifs}
 
-	Le but de ce projet est de concevoir et d'implémenter un outil d'analyse de comportement d'utilisateurs d?applications Web pour révéler les potentiels de détection de profile des personnes (préférences, centre d'intérêt, orientations et opinions) en analysant les interactions et les informations échangées avec les applications Web. L'application développée dans ce projet a pour le but de sensibiliser le public et les médias à la question du profiling sur internet.
+	Le but de ce projet est de concevoir et d'implémenter un outil d'analyse de comportements d'utilisateurs d'applications Web pour révéler les potentiels de détection de profils des personnes (préférences, centre d'intérêt, orientations et opinions) en analysant les interactions et les informations échangées avec les applications Web. L'application développée dans ce projet a pour le but principal de sensibiliser le public et les médias à la question du profiling sur internet.
 
-	Bla liste
-	\begin{itemize}
-		\item Truc 1
-		\item Truc 2
-	\end{itemize}
+	L'objectif technique du projet est de développer un plugin pour les navigateurs Mozilla Firefox et Google Chrome qui permettraient de :
 
-\section{Contraintes}
-
-	Bla liste
-	\begin{itemize}
-		\item Truc 1
-		\item Truc 2
-	\end{itemize}
+	\begin{enumerate}
+		\item Définir un profil utilisateur selon des critères de préférence, d'intérêt, d'habitude, d'opinion, etc.
+		\item De définir le profil d'un usager en se basant sur sa navigation sur Internet ainsi que sur les métadonnées (durée de consultation des pages, heure de consultation, etc.). Des algorithms de machine learning seront utilisés pour apprendre les profils en se basant sur des collections de profils annottées telle que la collection kaggle\cite{kaggle}. 
+		\item Identifier des trackers qui ont la possibilité de construire des profiles utilisateurs en intégrant des données de plusieurs sources. 
+	\end{enumerate}
 
 \section{Méthodologie}
 
-	Bla
+	Le développement du code sera \gls{open-source}. Le déroulement du projet sera divisé en deux phases distinctes : 
+
+	\begin{enumerate}
+		\item La première phase du projet consistera en une analyse des études et résultats actuels afin de proposer des concepts innovants à travers l'outil développé, tout en collectant les données des utilisateurs pour la deuxième phase.
+		\item La seconde phase mettra l'accent sur les données récoltées par le plug-in développé durant la première phase : Le but sera d'analyser les données et d'en tirer des conclusions intéressantes.
+	\end{enumerate}
