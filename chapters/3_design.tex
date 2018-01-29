@@ -89,165 +89,186 @@
 
 			Lors de l'installation de l'extension, un nombre aléatoire est généré pour l'installation. Cet identificateur est envoyé envoyé au serveur central en plus de chaque autre information : Elle nous est utile pour assigner chaque donnée de navigation avec un navigateur particulier.
 
-\section{Extension}
+\section{Architecture}
 
-	L'extension de navigateur est sans aucun doute la partie la plus simple du projet. Etant donné que nous avons décidé d'héberger l'interface utilisateur sur un serveur différent, l'extension ne va principalement s'occuper que de récupérer les données de l'utilisateur et les transmettre à notre serveur.
+	\subsection{Stack technologique}
 
-	Etant donné qu'une extension de navigateur n'est disponible que pour un type de navigateur à la fois, la question du suport de plusieurs navigateurs s'est posée. D'après le site populaire \texttt{w3schools.com}\cite{browser-stats}, Google Chrome représente plus de 75\% des visites au moins de décembre 2017. Nous décidons donc de ne pas adapter le code de l'extension pour plusieurs types de navigateurs, car nous estimons que le gain en utilisateurs serait insuffisant pour justifier le développement supplémentaire.
+		L'ensemble des éléments constituant le projet peuvent être regroupés en 3 parties différentes où s'exécute le code.
 
-	L'extension sera donc développée pour le navigateur Google Chrome, en utilisant l'API JavaScript que celui-ci met à disposition. Les fonctionnalités implémentées sont la récolte et l'envoi des types de données décrites à la section \ref{d-donnees}.
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/design/stack}
+			\caption{Technologies utilisées pour chaque partie}
+			\label{d-stack}
+		\end{figure}
 
-	L'extension proposera également à l'utilisateur d'accéder à l'interface grâce à un lien, ainsi que la possibilité de se "lier" ce navigateur au profil d'un autre navigateur existant, en entrant son ancien identificateur. Ceci permet à un utilisateur de profiter d'un seul profil au travers de plusieurs machines posédant l'extension, par exemple. 
-
-\section{Serveur}
-
-	\subsection{Rôles}
-
-		La partie du serveur est probablement la plus complexe du projet. Le serveur va devoir assurer le fonctionnement de plusieurs tâches clés :
+		La figure~\ref{d-stack} montre les trois parties ainsi que les technologies utilisées dans chacune.
 
 		\begin{itemize}
-			\item Récolte et enregistrement des données de l'extension
-			\item Traitement des données utilisateurs
-			\item API au service de l'interface
+			\item L'extension comprend le code exécuté dans le navigateur du client, et qui communique avec l'API de Google Chrome afin de pouvoir récolter et envoyer les informations.
+			\item L'interface comprend le code des diverses pages de visualisations montrées à l'utilisateur. On peut accéder à cette série de pages via un lien montré dans l'extension, ou par leur URL directement.
+			\item Le serveur comprend le code exécuté notre machine.
 		\end{itemize}
 
-	\subsection{Récolte}
+	\subsection{Extension}
 
-		Avant tout traitement, le serveur doit être capable de recevoir et d'enregistrer les données des clients. Etant donné que l'extension est développée en JavaScript, les données seront transmises par HTTP au format JSON pour des raisons de simplicité.
+		L'extension de navigateur est sans aucun doute la partie la plus simple du projet. Etant donné que nous avons décidé d'héberger l'interface utilisateur sur un serveur différent, l'extension ne va principalement s'occuper que de récupérer les données de l'utilisateur et les transmettre à notre serveur.
 
-		\subsubsection{Installation du plug-in}
+		Etant donné qu'une extension de navigateur n'est disponible que pour un type de navigateur à la fois, la question du suport de plusieurs navigateurs s'est posée. D'après le site populaire \texttt{w3schools.com}\cite{browser-stats}, Google Chrome représente plus de 75\% des visites au moins de décembre 2017. Nous décidons donc de ne pas adapter le code de l'extension pour plusieurs types de navigateurs, car nous estimons que le gain en utilisateurs serait insuffisant pour justifier le développement supplémentaire.
 
-			Au moment où le plug-in est installé, une requête est envoyée au serveur afin de l'avertir qu'un nouvel utilisateur a installé l'extension. Le serveur génère un identifiant, l'envoie à l'extension en réponse et est désormais prêt à recevoir des information de ce nouvel identifiant.
+		L'extension sera donc développée pour le navigateur Google Chrome, en utilisant l'API JavaScript que celui-ci met à disposition. Les fonctionnalités implémentées sont la récolte et l'envoi des types de données décrites à la section \ref{d-donnees}.
 
-		\subsubsection{Récolte continuelle\label{d-recolte}}
+		L'extension proposera également à l'utilisateur d'accéder à l'interface grâce à un lien, ainsi que la possibilité de se "lier" ce navigateur au profil d'un autre navigateur existant, en entrant son ancien identificateur. Ceci permet à un utilisateur de profiter d'un seul profil au travers de plusieurs machines posédant l'extension, par exemple. 
 
-			Afin que le serveur soit capable de supporter une certaine charge d'utilisateurs, il est nécessaire que celui-ci recoive un nombre réduit de requêtes de la part des clients. Pour cette raison, l'extension ne contacte le serveur qu'une seule fois toutes les 30 secondes afin de le tenir informaé des évènement ayant eu lieu.
+	\subsection{Serveur}
 
-			Le serveur va donc pouvoir exposer une API simple : L'extension contactera toujours le même endpoint, et chaque requête contiendra la liste des informations concernant les évènements qui se sont passés chez le client.
+		\subsubsection{Rôles}
 
-			Lorsque nous détectons qu'utilisateur visite une URL pour la première fois, le serveur va télécharger le contenu de cette page. Notre serveur ouvre un navigateur virtuel afin de simuler le chargement complet de la page - y compris l'exécution de scripts - et enregistre le contenu final de la page dans la base de données.
+			La partie du serveur est probablement la plus complexe du projet. Le serveur va devoir assurer le fonctionnement de plusieurs tâches clés :
+
+			\begin{itemize}
+				\item Récolte et enregistrement des données de l'extension
+				\item Traitement des données utilisateurs
+				\item API au service de l'interface
+			\end{itemize}
+
+		\subsubsection{Récolte}
+
+			Avant tout traitement, le serveur doit être capable de recevoir et d'enregistrer les données des clients. Etant donné que l'extension est développée en JavaScript, les données seront transmises par HTTP au format JSON pour des raisons de simplicité.
+
+			\paragraph{Installation du plug-in}
+
+				Au moment où le plug-in est installé, une requête est envoyée au serveur afin de l'avertir qu'un nouvel utilisateur a installé l'extension. Le serveur génère un identifiant, l'envoie à l'extension en réponse et est désormais prêt à recevoir des information de ce nouvel identifiant.
+
+			\paragraph{Récolte continuelle\label{d-recolte}}
+
+				Afin que le serveur soit capable de supporter une certaine charge d'utilisateurs, il est nécessaire que celui-ci recoive un nombre réduit de requêtes de la part des clients. Pour cette raison, l'extension ne contacte le serveur qu'une seule fois toutes les 30 secondes afin de le tenir informaé des évènement ayant eu lieu.
+
+				Le serveur va donc pouvoir exposer une API simple : L'extension contactera toujours le même endpoint, et chaque requête contiendra la liste des informations concernant les évènements qui se sont passés chez le client.
+
+				Lorsque nous détectons qu'utilisateur visite une URL pour la première fois, le serveur va télécharger le contenu de cette page. Notre serveur ouvre un navigateur virtuel afin de simuler le chargement complet de la page - y compris l'exécution de scripts - et enregistre le contenu final de la page dans la base de données.
+
+				\begin{figure}[!h]
+					\centering
+					\includegraphics[width=0.5\textwidth]{images/design/data1_big}
+					\caption{Téléchargement et enregistrement du contenu d'une page}
+					\label{d-download-page}
+				\end{figure}
+
+				Une série d'opérations est ensuite effectuée sur le contenu de la page, afin de le rendre utilisable par les prochains algorithmes. La figure~\ref{d-download-page} montre les étapes qui entrent en compte dans le pré-traitement du contenu :
+
+				\begin{description}
+					\item[1. Téléchargement] Le serveur lance, dans un navigateur virtual, le téléchargement de la page ainsi que l'exécution des scripts présents sur celle-ci. Une fois la page complètement chargée, on conserve le DOM de la page chargée.
+					\item[2. Nettoyage] À partir du HTML de la page, on ne cherche à garder que le texte de celle-ci, sans balise. Un parseur enlève toutes les balises \texttt{<script>} et \texttt{<style>}, puis ne garde que le contenu des éléments restants.
+					\item[3. [FR/EN] Lemmatisation] Un détecteur de langue nous renseigne sur la langue du texte. Si celui-ci est en anglais ou en français, nous lemmatisons chaque mot du texte. Ce processus analyse lexicalement les mots présents, et tente de ramener chaque mot à dans une forme plus simple pour le représenter. Par exemple, le temps des verbes est changé en infinitif, et les noms communs perdent leur pluriel. La liste complète des traitements effectuée est en réalité bien plus longue, et propre à la langue du texte.
+					\item[3/4. Enregistrement] Si le texte n'est pas dans une langue supportée par la lemmatisation, ou après la lemmatisation du texte anglais ou français, celui-ci est enregistré dans la base de données. Tous les traitements futurs sur le contenu de la page se feront sur cette version-ci.
+				\end{description}
+
+		\subsubsection{Enregistrement}
+
+			Le serveur se charge également de la gestion du stockage des données reçues (et calculées). Une base de données MySQL sera continuellement alimentée par les nouvelles données reçues. La base de données comprendra généralement une table par type de données à enregistrer, ainsi que des tables temporaires dans lesquelles seront placées des informations pré-calculées afin de répondre plus rapidement aux requêtes de l'interface.
+
+		\subsubsection{Traitement des données}
+
+			Une fois des données enregistrées, celles-ci sont traitées par différentes méthodes en fonction des besoins de l'interface. Voici le traitement que subit chaque type de données. Les traitements décrits ici ne sont pas effectués directement à la réception de données d'un client : Ils sont effectués régulièrement lorsque nécessaire.
+
+			\paragraph{Quantité de visites}
+
+				Deux mesures sont récoltées sur l'intérêt que peut avoir un utilisateur par rapport à une page web : Le nombre de fois que cette URL a été ouverte, et le temps passé à être actif sur la page en question. Chacune de ces informations est également datée.
+
+			\paragraph{Contenu des pages}
+
+				Les traitements les plus lourds que nous effectuons prennent en entrée le contenu des pages visitées.
+
+				\begin{figure}[!h]
+					\centering
+					\includegraphics[width=0.8\textwidth]{images/design/traitement_offline}
+					\caption{Traitements du contenu des pages}
+					\label{d-traitements}
+				\end{figure}
+
+				Le contenu de la page est analysé indépendamment par deux algorithmes différents, chacun permettant de révéler un type d'information différent.
+
+				La figure~\ref{d-traitements} montre les deux traitements effectués aux documents de la base de données.
+
+				\begin{description}
+					\item[1. Chaque document] le serveur va charger la liste entière des contenus enregistrés des pages web, obtenues comme décrites à la section \ref{d-recolte}.
+					\item[A2. Calcul TF] La fréquence de chaque mot du document est calculée, puis enregistrée
+					\item[A3. Calcul TF-IDF] Une fois en possession de la fréquence de chaque mot dans chaque document, le poids final TF-IDF normalisé est calculé et enregistré dans la base de données, pour chaque mot à l'intérieur de chaque document.
+					\item[B2. Ajout au corpus LDA] Avant de générer un modèle, un traitement semblable à la branche A2 est effectuée pour chaque document. Une fois tous les documents chargés, on lance l'exécution de la génération du modèle LDA.
+					\item[B3. Pré-calcule topics] Une le modèle entraîné, processus qui peut facilement durer plusieurs heures, il est enregistré sur le disque. Après quoi, une multitude de requêtes sont effectuées sur le modèle afin de connaître déjà quels sont les topics les plus probables pour chaque page de la base de données. On enregistre les résultats à nouveau dans la base de données. Ce pré-calcul va accélérer considérablement les traitements futurs sur la reconnaissance des topics significatifs pour un utilisateur en fonction des pages web qu'il a visité. 
+
+				\end{description}
+
+				\subparagraph{TF-IDF}
+
+					TF-IDF est une méthode permettant de détecter quels sont les mots les plus importants dans un document parmi l'ensemble d'un cropus. La méthode consiste purement en l'analyse de la fréquence de chaque mot dans chaque document, et ne s'occupe absolument pas de la signification des mots.
+
+				\subparagraph{LDA}
+
+					LDA est un modèle qui permet de générer un nombre de sujets, thèmes ou topics, en fonction du contenu textuel d'un corpus de documents. Le modèle suppose que chaque document parle de un ou plusieurs topics, et tente de les retrouver en se basant sur la fréquence d'utilisation de ses mots en comparaison avec le reste du corpus de documents. 
+
+			\paragraph{Requêtes du navigateur}
+
+				Comme mentionné précédemment, quelques informations de chaque requête du navigateur du client sont enregistrées. Ces données n'ont pas besoin d'un traitement particulier.
+
+				Etant donné que nous nous intéressont particulièrement à leur quantité, nous n'allons principalement que les compter. Cependant dû au fait de leur énorme quantité, il nous est nécessaire de pré-calculer certaines sommes avant de les servir à l'interface.
+
+		\subsubsection{API}
+
+			Le serveur a également le rôle de répondre aux demander de l'interface, et de lui fournir les informations nécessaire pour afficher les données du client. Ces communications se font au travers d'une série de requêtes initiées par le client.
+
+			Une partie des données servies au client sont pré-calculées, comme la liste des topics tirés de LDA ou le poids TF-IDF des mots, et ne sont donc rafraîchies que périodiquement lorsque demandé.
+
+			Le reste des données, comme le nombre d'ouvertures d'une page ou le temps actif passé sur chaque page, est continuellement rafraîchi. Ces données sont donc toujours à jour.
+
+	\subsection{Interface}
+
+		L'interface a connu de nombreuses versions au fur et à mesure du projet. Cependant, le thème et le but commun de ces pages n'a pas changé : Montrer à l'utilisateur les informations qu'il révèle, ainsi que des possibles utilisations de celles-ci. Le design initial des visualisation était très visuel et varié et a progressé vers des pages plus utilitaires.
+
+		L'interface se divise en deux onglets distincs, chacun tentant de représenter une partie des informations. 
+
+		\subsubsection{Settings}
+
+			La page Settings laisse la possibilité à l'utilisateur de resneigner ces centres d'intérêt en les sélectionneant parmi une liste d'une centaine d'entre-eux. Cette centaine d'intérêts sont ceux que Google utilise pour "classifier" les visiteurs de sites web utilisant Google Analytics, nous estimons donc que ces intérêts font sens. 
+
+		\subsubsection{Profil}
 
 			\begin{figure}[!h]
 				\centering
-				\includegraphics[width=0.5\textwidth]{images/design/data1_big}
-				\caption{Téléchargement et enregistrement du contenu d'une page}
-				\label{d-download-page}
+				\includegraphics[width=0.8\textwidth]{images/design/mockup_profile}
+				\caption{Maquette de la page de Profil}
+				\label{d-mockup-profile}
 			\end{figure}
 
-			Une série d'opérations est ensuite effectuée sur le contenu de la page, afin de le rendre utilisable par les prochains algorithmes. La figure~\ref{d-download-page} montre les étapes qui entrent en compte dans le pré-traitement du contenu :
+			La page Profil cherche à montrer le résultat de l'analyse des pages visitées par l'utilisateur, tentant de retrouver et de lui montrer quels sont ses centres d'intérêts. 
 
-			\begin{description}
-				\item[1. Téléchargement] Le serveur lance, dans un navigateur virtual, le téléchargement de la page ainsi que l'exécution des scripts présents sur celle-ci. Une fois la page complètement chargée, on conserve le DOM de la page chargée.
-				\item[2. Nettoyage] À partir du HTML de la page, on ne cherche à garder que le texte de celle-ci, sans balise. Un parseur enlève toutes les balises \texttt{<script>} et \texttt{<style>}, puis ne garde que le contenu des éléments restants.
-				\item[3. [FR/EN] Lemmatisation] Un détecteur de langue nous renseigne sur la langue du texte. Si celui-ci est en anglais ou en français, nous lemmatisons chaque mot du texte. Ce processus analyse lexicalement les mots présents, et tente de ramener chaque mot à dans une forme plus simple pour le représenter. Par exemple, le temps des verbes est changé en infinitif, et les noms communs perdent leur pluriel. La liste complète des traitements effectuée est en réalité bien plus longue, et propre à la langue du texte.
-				\item[3/4. Enregistrement] Si le texte n'est pas dans une langue supportée par la lemmatisation, ou après la lemmatisation du texte anglais ou français, celui-ci est enregistré dans la base de données. Tous les traitements futurs sur le contenu de la page se feront sur cette version-ci.
-			\end{description}
+			Voici les différentes concepts de visualisations montrées à l'utilisateur :
 
-	\subsection{Enregistrement}
+			\paragraph{Wordcloud}
 
-		Le serveur se charge également de la gestion du stockage des données reçues (et calculées). Une base de données MySQL sera continuellement alimentée par les nouvelles données reçues. La base de données comprendra généralement une table par type de données à enregistrer, ainsi que des tables temporaires dans lesquelles seront placées des informations pré-calculées afin de répondre plus rapidement aux requêtes de l'interface.
+				Le wordcloud montre à l'utilisateur la liste des mots qu'il lit le plus fréquemment. Le visualisation est un amassage de mots de différentes tailles, placés d'une manière aléatoire sur un rectangle. Les mots les plus lus ont une taille plus grande afin d'attirer l'attention de l'utilisateur.
 
-	\subsection{Traitement des données}
+				Cette visualisation cherche à donner très rapidement une impression générale des thèmes que l'utilisateur parcourt lors de sa navigation.
 
-		Une fois des données enregistrées, celles-ci sont traitées par différentes méthodes en fonction des besoins de l'interface. Voici le traitement que subit chaque type de données. Les traitements décrits ici ne sont pas effectués directement à la réception de données d'un client : Ils sont effectués régulièrement lorsque nécessaire.
+			\paragraph{Topics graph}
 
-		\subsubsection{Quantité de visites}
+				Le "topics graph" cherche à rassembler les mots en thèmes, et monte d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquamment. À chaque thème est lié un ou plusieurs mots, qui reprèsentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
 
-			Deux mesures sont récoltées sur l'intérêt que peut avoir un utilisateur par rapport à une page web : Le nombre de fois que cette URL a été ouverte, et le temps passé à être actif sur la page en question. Chacune de ces informations est également datée.
+				Le but de cette visualisation est de montrer que nous pouvons déduire des thèmes et ainsi montrer un traitement plus fin des intérêts de l'utilisateur, que simplement additionner une liste de mots. Dans le marketing, les thèmes découverts pourraient être utilisés pour labelliser les utilisateurs à qui faire apparaître une publicité.
 
-		\subsubsection{Contenu des pages}
-
-			Les traitements les plus lourds que nous effectuons prennent en entrée le contenu des pages visitées.
+		\subsubsection{Trackers}
 
 			\begin{figure}[!h]
 				\centering
-				\includegraphics[width=0.8\textwidth]{images/design/traitement_offline}
-				\caption{Traitements du contenu des pages}
-				\label{d-traitements}
+				\includegraphics[width=0.8\textwidth]{images/design/mockup_trackers1}
+				\caption{Maquette de la page de Trackers}
+				\label{d-mockup-trackers1}
 			\end{figure}
 
-			Le contenu de la page est analysé indépendamment par deux algorithmes différents, chacun permettant de révéler un type d'information différent.
-
-			La figure~\ref{d-traitements} montre les deux traitements effectués aux documents de la base de données.
-
-			\begin{description}
-				\item[1. Chaque document] le serveur va charger la liste entière des contenus enregistrés des pages web, obtenues comme décrites à la section \ref{d-recolte}.
-				\item[A2. Calcul TF] La fréquence de chaque mot du document est calculée, puis enregistrée
-				\item[A3. Calcul TF-IDF] Une fois en possession de la fréquence de chaque mot dans chaque document, le poids final TF-IDF normalisé est calculé et enregistré dans la base de données, pour chaque mot à l'intérieur de chaque document.
-				\item[B2. Ajout au corpus LDA] Avant de générer un modèle, un traitement semblable à la branche A2 est effectuée pour chaque document. Une fois tous les documents chargés, on lance l'exécution de la génération du modèle LDA.
-				\item[B3. Pré-calcule topics] Une le modèle entraîné, processus qui peut facilement durer plusieurs heures, il est enregistré sur le disque. Après quoi, une multitude de requêtes sont effectuées sur le modèle afin de connaître déjà quels sont les topics les plus probables pour chaque page de la base de données. On enregistre les résultats à nouveau dans la base de données. Ce pré-calcul va accélérer considérablement les traitements futurs sur la reconnaissance des topics significatifs pour un utilisateur en fonction des pages web qu'il a visité. 
-
-			\end{description}
-
-			\paragraph{TF-IDF}
-
-				TF-IDF est une méthode permettant de détecter quels sont les mots les plus importants dans un document parmi l'ensemble d'un cropus. La méthode consiste purement en l'analyse de la fréquence de chaque mot dans chaque document, et ne s'occupe absolument pas de la signification des mots.
-
-			\paragraph{LDA}
-
-				LDA est un modèle qui permet de générer un nombre de sujets, thèmes ou topics, en fonction du contenu textuel d'un corpus de documents. Le modèle suppose que chaque document parle de un ou plusieurs topics, et tente de les retrouver en se basant sur la fréquence d'utilisation de ses mots en comparaison avec le reste du corpus de documents. 
-
-		\subsubsection{Requêtes du navigateur}
-
-			Comme mentionné précédemment, quelques informations de chaque requête du navigateur du client sont enregistrées. Ces données n'ont pas besoin d'un traitement particulier.
-
-			Etant donné que nous nous intéressont particulièrement à leur quantité, nous n'allons principalement que les compter. Cependant dû au fait de leur énorme quantité, il nous est nécessaire de pré-calculer certaines sommes avant de les servir à l'interface.
-
-	\subsection{API}
-
-		Le serveur a également le rôle de répondre aux demander de l'interface, et de lui fournir les informations nécessaire pour afficher les données du client. Ces communications se font au travers d'une série de requêtes initiées par le client.
-
-		Une partie des données servies au client sont pré-calculées, comme la liste des topics tirés de LDA ou le poids TF-IDF des mots, et ne sont donc rafraîchies que périodiquement lorsque demandé.
-
-		Le reste des données, comme le nombre d'ouvertures d'une page ou le temps actif passé sur chaque page, est continuellement rafraîchi. Ces données sont donc toujours à jour.
-
-\section{Interface}
-
-	L'interface a connu de nombreuses versions au fur et à mesure du projet. Cependant, le thème et le but commun de ces pages n'a pas changé : Montrer à l'utilisateur les informations qu'il révèle, ainsi que des possibles utilisations de celles-ci. Le design initial des visualisation était très visuel et varié et a progressé vers des pages plus utilitaires.
-
-	L'interface se divise en deux onglets distincs, chacun tentant de représenter une partie des informations. 
-
-	\subsection{Settings}
-
-		La page Settings laisse la possibilité à l'utilisateur de resneigner ces centres d'intérêt en les sélectionneant parmi une liste d'une centaine d'entre-eux. Cette centaine d'intérêts sont ceux que Google utilise pour "classifier" les visiteurs de sites web utilisant Google Analytics, nous estimons donc que ces intérêts font sens. 
-
-	\subsection{Profil}
-
-		\begin{figure}[!h]
-			\centering
-			\includegraphics[width=0.8\textwidth]{images/design/mockup_profile}
-			\caption{Maquette de la page de Profil}
-			\label{d-mockup-profile}
-		\end{figure}
-
-		La page Profil cherche à montrer le résultat de l'analyse des pages visitées par l'utilisateur, tentant de retrouver et de lui montrer quels sont ses centres d'intérêts. 
-
-		Voici les différentes concepts de visualisations montrées à l'utilisateur :
-
-		\subsubsection{Wordcloud}
-
-			Le wordcloud montre à l'utilisateur la liste des mots qu'il lit le plus fréquemment. Le visualisation est un amassage de mots de différentes tailles, placés d'une manière aléatoire sur un rectangle. Les mots les plus lus ont une taille plus grande afin d'attirer l'attention de l'utilisateur.
-
-			Cette visualisation cherche à donner très rapidement une impression générale des thèmes que l'utilisateur parcourt lors de sa navigation.
-
-		\subsubsection{Topics graph}
-
-			Le "topics graph" cherche à rassembler les mots en thèmes, et monte d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquamment. À chaque thème est lié un ou plusieurs mots, qui reprèsentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
-
-			Le but de cette visualisation est de montrer que nous pouvons déduire des thèmes et ainsi montrer un traitement plus fin des intérêts de l'utilisateur, que simplement additionner une liste de mots. Dans le marketing, les thèmes découverts pourraient être utilisés pour labelliser les utilisateurs à qui faire apparaître une publicité.
-
-	\subsection{Trackers}
-
-		\begin{figure}[!h]
-			\centering
-			\includegraphics[width=0.8\textwidth]{images/design/mockup_trackers1}
-			\caption{Maquette de la page de Trackers}
-			\label{d-mockup-trackers1}
-		\end{figure}
-
-		\begin{figure}[!h]
-			\centering
-			\includegraphics[width=0.8\textwidth]{images/design/mockup_trackers2}
-			\caption{Suite de la maquette de la page de Trackers}
-			\label{d-mockup-trackers2}
-		\end{figure}
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[width=0.8\textwidth]{images/design/mockup_trackers2}
+				\caption{Suite de la maquette de la page de Trackers}
+				\label{d-mockup-trackers2}
+			\end{figure}
