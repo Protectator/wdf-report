@@ -222,11 +222,217 @@
 
 			Le reste des données, comme le nombre d'ouvertures d'une page ou le temps actif passé sur chaque page, est continuellement rafraîchi. Ces données sont donc toujours à jour.
 
+	\subsection{Base de données}
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[height=0.85\textwidth]{images/design/db}
+			\caption{Schéma des tables de la base de données}
+			\label{db}
+		\end{figure}
+
+		Toutes les informations sont centralisées dans une base de données MySQL. La figure~\ref{db} montre le schéma global des tables de la base de données. L'utilisation de chaque table est décrite dans la section suivante, lors de leur accès. La figure~\ref{db_tables} décrit chacun des champs des tables de la base de données.
+
+		\begin{figure}[!h]
+			\centering
+			\subfloat[Table \texttt{content}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{id}       & Clé primaire artificielle \\
+					\texttt{wdfId}    & Identifiant ayant accédé \\
+					\texttt{url}      & URL de la page \\
+					\texttt{timestamp} & Date téléchargée \\
+					\texttt{content}  & Contenu \glsdisp{DOM}{DOM} entier \\
+					\texttt{language} & Langue détectée du texte \\
+					\texttt{title}    & Contenu de la balise \texttt{\small{title}} \\
+					\hline
+				\end{tabular}
+			}
+			\subfloat[Table \texttt{content\_text}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{url}      & URL de la page \\
+					\texttt{content}  & Contenu textuel lemmatisé \\
+					\texttt{title}    & Contenu de la balise \texttt{\small{title}} \\
+					\texttt{language} & Langue détectée du texte \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{users}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{wdfId}    & Numéro d'identifiant \\
+					\texttt{wdfToken} & Token du client \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{pagewatch}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{wdfId}    & Numéro d'identifiant \\
+					\texttt{url}  & URL de la page \\
+					\texttt{timestamp} & Date de visualisation \\
+					\texttt{amount} & Temps regardé [sec] \\
+					\texttt{id} & Clé primaire artificielle \\
+					\hline
+				\end{tabular}
+			}
+			\subfloat[Table \texttt{pagerequests}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{wdfId}    & Numéro d'identifiant \\
+					\texttt{url}  & URL de la page \\
+					\texttt{timestamp} & Date de visualisation \\
+					\texttt{request} & URL requêtée \\
+					\texttt{method} & Méthode HTTP \\
+					\texttt{size} & Taille de la requête \\
+					\texttt{id} & Clé primaire artificielle \\
+					\texttt{urlDomain} & Domaine de l'URL actuelle \\
+					\texttt{requestDomain} & Domaine de l'URL requêtée\\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{pageviews}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{wdfId} & Numéro d'identifiant \\
+					\texttt{url}   & URL de la page \\
+					\texttt{timestamp} & Date de visualisation \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{user\_interests}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{wdfId} & Numéro d'identifiant \\
+					\texttt{interest\_id} & Numéro d'intérêt \\
+					\hline
+				\end{tabular}
+			}
+			\subfloat[Table \texttt{interests}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{id} & Numéro d'intérêt \\
+					\texttt{name} & Nom de l'intérêt \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{current\_user\_tags}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{wdfId} & Numéro d'identifiant \\
+				    \texttt{topic\_id} & Numéro du topic \\
+					\texttt{interest\_id} & Numéro de l'intérêt \\
+					\hline
+				\end{tabular}
+			}
+			\subfloat[Table \texttt{user\_tags}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{wdfId} & Numéro d'identifiant \\
+				    \texttt{topic\_id} & Numéro du topic \\
+					\texttt{words} & Trois mots du topic \\
+					\hline
+				\end{tabular}
+			}
+			\caption{Tables de la base de données}
+			\label{db_tables}
+		\end{figure}
+
+		\begin{figure}[!h]\ContinuedFloat
+			\centering
+			\subfloat[Table \texttt{precalc\_trackers}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{wdfId} & Numéro d'identifiant \\
+				    \texttt{urlDomain} & Domaine de l'URL actuelle \\
+					\texttt{requestDomain} & Domaine de l'URL requêtée \\
+					\texttt{amount} & Nombre de requêtes \\
+					\texttt{size} & Taille totale des requêtes \\
+					\hline
+				\end{tabular}
+			}
+			\subfloat[Table \texttt{precalc\_topics}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{url} & URL de la page \\
+				    \texttt{topics} & JSON des topics associés \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{lda\_topics}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{topic\_id} & Numéro du topic \\
+				    \texttt{topics} & Mot associé \\
+				    \texttt{value} & Probabilité du mot \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{computed\_tf}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{url} & URL de la page \\
+				    \texttt{word} & Mot \\
+				    \texttt{tf} & Term Frequency selon TF-IDF \\
+					\hline
+				\end{tabular}
+			}
+			\subfloat[Table \texttt{computed\_df}]{
+				\begin{tabular}{|rl|}
+					\hline
+				    \texttt{word} & Mot \\
+				    \texttt{df} & Document Frequency selon TF-IDF \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{computed\_tfidf}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{url} & URL de la page \\
+				    \texttt{word} & Mot \\
+				    \texttt{df} & Score final TF-IDF \\
+					\hline
+				\end{tabular}
+			}
+
+			\subfloat[Table \texttt{computed\_bestwords}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{url} & URL de la page \\
+				    \texttt{word} & Mot \\
+				    \texttt{tfidf} & Score final TF-IDF \\
+					\hline
+				\end{tabular}
+			}
+			\subfloat[Table \texttt{current\_url\_topics}]{
+				\begin{tabular}{|rl|}
+					\hline
+					\texttt{url} & URL de la page \\
+				    \texttt{topic} & Numéro du topic \\
+				    \texttt{probability} & Probabilité du toppic pour la page \\
+					\hline
+				\end{tabular}
+			}
+			\caption{Tables de la base de données (suite)}
+			\label{db_tables}
+		\end{figure}
+
+	\FloatBarrier
+
 	\subsection{Interface}
 
 		L'interface a connu de nombreuses versions au fur et à mesure du projet. Cependant, le thème et le but commun de ces pages n'a pas changé : Montrer à l'utilisateur les informations qu'il révèle, ainsi que des possibles utilisations de celles-ci. Le design initial des visualisation était très visuel et varié et a progressé vers des pages plus utilitaires.
 
-		L'interface se divise en deux onglets distincs, chacun tentant de représenter une partie des informations. 
+		L'interface se divise en trois onglets distincs, chacun tentant de représenter une partie des informations : Settings, Profil, et Trackers.
 
 		\subsubsection{Settings}
 
@@ -241,23 +447,27 @@
 				\label{d-mockup-profile}
 			\end{figure}
 
-			La page Profil cherche à montrer le résultat de l'analyse des pages visitées par l'utilisateur, tentant de retrouver et de lui montrer quels sont ses centres d'intérêts. 
+			La page Profil cherche à montrer le résultat de l'analyse des pages visitées par l'utilisateur, tentant de retrouver et de lui montrer quels sont ses centres d'intérêts. La figure~\ref{d-mockup-profile} montre les différentes vues prévues initialement :
 
-			Voici les différentes concepts de visualisations montrées à l'utilisateur :
+			\begin{description}
+				\item[1 Word Cloud] Cette vue cherche à mettre rapidement en valeur les mots les plus consultés par l'utilisateur en affichant un nuage de mots, où les plus grand seraient les plus vus. 
+				\item[2 Interests graph] Cette visualisation cherche à rassembler les mots fréquemment lus par l'utilisateur en topics, eux-même liés entre eux. Le but est de montrer une synthèse du Word Cloud.
+				\item[3 Website themes] Cette partie cherchait à montrer les mots redondants ainsi que les thèmes trouvés sur certains sites web.
+				\item[4 Most visited sites] Ce graphique en barres cherche à montrer à l'utilisateur quels sont les sites qu'il a le plus souvent visité, c'est-à-dire ouverts l'URL, peu importe le temps passé sur chaque site.
+				\item[5 Most watched sites] Ce graphique, contrairement au 4, cherche à montrer à l'utilisateur le temps total passé à regarder chaque page.
+				\item[6 History of websites] Ce graphique cherche à montrer à l'utilisateur la fluctuation de sa visite de sites web sur la durée.
+				\item[7 History of interests] Ce graphique cherche à mettre en lumière les sujets les plus visités par l'utilisateur sur une période de temps afin de potentiellement détecter des tendances ou des changements dans son comportement.
+			\end{description}
 
-			\paragraph{Wordcloud}
-
-				Le wordcloud montre à l'utilisateur la liste des mots qu'il lit le plus fréquemment. Le visualisation est un amassage de mots de différentes tailles, placés d'une manière aléatoire sur un rectangle. Les mots les plus lus ont une taille plus grande afin d'attirer l'attention de l'utilisateur.
-
-				Cette visualisation cherche à donner très rapidement une impression générale des thèmes que l'utilisateur parcourt lors de sa navigation.
-
-			\paragraph{Topics graph}
-
-				Le "topics graph" cherche à rassembler les mots en thèmes, et monte d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquamment. À chaque thème est lié un ou plusieurs mots, qui reprèsentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
-
-				Le but de cette visualisation est de montrer que nous pouvons déduire des thèmes et ainsi montrer un traitement plus fin des intérêts de l'utilisateur, que simplement additionner une liste de mots. Dans le marketing, les thèmes découverts pourraient être utilisés pour labelliser les utilisateurs à qui faire apparaître une publicité.
+		\FloatBarrier
 
 		\subsubsection{Trackers}
+
+			La page Trackers montre la liste des différents trackers contactés au cours de la navigation, ainsi que les domaines les ayant contactés.
+
+			Les requêtes effectuées depuis une page vers le même domaine ne sont pas comptées car on estime qu'il s'agit de trafic que l'on sait qui va prendre place, peu importe la page contactée : Il est évident qu'elle va chercher à charger du contenu provenant du même domaine.
+			
+			La figure~\ref{d-mockup-trackers1} montre les 4 premières visualisations conceptualisées de la page Trackers, et la figure~\ref{d-mockup-trackers2} montre les 4 dernières.
 
 			\begin{figure}[!h]
 				\centering
@@ -266,9 +476,31 @@
 				\label{d-mockup-trackers1}
 			\end{figure}
 
+			\begin{description}
+				\item[8 Most present trackers] Ce graphique en barres montrait les trackers potentiels contactés depuis  le plus grand nombre de pages différentes.
+				\item[9 Most revealing trackers] Ce graphique en barres montrait une moyenne par domaine du nombre de requêtes effectuées vers des trackers potentiels.
+				\item[10 Most contacted trackers] Ce graphique en barres montrait les potentiels trackers les plus contactés au total, depuis n'importe quelle page.
+				\item[11 Stats] Quelques nombres montrent des statistiques générales de l'utilisateur afin de lui faire prendre compte de certaines mesures. Par exemple, la taille totale d'informations envoyées aux trackers potentiels, ou le nombre de ceux-ci contactés.
+			\end{description}
+
+			\FloatBarrier
+
 			\begin{figure}[!h]
 				\centering
 				\includegraphics[width=0.8\textwidth]{images/design/mockup_trackers2}
 				\caption{Suite de la maquette de la page de Trackers}
 				\label{d-mockup-trackers2}
 			\end{figure}
+
+			\begin{description}
+				\item[12 Informations flow] Cette visualisation sous forme de graphe cherche à montrer quels sont les domaines les plus connectés entre eux. Le but est de rassembler des domaines et sous-domaines afin de montrer lesquels de ceux-ci communiquent le plus.
+				\item[13 World map] Cette visualisation est très semblable à la précédente. Les domaines sont à présent placés sur leur emplacement géographique afin de se rendre compte du trafic réel physique engendré par ces requêtes.
+				\item[14 Trackers list] Cette partie montre de manière exhaustive l'ensemble des requêtes effectuées vers un domaine. Le but est de permettre aux utilisateurs curieux de parcourir l'ensemble des données de manière plus fine. Un clic sur un tracker ouvre la vue 15.
+				\item[15 Selected tracker] Ce tableau s'ouvre en sélectionnant un tracker potentiel de la vue 14. Il montre l'ensemble des domaines ayant contacté le potentiel tracker sélectionné.
+			\end{description}
+
+			\paragraph{Topics graph}
+
+				Le "topics graph" cherche à rassembler les mots en thèmes, et monte d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquamment. À chaque thème est lié un ou plusieurs mots, qui reprèsentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
+
+				Le but de cette visualisation est de montrer que nous pouvons déduire des thèmes et ainsi montrer un traitement plus fin des intérêts de l'utilisateur, que simplement additionner une liste de mots. Dans le marketing, les thèmes découverts pourraient être utilisés pour labelliser les utilisateurs à qui faire apparaître une publicité.
