@@ -4,7 +4,6 @@
 %                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 %
 %
 % WORDCLOUD
@@ -93,7 +92,7 @@
 %
 %
 
-\section{Topics List}
+\section{Topics List}\label{topicslist}
 
 	\subsection{Concept}
 
@@ -368,52 +367,156 @@
 
 			Les données sont finalement transformées dans un format compatible et passées à une instance configurée de la librairie HighCharts, qui génère la visualisation du graphique sur la page.
 
+\clearpage
+
+%
+%
+% TRACKERS
+%
+%
+
 \section{Trackers}
 
 	\subsection{Concept}
 
-		La vue "Trackers" comporte deux pages et 
+		La vue "Trackers" comporte deux pages liées à une seule source de données. Le but est de montrer à l'utilisateur que lorsqu'une page web est visitée, des informations peuvent tout de même être transmises à d'autres domaines.
+
+		La première vue de l'interface, "Most Sending", montre quels sont les domaines qui contactent beacoup des domaines différents. Il peut ainsi voir sur cette vue quels sont les serveurs qui sont contactés lorsqu'il accède à une page web.
+
+		L'inverse est possible également. Grâce à la deuxième vue "Most recieving" il est possible de découvrir quels sont les domaines - trackers potentiels - qui sont fréquemment contactés par d'autres pages web. Chaque vue donne donc un point de vue différent sur le flux des données lorsque l'utilisateur parcourt le web.
+
+		\begin{wrapfigure}{r}{3cm}
+			\includegraphics[width=2cm]{images/design/pages/trackers_button}
+			\caption{Domaine activé, puis désactivé}\label{d-buttons}
+		\end{wrapfigure} 
+
+		De plus, ces deux vues peuvent interagir : Il est possible de décider de cacher certains domaines de l'une ou de l'autre vue, car par exemple l'utilisateur souhaiterait ne pas prendre en compte les données d'un certain site web, ou à l'inverse ignorer les données envoyées vers un potentiel tracker particulier.\\
+		Un bouton permettant d'activer ou de désactiver les données du domaine est présent à chaque ligne, et la désactivation de celui-ci impacte la vue des données de l'ensemble des deux pages "Trackers". La figure~\ref{d-buttons} montre un bouton de domaine activé et désactivé.
+		
+		Ainsi il est par exemple possible de désactiver les données émises par un domaine, et de regarder quelle est la répercussion sur les données reçues par les autres.
+
+		La figure~\ref{trackers_images} montre la différence entre la vue imaginée et le résultat final d'une des deux pages Trackers. La figure~\ref{tracker_images} montre la différence entre la vue imaginée et le résultat final de la page détaillée d'un tracker.
+
+		\begin{figure}[p]
+			\centering
+			\subfloat[Maquette initiale de la vue]{\includegraphics[width=0.3\textwidth,valign=t]{images/design/pages/trackers_mockup}}
+			\subfloat[Exemple de résultat final]{\includegraphics[width=0.75\textwidth,valign=t]{images/design/pages/trackers_final}}
+			\caption{Maquette initiale et résultat final d'une des vues Trackers}
+			\label{trackers_images}
+		\end{figure}
+
+		\begin{figure}[p]
+			\centering
+			\subfloat[Maquette initiale de la vue]{\includegraphics[width=0.6\textwidth,valign=t]{images/design/pages/tracker_mockup}}
+
+			\subfloat[Exemple de résultat final]{\includegraphics[width=0.75\textwidth,valign=t]{images/design/pages/tracker_final}}
+			\caption{Maquette initiale et résultat final de la vue détaillée lors d'un clic sur un Tracker}
+			\label{tracker_images}
+		\end{figure}
+
+		De plus, il est possible sur chacune des deux pages d'accéder aux statistiques détaillées sur le trafic de données d'un domaine particulier. En cliquant sur un domaine, l'interface ouvre une troisième vue qui montre en détail le nombre de requêtes liées à un domaine particulier.
+
+	\newpage
 
 	\subsection{Données}
 
 		\subsubsection{Sources}
 
+			Une seule source de données est nécessaire à constituer cette visualisation :
+			\begin{description}
+				\item[Requêtes pré-calculées] : Nombre de requêtes entre chahque domaine. Ces données sont stockées dans la table \texttt{precalc\_trackers} (figure \ref{table-precalc-trackers}).
+			\end{description}
+
+		\FloatBarrier
+
 		\subsubsection{Algorithme}
+
+			Peu de traitements entrent en jue dans la génération de la page Trackers. Il s'agit principalement de calculer la somme d'une liste de domaines. Ceci est illustré par la figure~\ref{trackers_algo} :
+			\begin{description}
+				\item[A] On additionne le nombre de requêtes faite pour un domaine vers un autre domaine, et on enregistre le total pour chaque paire par utilisateur.
+
+				\item[B] L'endpoint \texttt{/api/getTrackers} sert l'ensemble des résultats enregistrés pour l'utilisateur.
+
+				\item[C] On cherche ici les domaines ayant reçu le plus de requêtes. Nous allons donc effectuer regrouper les requêtes faites par leur nom de domaine de destination, et effectuer la somme des autres mesures.
+
+				\item[D] Inversément à l'étape précédente, on cherche cette fois les domaines ayant envoyé le plus de requêtes. Nous allons regrouper les requêtes par leur domaine d'envoie, et effectuer la somme des autres mesures.
+
+				\item[E] Les deux listes obtenues aux étapes précédentes sont alors affichées dans leur page correspondante.
+
+				\item[F] L'utilisateur peut choisir de cacher ou d'afficher un certain domaine d'une des vues. Ceci lance alors un nouveau calcul à partir de l'étape C. Aucune communication avec le serveur n'est nécessaire : Les données reçues initialement sont préservées.
+
+				\item[G] L'utilisateur peut également choisir d'afficher les requêtes d'un domaine particulier.
+
+				\item[H] Dans le cas de la sélection d'un domaine à afficher en détail, la liste des requêtes est filtrée est l'interface n'affiche que les requêtes concernant le domaine souhaité.
+			\end{description}				
+
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.95\textwidth]{images/design/pages/trackers_algo}
+				\caption{Algorithme utilisé pour les données des pages "Trackers"}
+				\label{trackers_algo}
+			\end{figure}
 
 	\subsection{Implémentation}
 
 		\subsubsection{Serveur}
 
+			Toutes les données nécessaires à cette vue sont pré-calculées avant le lancement du serveur. Il s'agit de calculer le nombre de requêtes de chaque domaine vers chaque autre domaine pour chaque utilisateur. La nécessité de pré-calculer ces données vient de leur quantité brute. Les compter sur le moment pour chaque requête demande trop de temps.
+
 		\subsubsection{Interface}
+
+			Les deux listes sont des tableaux HTML stylisés par Bootstrap. La gestion de leur interaction et de leur affichage est géré par plusieurs composants Vue imbriqués.
+
+\clearpage
+
+%
+%
+% STATS
+%
+%
 
 \section{Stats}
 
 	\subsection{Concept}
 
-	\subsection{Données}
+		Le but de la vue Stats est de résumer très rapidement en quelques nombres la quantité de données échangées entre les différents domaines visités par l'utilisateur.
 
-		\subsubsection{Sources}
-
-		\subsubsection{Algorithme}
-
-	\subsection{Implémentation}
-
-		\subsubsection{Serveur}
-
-		\subsubsection{Interface}
-
-\section{Settings}
-
-	\subsection{Concept}
+		\begin{figure}[!h]
+			\centering
+			\subfloat[Maquette initiale de la vue]{\includegraphics[width=0.3\textwidth,valign=t]{images/design/pages/stats_mockup}}
+			\subfloat[Exemple de résultat final]{\includegraphics[width=0.7\textwidth,valign=t]{images/design/pages/stats_final}}
+			\caption{Maquette initiale et résultat final d'une vue Stats}
+			\label{stats_images}
+		\end{figure}
 
 	\subsection{Données}
 
 		\subsubsection{Sources}
 
+			Une seule source de données est nécessaire à constituer cette visualisation :
+			\begin{description}
+				\item[Requêtes pré-calculées] : Nombre de requêtes entre chahque domaine. Ces données sont stockées dans la table \texttt{precalc\_trackers} (figure \ref{table-precalc-trackers}).
+			\end{description}
+
 		\subsubsection{Algorithme}
+
+			Très peu de traitements sont nécessaires pour cette vue. La figure~\ref{stats_algo} montre le traitement effectué aux données avant de les afficher.
+
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.6\textwidth]{images/design/pages/stats_algo}
+				\caption{Algorithme utilisé les données de la page "Stats"}
+				\label{stats_algo}
+			\end{figure}
 
 	\subsection{Implémentation}
 
 		\subsubsection{Serveur}
 
+			Les données nécessaires à cette vue sont calculées en temps réel : Il s'agit simplement de compter le nombre de requêtes enregistrées dans la table pré-calculée, ainsi que le nombre unique de nom de domaines.
+
 		\subsubsection{Interface}
+
+			Les nombres renvoyées par le serveur sont simplement affichés dans des \texttt{card}s de Bootstrap.
+
+\clearpage
