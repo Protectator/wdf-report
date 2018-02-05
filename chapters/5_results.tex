@@ -50,6 +50,10 @@
 
 		Une première étape est de se pencher sur les modèles que nous avons généré sur la base des données elle-mêmes. Nous utilisons principalement deux algorithmes qui se basent sur le contenu des pages pour en déterminer leur thème : TF-IDF, et LDA.
 
+		Ces modèles se basent sur le contenu des pages visitées des utilisateurs. Etant donné que nous ne récupérons pas directement le contenu de la page visitée par un utilisateur mais uniquement une partie de son URL, nous ne pouvons pas garantir que le contenu que nous récupérons d'une page soit effectivement le contenu que l'utilisateur voit sur son écran. En effet, beaucoup de pages web aujourd'hui sont liées à une application qui demande une authentification de l'utilisateur pour être affichée.
+
+		Par exemple, une grande partie des pages d'un réseau social peuvent nécessiter la connexion de l'utilisateur pour être affichée.
+
 		\subsubsection{TF-IDF}
 
 			\paragraph{Fonctionnement}
@@ -137,11 +141,37 @@
 
 			\paragraph{Fonctionnement}
 
-				LDA est un modèle probabiliste, permettant...
+				Le topic modelling consiste, à partir d'un corpus de documents, à générer une liste probable de sujets ou topics communs à plusieurs document. LDA (de l'anglais Latent Dirichelet Allocation) est un modèle de topic modelling, et va nous permettre de révéler des topics relatifs aux pages visitées par les utilisateurs. Ici, un topic est définit par une liste de mots, et un poids associé à chaque mot pour le topic.
+
+				La génération d'un modèle LDA prend plusieurs paramètres en entrée, mais le plus important pour nous est de définir un nombre de topics que nous souhaitons voir en sortie. On fixe ce nombre de topics, puis on lance l'apprentissage du modèle sur l'ensemble du corpus de documents, opération que peut durer plusieurs heures.
+
+				À la fin de l'apprentissage, nous sommes en possession d'un modèle que nous pouvons questionner de plusieurs manières, par exemple :
+				\begin{itemize}
+					\item Quels sont les mots les plus contribuants à un topic ?
+					\item Quels sont les topics les plus probables pour un document ?
+				\end{itemize}
+
+				Nous allons donc par exemple utiliser le modèle afin d'assigner des topics au contenu d'URLs, et ainsi tenter de trouver quels sont les thèmes communs aux pages visitées par un utilisateur.
 
 			\paragraph{Résultats}
 
+				Dans la première semaine de récolte des résultats, une recherche empirique sur les paramètres à fournir au modèle a été effectuée. Le paramètre du nombre de topics a été fixé à 100; cela semblait un bon compromis, car 50 générait un nombre de trop restreint pour définir de manière assez précise quels étaient les thèmes d'un utisilateur, et 200 générait beaucoup de topics qui n'avaient pas de sens en eux-mêmes.
+
+				La figure montre les 20 topics les plus 
+
 			\paragraph{Réflexion}
+
+	\subsection{Vues}
+
+		\subsubsection{Wordcloud}
+
+		\subsubsection{Topics List}
+
+		\subsubsection{Most watched and viewed}
+
+		\subsubsection{History}
+
+		\subsubsection{Trackers}
 
 	\subsection{Statistiques}
 
