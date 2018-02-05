@@ -56,25 +56,9 @@
 
 		\subsubsection{TF-IDF}
 
-			\paragraph{Fonctionnement}
-
-				TF-IDF est une méthode attribuant un poids à chaque mot de chaque document d'un corpus. Ce poids mesure l'importance relative du mot dans ce document. Le nom "TF-IDF" signifie "Term Frequency - Inverse Document Frequency". Le poids final d'un mot dans un document se calcule en prenant en compte uniquement deux mesures :
-				\begin{description}
-					\item[TF] Term Frequency : La quantité d'apparition de ce mot dans ce document
-					\item[DF] Document Frequency : Le nombre de documents dans lequels ce mot apparaît
-				\end{description}
-
-				Le score final d'un mot multiplie le TF d'un mot à l'inverse de son DF. Celà signifie que pour avoir une grande importance dans un document, un mot sera typiquement :
-				\begin{itemize}
-					\item Présent de nombreuses fois dans ce document
-					\item Présent dans très peu d'autres documents
-				\end{itemize}
-
-				Le calcul des poids se fait sur l'ensemble du corpus, en une fois, car il nécessite que l'on connaisse le nombre d'occurences de chaque mot dans l'entièreté du corpus de documents. Il n'est donc pas possible de mettre à jour les poids de manière "online" en utilisant ce modèle.
-
 			\paragraph{Résultats}
 
-				Juger les résultats du calcul de TF-IDF sur des documents est une tâche non triviale. Cela revient principalement à vérifier manuellement que les mots ayant le poids le plus élevé pour certaines pages soit significatif de leur sujet.
+				Le fonctionnement de TF-IDF est décrit à la section \ref{analyse-tfidf}. Juger les résultats du calcul de TF-IDF sur des documents est une tâche non triviale. Cela revient principalement à vérifier manuellement que les mots ayant le poids le plus élevé pour certaines pages soit significatif de leur sujet.
 
 				Intéressons-nous donc aux mots ayant le plus de poids trouvés pour les 20 pages les plus regardées, par exemple. Le tableau\ref{table-tfidf} illustre les 20 pages les plus regardées avec leurs mots associés, ainsi que plusieurs étapes amenant à une estimation finale de l'adéquation des mota trouvés avec le contenu de la page. Voici comment se lit le tableau :
 				\begin{description}
@@ -118,7 +102,7 @@
 
 			\paragraph{Réflexion}
 
-				Le tableau~\ref{resultats-tfidf} montre un résumé des résultats que l'on peut récupérer précédent tableau. On remarque que sur les 20 URLs entrées, seules 7 valent vraiment la peine d'être parcourues par notre algorithme, par élimination à causes des deux premières raisons énoncées. Cependant, sur les 7 URLs contenant du texte intéressant, TF-IDF a été capable d'en résumer adéquatement 5 d'entre-elles.
+				Le fonctionnement de TF-IDF est décrit à la section \ref{analyse-lda}. Le tableau~\ref{resultats-tfidf} montre un résumé des résultats que l'on peut récupérer précédent tableau. On remarque que sur les 20 URLs entrées, seules 7 valent vraiment la peine d'être parcourues par notre algorithme, par élimination à causes des deux premières raisons énoncées. Cependant, sur les 7 URLs contenant du texte intéressant, TF-IDF a été capable d'en résumer adéquatement 5 d'entre-elles.
 
 				Ce résultat est loin d'être parfait, mais il montre tout de même qu'il est possible d'automatiser la recherche de mots importants sur des pages lorsque les conditions sont favorables à notre approche.
 
@@ -138,20 +122,6 @@
 \end{table}
 
 		\subsubsection{LDA}
-
-			\paragraph{Fonctionnement}
-
-				Le topic modelling consiste, à partir d'un corpus de documents, à générer une liste probable de sujets ou topics communs à plusieurs document. LDA (de l'anglais Latent Dirichelet Allocation) est un modèle de topic modelling, et va nous permettre de révéler des topics relatifs aux pages visitées par les utilisateurs. Ici, un topic est définit par une liste de mots, et un poids associé à chaque mot pour le topic.
-
-				La génération d'un modèle LDA prend plusieurs paramètres en entrée, mais le plus important pour nous est de définir un nombre de topics que nous souhaitons voir en sortie. On fixe ce nombre de topics, puis on lance l'apprentissage du modèle sur l'ensemble du corpus de documents, opération que peut durer plusieurs heures.
-
-				À la fin de l'apprentissage, nous sommes en possession d'un modèle que nous pouvons questionner de plusieurs manières, par exemple :
-				\begin{itemize}
-					\item Quels sont les mots les plus contribuants à un topic ?
-					\item Quels sont les topics les plus probables pour un document ?
-				\end{itemize}
-
-				Nous allons donc par exemple utiliser le modèle afin d'assigner des topics au contenu d'URLs, et ainsi tenter de trouver quels sont les thèmes communs aux pages visitées par un utilisateur.
 
 			\paragraph{Résultats}
 

@@ -4,13 +4,15 @@
 %                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Données de l'étude de Kosinski}
+\section{Projet similaire}
 
 	\subsection{Introduction}
 
+		Afin de placer notre recherche dans les connaissances actuelles, nous nous intéressons d'abord aux recherches récentes partageant un objectif semblable au nôtre.
+
 		Michal Kosinski se présente sur son site web\cite{michal-kosinski} comme un "psychologist and data scientist". L'étude qu'il a co-rédigée à l'Université de Stanford en 2016 a eu un impact important sur le monde académique et même industriel, en montrant les possibilités techniques ouvertes par la récolte de données simples d'utilisateurs : les "likes" Facebbok.
 
-		Ainsi, il est montré qu'avec un peu plus de 300 "likes" tirés une personne, il est possible de définir avec une précision remarquable (mieux que son époux/épouse) des traits psychologiques, ainsi que d'autres caractéristiques personnelles.
+		Il est montré qu'avec un peu plus de 300 "likes" tirés une personne, il est possible de définir avec une précision remarquable (mieux que son époux/épouse) des traits psychologiques, ainsi que d'autres caractéristiques personnelles.
 
 	\subsection{Résumé}
 
@@ -85,21 +87,9 @@
 
 		Bien que cette base de connaissance ait pu être utile, notre étude va changer de direction. Nous décidons de baser la recherche sur des données que nous récupérerons nous-même.
 
-\section{SDIPI}
+\section{Outils de tracking}
 
-	SDIPI signifie "Swiss Digital Identity and Privacy Institute", pouvant se traduire par "Institut Suisse de l'Identité Digitale et de la Vie Privée". Il s'agit d'une association crée dans le but initial de soutenir le projet dans sa visibilité et dans sa légitimité, mais qui aspire à des objectifs généraux plus larges : Le but est de sensibiliser le public Suisse à la manière dont ses informations privées sont  enregistrées, traitées, croisées et utilisées.
-
-	\begin{figure}[h]
-		\centering
-		\includegraphics[width=1\textwidth]{images/design/sdipi_home}
-		\caption{Page d'accueil du site web \url{https://sdipi.ch}.}
-		\label{a-sdipi}
-	\end{figure}
-
-
-\section{Trackers et Google Analytics}
-
-	\subsection{trackerackers}
+	\subsection{Trackers}
 
 		Un tracker est un serveur contacté lors du chargement d'une page web par un utilisateur. De nos jours, les pages web sont souvent constituées de contenu provenant de plusieurs serveurs ou domaines différents. Il n'est pas rare qu'une seule page web fasse appel à plus d'une dizaine de domaines différents pour charger une seule page. La figure~\ref{a-nbdomains} montre l'évolution du nombre moyen de domaines contactés pour le chargement d'une seule page web, sur les 1'000 sites web les plus visités mondialement.
 
@@ -112,7 +102,7 @@
 
 		Bien qu'une partie des domaines soient nécessaires à contacter afin de charger du contenu indispensable à la page, une partie d'entre eux ne sert également qu'à des fins statistiques ou publicitaires. Par exemple, ceux-ci peuvent récupérer des informations sur l'utilisateur et son navigateur afin de lui proposer des publicités ciblées sur ses intérêts. Cette pratique est aujourd'hui courante, comme le montre la prochaine sous-section.
 
-	\subsection{Etat de l'art}
+	\subsection{Marché}
 
 		Etant donné que nous nous intéressons aux données des utilisateurs récupérées lors de la navigation Web, nous nous sommes intéressés à connaître quels sont les plus grand trackers sur le web.
 
@@ -249,3 +239,45 @@
 			\item Détection et mise en lumière des différents trackers présents sur les pages visitées par l'utilisateur.
 			\item Tentative de reconstitution du profil de l'utilisateur à partir de la fréquence de la visite des pages web et de leur contenu.
 		\end{itemize}
+
+\section{Analyse de texte}
+
+	Nous allons utliser le contenu des pages pour trouver des informations sur les centres d'intérêt de l'utilisateur. Pour ceci, nous avons besoin d'analyser et de tenter de comprendre le contenu des pages.
+
+	\subsection{Recherches}
+
+		Nous nous renseignons tout d'abord sur les méthodes existantes permettant de retirer des informations d'un contenu textuel. Une liste de publications scientifiques a été prise en compte pour le choix de méthodes à adopter.\cite{text-analysis-src4}\cite{text-analysis-src5}\cite{text-analysis-src6}
+
+		Etant donné qu'il s'agit ici d'entraîner des modèles à l'aides d'algorithmes non-supervisés, il n'existe pas de méthode efficace cartésienne pour prouver que nous obtenons des bons résultats à l'aide des modèles générés. Nous ne cherchons ici une vérité absolue, mais nous voulons trouver des modèles dans les pages parcourues par l'utilisateur. Les publications étudiées font donc également souvent appel à un jugement humain afin de définir si une méthode est adaptée ou non.
+
+		Après l'observation de l'étude et des résultats présentés dans les publications, nous en ressortons que les méthodes donnant les résultats les plus satisfaisants pour notre objectif sont probablement les algorithmes TF-IDF ainsi que LDA. Nous allons donc utiliser ces deux méthodes pour la suite du projet.
+
+	\subsection{TF-IDF}\label{analyse-tfidf}
+
+		TF-IDF est une méthode attribuant un poids à chaque mot de chaque document d'un corpus. Ce poids mesure l'importance relative du mot dans ce document. Le nom "TF-IDF" signifie "Term Frequency - Inverse Document Frequency". Le poids final d'un mot dans un document se calcule en prenant en compte uniquement deux mesures :
+		\begin{description}
+			\item[TF] Term Frequency : La quantité d'apparition de ce mot dans ce document
+			\item[DF] Document Frequency : Le nombre de documents dans lequels ce mot apparaît
+		\end{description}
+
+		Le score final d'un mot multiplie le TF d'un mot à l'inverse de son DF. Celà signifie que pour avoir une grande importance dans un document, un mot sera typiquement :
+		\begin{itemize}
+			\item Présent de nombreuses fois dans ce document
+			\item Présent dans très peu d'autres documents
+		\end{itemize}
+
+		Le calcul des poids se fait sur l'ensemble du corpus, en une fois, car il nécessite que l'on connaisse le nombre d'occurences de chaque mot dans l'entièreté du corpus de documents. Il n'est donc pas possible de mettre à jour les poids de manière "online" en utilisant ce modèle.
+
+	\subsection{LDA}\label{analyse-lda}
+
+		Le topic modelling consiste, à partir d'un corpus de documents, à générer une liste probable de sujets ou topics communs à plusieurs document. LDA (de l'anglais Latent Dirichelet Allocation) est un modèle de topic modelling, et va nous permettre de révéler des topics relatifs aux pages visitées par les utilisateurs. Ici, un topic est définit par une liste de mots, et un poids associé à chaque mot pour le topic.
+
+		La génération d'un modèle LDA prend plusieurs paramètres en entrée, mais le plus important pour nous est de définir un nombre de topics que nous souhaitons voir en sortie. On fixe ce nombre de topics, puis on lance l'apprentissage du modèle sur l'ensemble du corpus de documents, opération que peut durer plusieurs heures.
+
+		À la fin de l'apprentissage, nous sommes en possession d'un modèle que nous pouvons questionner de plusieurs manières, par exemple :
+		\begin{itemize}
+			\item Quels sont les mots les plus contribuants à un topic ?
+			\item Quels sont les topics les plus probables pour un document ?
+		\end{itemize}
+
+		Nous allons donc par exemple utiliser le modèle afin d'assigner des topics au contenu d'URLs, et ainsi tenter de trouver quels sont les thèmes communs aux pages visitées par un utilisateur.
