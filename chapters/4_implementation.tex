@@ -6,7 +6,30 @@
 
 \section{Technologies}
 
+
+
 	\subsection{Serveur}
+
+		Le serveur est développé en Python3.6, et utilise le framework Flask. Flask permet de définir rapidement le comportement d'un serveur web basique en mappant des fonctions à des endpoints de l'API.
+
+		Par exemple, à l'aide d'une combinaison de décorateurs fournis par Flask et crées par nous-même, nous pouvons très facilement spécifier le comportement d'une méthode. La figure~\ref{i-code-server} montre le peu de code nécessaire pour définir l'endpoint de vérification de la connexion de l'utilisateur.
+
+		\begin{figure}[!h]
+			\centering
+			\begin{lstlisting}[language=python]
+@app.route("/api/connectionState", methods=['GET'])
+@userConnected
+@apiMethod
+def connectionState(wdfId):
+    return jsonify({'success': "Connected", "wdfId": wdfId})\end{lstlisting}
+			\caption{Code de la méthode de vérification de connexion}
+			\label{i-code-server}
+		\end{figure}
+
+		Naturellement, la plupart des autres méthodes nécessitent un accès à la base de données MySQL et donc du code plus conséquent.
+
+		Ici, Flask n'écoute pas directement sur les ports concernés. Le programme entier est accessible derrière un serveur Apache pour des questions de sécurité : la communication entre l'extension, l'interface et le serveur se fait en HTTPS, grâce à la gestion de SSL par Apache, et un certificat obtenu à l'aide de Let's Encrypt.
+
 
 	\subsection{Client}
 
