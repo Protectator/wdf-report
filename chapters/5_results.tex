@@ -4,7 +4,7 @@
 %                          %
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Test utilisateurs}
+\section{Processus de test}
 
 	Une fois toutes les parties du projet réalisées, à savoir l'extension navigateur, le serveur et l'interface, nous avons cherché des utilisateurs volontaires pour installer l'extension et l'utiliser pendant une période de 4 semaines. Bien qu'initialement prévue pour un grand panel d'utilisateurs, les restrictions temporelles ont limité la quantité d'utilisateurs que nous avons pu atteindre.
 
@@ -42,7 +42,7 @@
 
 			Sur l'échantillon de 8 personnes actives, 6 personnes ont ajouté des associations aux 20 topics proposés sur leur page. 
 
-\section{Résultats de la recherche}
+\section{Evaluation}
 
 	Après une récolte des données sur environ 4 semaines, nous pouvons nous intéresser aux résultats que nous avons récoltés.
 
@@ -60,7 +60,7 @@
 
 				Le fonctionnement de TF-IDF est décrit à la section \ref{analyse-tfidf}. Juger les résultats du calcul de TF-IDF sur des documents est une tâche non triviale. Cela revient principalement à vérifier manuellement que les mots ayant le poids le plus élevé pour certaines pages soit significatif de leur sujet.
 
-				Intéressons-nous donc aux mots ayant le plus de poids trouvés pour les 20 pages les plus regardées, par exemple. Le tableau\ref{table-tfidf} illustre les 20 pages les plus regardées avec leurs mots associés, ainsi que plusieurs étapes amenant à une estimation finale de l'adéquation des mota trouvés avec le contenu de la page. Voici comment se lit le tableau :
+				Intéressons-nous donc aux mots ayant le plus de poids trouvés pour les 20 pages les plus regardées, par exemple. Le tableau\ref{table-tfidf} illustre les 20 pages les plus regardées avec leurs mots associés, ainsi que plusieurs étapes amenant à une estimation finale de l'adéquation des mots trouvés avec le contenu de la page. Voici comment se lit le tableau :
 				\begin{description}
 					\item[URL] URL de la page concernée. Certaines URLs trop longues ont été raccourcies ici
 					\item[Mot 1, 2, 3] 3 meilleurs mots dans l'orrdre décroissant décrivant la page selon TF-IDF.
@@ -102,7 +102,7 @@
 
 			\paragraph{Réflexion}
 
-				Le fonctionnement de TF-IDF est décrit à la section \ref{analyse-lda}. Le tableau~\ref{resultats-tfidf} montre un résumé des résultats que l'on peut récupérer précédent tableau. On remarque que sur les 20 URLs entrées, seules 7 valent vraiment la peine d'être parcourues par notre algorithme, par élimination à causes des deux premières raisons énoncées. Cependant, sur les 7 URLs contenant du texte intéressant, TF-IDF a été capable d'en résumer adéquatement 5 d'entre-elles.
+				Le fonctionnement de TF-IDF est décrit à la section \ref{analyse-tfidf}. Le tableau~\ref{resultats-tfidf} montre un résumé des résultats que l'on peut récupérer précédent tableau. On remarque que sur les 20 URLs entrées, seules 7 valent vraiment la peine d'être parcourues par notre algorithme, par élimination à causes des deux premières raisons énoncées. Cependant, sur les 7 URLs contenant du texte intéressant, TF-IDF a été capable d'en résumer adéquatement 5 d'entre-elles.
 
 				Ce résultat est loin d'être parfait, mais il montre tout de même qu'il est possible d'automatiser la recherche de mots importants sur des pages lorsque les conditions sont favorables à notre approche.
 
@@ -127,9 +127,147 @@
 
 				Dans la première semaine de récolte des résultats, une recherche empirique sur les paramètres à fournir au modèle a été effectuée. Le paramètre du nombre de topics a été fixé à 100; cela semblait un bon compromis, car 50 générait un nombre de trop restreint pour définir de manière assez précise quels étaient les thèmes d'un utisilateur, et 200 générait beaucoup de topics qui n'avaient pas de sens en eux-mêmes.
 
-				La figure montre les 20 topics les plus 
+				Le tableau\ref{table-lda} montre l'ensemble des 100 topics générés, ainsi que plusieurs étapes amenant à une estimation finale de la pertinence tu thème trouvé. Voici comment se lit le tableau :
+				\begin{description}
+					\item[Mots] 5 meilleurs mots pour décrire le topic
+					\item[Mot] Est-ce que chaque mot, pris séparément, a un sens ?
+					\item[Thè(me)] Est-ce les mots ont un thème en commun discernable ?
+					\item[Thème commun] Quel est le thème en commun des mots ?
+					\item[S(e)ns] Est-ce que le thème trouvé peut avoir un sens en tant que centre d'intérêt ?
+				\end{description}
+
+				Les mots de la première proviennent de la base de données, tandis que les 4 dernières colonnes sont le résultat d'une évaluation manuelle des critères décrits. Un "OUI" dans une colonne indique que la page a passé le critère défini, contrairement à un "NON". Un "NON" dans une colonne entraîne automatiquement un "NON" dans les colonnes situées les plus à droite.
+
+\begin{longtable}{lllll}
+\caption{Topics LDA}\\
+\label{table-lda}\\
+\textbf{Mots}                                      & \textbf{Mot}                                       & \textbf{Thè}                & \textbf{Thème commun}            & \textbf{Sns}               \\ \hline \endfirsthead
+\textbf{Mots}                                      & \textbf{Mot}                                       & \textbf{Thè}                & \textbf{Thème commun}            & \textbf{Sns}               \\ \hline \endhead 
+\scriptsize play, n64, subreddit, game, vox                    & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Jeu vidéo                 & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize add, ad, free, div, class                          & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize game, studio, software, entertainment, ... & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Dévelop. jeu vidéo            & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize dog, sign, dogbuddy, amp, style                    & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize vue, component, data, will, render                 & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Vue.js framework          & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize example, vector, product, displaystyle, cross      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Librairie de graphes      & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize please, browser, javascript, intel, vi             & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize self, topic, word, model, corpus                   & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Topic modelling           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize antwort, google, bleiben, div, thema               & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize chf, prix, km, ch, gris                            & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize chrome, api, web, devtools, headless               & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Chrome API                & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize github, sign, data, issue, tab                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Github                    & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize also, system, love, note, may                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize view, u, duration, minute, add                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize jan, oct, dec, nov, feb                            & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Mois de l'année           & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize v0, td, selectize, class, nowrap                   & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Librairie JS              & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize laptop, lenovo, driver, thinkpad, nvidia           & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Produits Lenovo           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize vue, composant, composants, propriétés, ...    & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Vue.js framework          & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize point, reply, child, give, permalink               & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Reddit                    & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize support, english, product, security, steam         & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize school, child, social, research, study             & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Ecole                     & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize facebook, retweets, registrieren, seite, konto     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Réseaux sociaux           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize kid, baby, girl, child, parent                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Enfants                   & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize kindle, commentaire, the, produit, amazon          & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Produits Amazon           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize root, size, review, id, common                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize string, type, return, class, json                  & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Types JSON                & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize twitter, gefällt, account, antworten, tweets       & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Twitter                   & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize plus, bien, autres, voir, jour                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize ago, year, month, day, switch                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Durée                     & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize leagueoflegends, champion, http, img, png          & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & League of Legends         & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize webpack, j, loader, file, module                   & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Webpack                   & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize replay, del, normal, lunatic, extra                & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Niveaux de jeu vidéo      & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize the, ch, hast, to, and                             & \cellcolor[HTML]{FFCCC9}NON & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize amazon, game, badge, book, home                    & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize window, microsoft, windows, store, phantomjs       & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Windows                   & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize property, method, data, server, application        & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Dev. backend              & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize yes, flag, prototype, array, strict                & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize post, publish, revision, code, microspot           & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize zelda, wild, breath, link, legend                  & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & The Legend of Zelda       & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize head, coin, room, stone, ll                        & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize icon, copy, font, arrow, fill                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Graphisme                 & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize modifier, code, états, unis, article               & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Article Etats-Unis        & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize class, div, html, cs, button                       & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Elements HTML             & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize child, food, see, year, book                       & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize cuisinières, min, laver, service, cuisson          & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Cuisine                   & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize time, season, episode, adventure, part             & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Série télévisée           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize image, png, data, width, item                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Métadonnées image         & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize mysql, syntax, table, statement, create            & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & SQL                       & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize account, sign, email, please, click                & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Compte mail               & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize url, request, flask, app, response                 & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Flask Framework           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize chart, plot, data, column, babish                  & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Graphique                 & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize video, youtube, watch, vimeo, makeup               & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Vidéo                     & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize file, npm, package, run, version                   & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Packaging application     & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize date, prototype, support, object, document         & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize function, var, return, array, option               & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Keywords (prog)           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize light, book, lamp, night, éclairage                & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Lumière                   & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize answer, stack, vote, overflow, question            & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & StackOverflow             & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize like, get, just, one, make                         & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize flex, div, align, item, content                    & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & CSS                       & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize typescript, code, test, type, file                 & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & TypeScript                & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize thread, method, call, will, module                 & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Concurrence (prog)        & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize character, draw, art, design, forward              & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Personnage fiction        & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize amazon, plus, prime, jeux, nav                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Produits Amazon           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize option, value, select, input, label                & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Formulaire HTML           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize table, td, th, silhouette, tr                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Tableau HTML              & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize hsbc, business, banking, website, http             & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & E-Banking                 & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize november, history, world, december, retrieve       & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize anime, girl, manga, meme, irl                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Anime                     & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize top, middle, support, jungle, stockage             & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Rôles (League of Legends) & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize net, number, random, insert, openx                 & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Nombres                   & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize advertising, design, ad, forward, marketing        & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Marketing                 & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize channel, message, princess, margaret, jump         & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize accessoires, cm, autres, iphone, jeux              & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize canada, québec, france, ainsi, guerre              & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Pays                      & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize merci, janvier, classe, enfants, répondre          & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize de, la, le, nutzt, kommentare                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize vaisselle, poche, tuner, longueur, gcn             & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize page, edit, fire, hero, list                       & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize stock, temp, come, soon, sell                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Bourse                    & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize jeu, amp, ps4, pc, jeux                            & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Jeux vidéo                & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize pm, january, follow, http, www                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize img, src, alt, http, jpg                           & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Métadonnées image         & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize net, post, internet, neutrality, trump             & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Net neutrality            & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize comment, reddit, post, save, report                & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Reddit                    & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize game, card, switch, update, now                    & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Jeu vidéo                 & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize game, league, team, legend, comment                & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & League of Legends         & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize nintendo, switch, mario, demande, iwata            & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Nintendo                  & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize pack, ce, café, news, bbc                          & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize reimu, interest, manipulation, shrine, touhou      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Touhou Project            & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize moon, blood, tattoo, artwork, madj0hn              & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Tatouages                 & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize select, mysql, set, value, sql                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & SQL                       & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize amp, google, web, android, app                     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Android                   & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize amp, log, src, hide, style                         & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize eps3, robot, mr, season, wiki                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Mr.Robot                  & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize suisse, protecteur, vapeur, services, sécurité     & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Sécurité                  & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize rate, earn, win, th, panda                         & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{FFCCC9}NON & -                         & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize share, facebook, link, pinterest, twitter          & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Réseaux sociaux           & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize function, class, name, object, decorator           & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Fonction (prog)           & \cellcolor[HTML]{FFCCC9}NON \\
+\scriptsize unit, attack, build, hero, hp                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Theorycraft               & \cellcolor[HTML]{9AFF99}OUI \\
+\scriptsize the, saison, série, big, film                      & \cellcolor[HTML]{9AFF99}OUI & \cellcolor[HTML]{9AFF99}OUI & Télévision                & \cellcolor[HTML]{9AFF99}OUI
+\end{longtable}
 
 			\paragraph{Réflexion}
+
+				Le fonctionnement de LDA est décrit à la section \ref{analyse-lda}. Le tableau~\ref{resultats-lda} montre un résumé des résultats que l'on peut récupérer précédent tableau. Sur les 100 topics générés par le modèle, on a pu estimer qu'au final 65 de ceux-ci sont des topics potentiellement désirables, et décrivant un thème commun et sensé.
+
+				Bien que ceci laisse un tiers des topics comme étant potentiellement inutiles ou indésirables, ce résultat montre tout de même qu'une partie conséquente des utilisateurs peut être retrouvée. Notons qu'un nombre final de topic sensé de 100\% n'est pas le but recherché, et serait même totalement utopique : Il est impossible de définir précisément qu'est-ce qu'un topic, ou même définir quelle page web parle de quel topic, ou même encore combien de topics différents une page web touche.
+
+				De plus, il semble fort probable que certains topics soient définis autour de concepts qui se présentent dans des proportions semblables à des centres d'intérêts, mais qui forment des topics qui ont peu de sens. Comme le concept de temps par exemple, ou de géographie, qui constituent tous deux des topics dans notre modèle.
+
+				Cependant le modèle serait tout à fait améliorable. En effet, le jeu de données que nous disposons est fortement influencé en quantité par les intérêts des quelques utilisateurs, et LDA possède encore plusieurs paramètres modifiables, qui pourraient amener à des résultats encore meilleurs.
+
+\FloatBarrier
+
+				\begin{table}[h]
+\centering
+\caption{Résumé des résultats de LDA}
+\label{resultats-lda}
+\begin{tabular}{lr}
+\textbf{Topics générés}            & 100 \\
+\textbf{avec mots sensés}           & 99 \\
+\textbf{avec un topic commun}       & 71 \\
+\textbf{avec un topic sensé}        & 65 \\
+\end{tabular}
+\end{table}
 
 	\subsection{Vues}
 
@@ -143,11 +281,13 @@
 
 		\subsubsection{Trackers}
 
-	\subsection{Statistiques}
+\section{Statistiques}
 
-		\subsubsection{Profiling}
+	\subsection{Profiling}
 
-		\subsubsection{Trackers}
+
+
+	\subsection{Trackers}
 
 	\subsection{Implications}
 
