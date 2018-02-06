@@ -231,218 +231,216 @@
 			\label{db}
 		\end{figure}
 
-		Toutes les informations sont centralisées dans une base de données MySQL. La figure~\ref{db} montre le schéma global des tables de la base de données. L'utilisation de chaque table est décrite dans la section suivante, lors de leur accès. La figure~\ref{db_tables} décrit chacun des champs des tables de la base de données.
+		Toutes les informations sont centralisées dans une base de données MySQL. La figure~\ref{db} montre le schéma global des tables de la base de données. L'utilisation de chaque table est décrite dans la section suivante, lors de leur accès. La section suivante décrit chacun des champs des tables de la base de données.
 
-		\begin{figure}[!h]
-			\centering
-			\subfloat[Table \texttt{content}]{
-				\label{table-content}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{id}       & Clé primaire artificielle \\
-					\texttt{wdfId}    & Identifiant ayant accédé \\
-					\texttt{url}      & URL de la page \\
-					\texttt{timestamp} & Date téléchargée \\
-					\texttt{content}  & Contenu \glsdisp{DOM}{DOM} entier \\
-					\texttt{language} & Langue détectée du texte \\
-					\texttt{title}    & Contenu de la balise \texttt{\small{title}} \\
-					\hline
-				\end{tabular}
-			}
-			\subfloat[Table \texttt{content\_text}]{
-				\label{table-content-text}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{url}      & URL de la page \\
-					\texttt{content}  & Contenu textuel lemmatisé \\
-					\texttt{title}    & Contenu de la balise \texttt{\small{title}} \\
-					\texttt{language} & Langue détectée du texte \\
-					\hline
-				\end{tabular}
-			}
+		\subsubsection{Table \texttt{content}}\label{table-content}
+			La table \texttt{content} sert à stocker le contenu HTML initial des pages téléchargées. Il s'agit du contenu \glsdisp{DOM}{DOM} de la page après la fin du chargement et de l'exécution du JavaScript présent sur celle-ci.
 
-			\subfloat[Table \texttt{users}]{
-				\label{table-users}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{wdfId}    & Numéro d'identifiant \\
-					\texttt{wdfToken} & Token du client \\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{id}       & Clé primaire artificielle \\
+				\texttt{wdfId}    & Identifiant de l'utilisateur ayant accédé à la page \\
+				\texttt{url}      & URL de la page \\
+				\texttt{timestamp} & Date du téléchargement \\
+				\texttt{content}  & Contenu \glsdisp{DOM}{DOM} entier \\
+				\texttt{language} & Langue détectée du texte \\
+				\texttt{title}    & Contenu de la balise \texttt{\small{title}} \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{content\_text}}\label{table-content-text}
+			La table \texttt{content\_text} sert à stocker le contenu textuel des pages après le traitement décrit au paragraphe \ref{d-recolte}.
 
-			\subfloat[Table \texttt{pagewatch}]{
-				\label{table-pagewatch}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{wdfId}    & Numéro d'identifiant \\
-					\texttt{url}  & URL de la page \\
-					\texttt{timestamp} & Date de visualisation \\
-					\texttt{amount} & Temps regardé [sec] \\
-					\texttt{id} & Clé primaire artificielle \\
-					\hline
-				\end{tabular}
-			}
-			\subfloat[Table \texttt{pagerequests}]{
-				\label{table-pagerequests}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{wdfId}    & Numéro d'identifiant \\
-					\texttt{url}  & URL de la page \\
-					\texttt{timestamp} & Date de visualisation \\
-					\texttt{request} & URL requêtée \\
-					\texttt{method} & Méthode HTTP \\
-					\texttt{size} & Taille de la requête \\
-					\texttt{id} & Clé primaire artificielle \\
-					\texttt{urlDomain} & Domaine de l'URL actuelle \\
-					\texttt{requestDomain} & Domaine de l'URL requêtée\\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{url}      & URL de la page \\
+				\texttt{content}  & Contenu textuel lemmatisé \\
+				\texttt{title}    & Contenu de la balise \texttt{\small{title}} \\
+				\texttt{language} & Langue détectée du texte \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{users}}\label{table-users}
+			La table \texttt{users} sert à stocker les tuilisateurs enregistrés sur l'extension.
 
-			\subfloat[Table \texttt{pageviews}]{
-				\label{table-pageviews}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{wdfId} & Numéro d'identifiant \\
-					\texttt{url}   & URL de la page \\
-					\texttt{timestamp} & Date de visualisation \\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{wdfId}    & Numéro d'identifiant \\
+				\texttt{wdfToken} & Token du client \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{pagewatch}}\label{table-pagewatch}
+			La table \texttt{pagewatch} sert à enregistrer le temps passé par les utilisateurs sur les différentes pages web qu'ils visitent.
 
-			\subfloat[Table \texttt{user\_interests}]{
-				\label{table-user-interests}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{wdfId} & Numéro d'identifiant \\
-					\texttt{interest\_id} & Numéro d'intérêt \\
-					\hline
-				\end{tabular}
-			}
-			\subfloat[Table \texttt{interests}]{
-				\label{table-interests}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{id} & Numéro d'intérêt \\
-					\texttt{name} & Nom de l'intérêt \\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{wdfId}    & Numéro d'identifiant \\
+				\texttt{url}  & URL de la page \\
+				\texttt{timestamp} & Date de visualisation \\
+				\texttt{amount} & Temps regardé [sec] \\
+				\texttt{id} & Clé primaire artificielle \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{pagerequests}}\label{table-pagerequests}
+			La table \texttt{pagerequests} sert à enregistrer les requêtes envoyées par le navigateur des utilisateurs.
 
-			\subfloat[Table \texttt{current\_user\_tags}]{
-				\label{table-current-user-tags}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{wdfId} & Numéro d'identifiant \\
-				    \texttt{topic\_id} & Numéro du topic \\
-					\texttt{interest\_id} & Numéro de l'intérêt \\
-					\hline
-				\end{tabular}
-			}
-			\subfloat[Table \texttt{user\_tags}]{
-				\label{table-user-tags}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{wdfId} & Numéro d'identifiant \\
-				    \texttt{topic\_id} & Numéro du topic \\
-					\texttt{words} & Trois mots du topic \\
-					\hline
-				\end{tabular}
-			}
-			\caption{Tables de la base de données}
-			\label{db_tables}
-		\end{figure}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{wdfId}    & Numéro d'identifiant \\
+				\texttt{url}  & URL de la page \\
+				\texttt{timestamp} & Date de visualisation \\
+				\texttt{request} & URL requêtée \\
+				\texttt{method} & Méthode HTTP \\
+				\texttt{size} & Taille de la requête \\
+				\texttt{id} & Clé primaire artificielle \\
+				\texttt{urlDomain} & Domaine de l'URL actuelle \\
+				\texttt{requestDomain} & Domaine de l'URL requêtée\\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{pageviews}}\label{table-pageviews}
+			La table \texttt{pageviews} sert à enregistrer les ouvertures d'URL de la part des utilisateurs.
 
-		\begin{figure}[!h]\ContinuedFloat
-			\centering
-			\subfloat[Table \texttt{precalc\_trackers}]{
-				\label{table-precalc-trackers}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{wdfId} & Numéro d'identifiant \\
-				    \texttt{urlDomain} & Domaine de l'URL actuelle \\
-					\texttt{requestDomain} & Domaine de l'URL requêtée \\
-					\texttt{amount} & Nombre de requêtes \\
-					\texttt{size} & Taille totale des requêtes \\
-					\hline
-				\end{tabular}
-			}
-			\subfloat[Table \texttt{precalc\_topics}]{
-				\label{table-precalc-topics}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{url} & URL de la page \\
-				    \texttt{topics} & JSON des topics associés \\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{wdfId} & Numéro d'identifiant \\
+				\texttt{url}   & URL de la page \\
+				\texttt{timestamp} & Date de visualisation \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{user\_interests}}\label{table-user-interests}
+			La table \texttt{user\_interests} sert à enregistrer les centres d'intérêt que les utilisateurs déclarent.
 
-			\subfloat[Table \texttt{lda\_topics}]{
-				\label{table-lda-topics}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{topic\_id} & Numéro du topic \\
-				    \texttt{topics} & Mot associé \\
-				    \texttt{value} & Probabilité du mot \\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{wdfId} & Numéro d'identifiant \\
+				\texttt{interest\_id} & Numéro d'intérêt \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{interests}}\label{table-interests}
+			La table \texttt{interests} sert à enregistrer la liste de centres d'intérêt que les utilisateurs peuvent choisir.
 
-			\subfloat[Table \texttt{computed\_tf}]{
-				\label{table-computed-tf}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{url} & URL de la page \\
-				    \texttt{word} & Mot \\
-				    \texttt{tf} & Term Frequency selon TF-IDF \\
-					\hline
-				\end{tabular}
-			}
-			\subfloat[Table \texttt{computed\_df}]{
-				\label{table-computed-df}
-				\begin{tabular}{|rl|}
-					\hline
-				    \texttt{word} & Mot \\
-				    \texttt{df} & Document Frequency selon TF-IDF \\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{id} & Numéro d'intérêt \\
+				\texttt{name} & Nom de l'intérêt \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{current\_user\_tags}}\label{table-current-user-tags}
+			La table \texttt{current\_user\_tags} sert à enregistrer les associations que les utilisateurs ont crée entre un topic LDA actuel et un centre d'intérêt renseigné.
 
-			\subfloat[Table \texttt{computed\_tfidf}]{
-				\label{table-computed-tfidf}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{url} & URL de la page \\
-				    \texttt{word} & Mot \\
-				    \texttt{df} & Score final TF-IDF \\
-					\hline
-				\end{tabular}
-			}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{wdfId} & Numéro d'identifiant \\
+			    \texttt{topic\_id} & Numéro du topic \\
+				\texttt{interest\_id} & Numéro de l'intérêt \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{user\_tags}}\label{table-user-tags}
+			La table \texttt{user\_tags} sert à enregistrer les associations que les utilisateurs ont crée entre un \textbf{précédent} topic LDA représenté par quelques mots et un centre d'intérêt.
 
-			\subfloat[Table \texttt{computed\_bestwords}]{
-				\label{table-computed-bestwords}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{url} & URL de la page \\
-				    \texttt{word} & Mot \\
-				    \texttt{tfidf} & Score final TF-IDF \\
-					\hline
-				\end{tabular}
-			}
-			\subfloat[Table \texttt{current\_url\_topics}]{
-				\label{table-current-url-topics}
-				\begin{tabular}{|rl|}
-					\hline
-					\texttt{url} & URL de la page \\
-				    \texttt{topic} & Numéro du topic \\
-				    \texttt{probability} & Probabilité du toppic pour la page \\
-					\hline
-				\end{tabular}
-			}
-			\caption{Tables de la base de données (suite)}
-			\label{db_tables}
-		\end{figure}
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{wdfId} & Numéro d'identifiant \\
+			    \texttt{topic\_id} & Numéro du topic \\
+				\texttt{words} & Trois mots du topic \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{precalc\_trackers}}\label{table-precalc-trackers}
+			La table \texttt{precalc\_trackers} sert à enregistrer les informations pré-calculées concernant le nombre de requêtes entre les domaines visités par l'utilisateur.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{wdfId} & Numéro d'identifiant \\
+			    \texttt{urlDomain} & Domaine de l'URL actuelle \\
+				\texttt{requestDomain} & Domaine de l'URL requêtée \\
+				\texttt{amount} & Nombre de requêtes \\
+				\texttt{size} & Taille totale des requêtes \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{precalc\_topics}}\label{table-precalc-topics}
+			La table \texttt{precalc\_topics} sert à enregistrer les informations pré-calculées sur les topics relatifs à chaque page web.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{url} & URL de la page \\
+			    \texttt{topics} & JSON des topics associés \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{lda\_topics}}\label{table-lda-topics}
+			La table \texttt{lda\_topics} sert à enregistrer les informations des topics LDA du modèle actuel.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{topic\_id} & Numéro du topic \\
+			    \texttt{topics} & Mot associé \\
+			    \texttt{value} & Probabilité du mot \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{computed\_tf}}\label{table-computed-tf}
+			La table \texttt{computed\_tf} sert à enregistrer la valeur TF de chaque mot dans chaque page web. Cette table est uniquement là dans un but d'archivage, et n'est pas lue directement.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{url} & URL de la page \\
+			    \texttt{word} & Mot \\
+			    \texttt{tf} & Term Frequency selon TF-IDF \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{computed\_df}}\label{table-computed-df}
+			La table \texttt{computed\_df} sert à enregistrer la valeur DF de chaque mot dans chaque page web. Cette table est uniquement là dans un but d'archivage, et n'est pas lue directement.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+			    \texttt{word} & Mot \\
+			    \texttt{df} & Document Frequency selon TF-IDF \\
+			\end{tabular}
+		
+ 		\subsubsection{Table \texttt{computed\_tfidf}}\label{table-computed-tfidf}
+			La table \texttt{computed\_tfidf} sert à enregistrer la valeur TF-IDF de chaque mot dans chaque page web.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{url} & URL de la page \\
+			    \texttt{word} & Mot \\
+			    \texttt{df} & Score final TF-IDF \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{computed\_bestwords}}\label{table-computed-bestwords}
+			La table \texttt{computed\_bestwords} sert à enregistrer les meilleurs mots selon TF-IDF de chaque page web.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{url} & URL de la page \\
+			    \texttt{word} & Mot \\
+			    \texttt{tfidf} & Score final TF-IDF \\
+			\end{tabular}
+		
+		\subsubsection{Table \texttt{current\_url\_topics}}\label{table-current-url-topics}
+			La table \texttt{current\_url\_topics} sert à enregistrer les meilleurs topics du modèle LDA actuel pour chaque page web.
+
+			\begin{tabular}{rl}
+				\textbf{Colonne} & \textbf{Description} \\
+				\hline
+				\texttt{url} & URL de la page \\
+			    \texttt{topic} & Numéro du topic \\
+			    \texttt{probability} & Probabilité du topic pour la page \\
+			\end{tabular}
+		
 
 	\FloatBarrier
 
