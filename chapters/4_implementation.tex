@@ -450,7 +450,7 @@ git status
 			\item[G] L'utilisateur peut également choisir d'afficher les requêtes d'un domaine particulier.
 
 			\item[H] Dans le cas de la sélection d'un domaine à afficher en détail, la liste des requêtes est filtrée est l'interface n'affiche que les requêtes concernant le domaine souhaité.
-		\end{description}				
+		\end{description}
 
 		\begin{figure}[!h]
 			\centering
@@ -498,15 +498,98 @@ git status
 
 		Les données nécessaires à cette vue sont calculées en temps réel : Il s'agit simplement de compter le nombre de requêtes enregistrées dans la table pré-calculée, ainsi que le nombre unique de nom de domaines.
 
+		\begin{description}
+			\item[A] On additionne le nombre de requêtes faite pour un domaine vers un autre domaine, et on enregistre le total pour chaque paire par utilisateur. Toutes ces données sont pré-calculées avant le lancement du serveur. Il s'agit de calculer le nombre de requêtes de chaque domaine vers chaque autre domaine pour chaque utilisateur. La nécessité de pré-calculer ces données vient de leur quantité brute. Les compter sur le moment pour chaque requête demande trop de temps.
+
+			\item[B] On calcule le total de certaines valeurs pour les requêtes de l'utilisateur : Par exemple, le nombre total effectuées, et le nombre total de domaines différents.
+
+			\item[C] On calcule ici certaines valeurs globales pour l'ensemble des utilisateurs. Par exemple le nombre total effectuées, et le nombre total de domaines différents.
+
+			\item[D et E] On affiche les nombres résultats des opérations précédente dans leur page respective, à savoir "Your stats" présentant les statistiques de l'utilisateur uniquement, ou "Global stats" affichant les statistiques globales sur la base de données.
+
+		\end{description}
+
 		\begin{figure}[!h]
 			\centering
 			\includegraphics[height=0.6\textwidth]{images/design/pages/stats_algo}
-			\caption{Algorithme utilisé les données de la page "Stats"}
+			\caption{Algorithme utilisé sur les données de la page "Stats"}
 			\label{stats_algo}
 		\end{figure}
 
 	\subsection{Visualisation}
 
-			Les nombres renvoyées par le serveur sont simplement affichés dans des \texttt{card}s de Bootstrap.
+		Les nombres renvoyées par le serveur sont simplement affichés dans des \texttt{card}s de Bootstrap.
+
+\clearpage
+
+%
+%
+% SETTINGS
+%
+%
+
+\section{Settings}
+
+	\subsection{Concept}
+
+		Le but de la page Settings est de montrer à l'utilisateur la possibilité de renseigner ces centres d'intérêt. Ces informations nous seront utiles par la suite pour tenter d'associer les centres d'intérêt entrés ici avec les topics que nous estimons être importants.
+
+		La figure~\ref{settings_image} montre un formulaire à remplir par l'utilisateur. Celui-ci cherche ces centres d'intérêts parmi une liste de 101, organisés hiérarchiquement. Un maximum de 10 centres d'intérêts peuvent être choisis.
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[height=0.32\textwidth]{images/design/pages/settings}
+			\caption{Champ d'entrée des centres d'intérêts}
+			\label{settings_image}
+		\end{figure}
+
+		Une fois que l'utilisateur a défini des centres d'intérêt, il peut donner des informations sur la page Topics (voir section \ref{topicslist}). Les centres d'intérêts choisis sur la page Settings sont donc "simplement" utilisés pour définir quels seront les choix de centres d'intérets possibles sur la page Topics List. La figure~\ref{choice} montre la fenêtre déroulante de sélection d'un centre d'intérêt pour un topic donné.
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[height=0.32\textwidth]{images/results/choice}
+			\caption{Sélection d'intérêt sur un topic}
+			\label{choice}
+		\end{figure}
+
+		Il est demandé aux utilisateurs d'ajouter une association entre un topic et un intérêt lorsque cela semble lui faire sens. Ainsi, nous pouvons savoir quels topics de l'utilisateur nous avons réussi à identifier. En effet, lorsqu'un utilisateur associe un centre d'intérêt à un topic, celà signifie non seulement que le topic trouvé a du sens en soi, mais en plus qu'il est intéressant pour l'utilisateur.
+
+	\subsection{Données}
+
+		Deux source de données est nécessaire à constituer la vue Settings :
+		\begin{description}
+			\item[Liste des 101 centres d'intérêts] : Ces données sont stockées dans la table \texttt{interests} (figure \ref{table-interests}).
+			\item[Centres d'intérêt de l'utilisateur] : Ces données sont stockées dans la table \texttt{user\_interests} (figure \ref{table-user-interests}).
+		\end{description}
+
+	\subsection{Traitement}
+
+		Très peu de traitements sont nécessaires pour cette vue. La plupart des données nécessaires à cette vue sont calculées en temps réel : Il s'agit simplement de compter le nombre de requêtes enregistrées dans la table pré-calculée, ainsi que le nombre unique de nom de domaines.
+
+		La figure~\ref{stats_algo} montre le traitement effectué aux données avant de les afficher.
+
+		\begin{description}
+			\item[A] La liste pré-définie de centres d'intérêts est ajoutée à la base de données. Cette opération n'est à effectuer qu'une seule fois, le but de cette liste n'est pas de changer. Dans notre cas, la liste des centres d'intérêts provient de ceux utilisés par la classification des utilisateurs par Google.
+
+			\item[B] On envoie la liste des centres d'intérêts et de leur nom au client
+
+			\item[C] On envoie également la liste des centres d'intérets que l'utilisateur a déjà renseignés, afin de les afficher directement comme étant entrés dans le formulaire.
+
+			\item[E] L'utilisateur peut donc changer ses centres d'intérêts, puis envoyer sa nouvelle liste au serveur.
+
+			\item[F] Les nouveaux centres d'intérêts sont donc enregistrés, et la nouvelle liste est envoyée une fois supplémentaire cu lient, reprenant au point C de l'algorithme.
+
+		\end{description}
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[height=0.55\textwidth]{images/design/pages/settings_algo}
+			\caption{Algorithme utilisé pour les données de la page "Settings"}
+			\label{settings_algo}
+		\end{figure}
+
+	\subsection{Visualisation}
+
+		Le champ du formulaire permettant d'entrer des centres d'intérêts en affichant leur hiérarchisation est une instance configurée de la librairie JavaScript nommée Selectize\cite{selectize}, dont le but est de proposer des champs de formulaire personnalisés tels que celui-ci.
 
 \clearpage
