@@ -33,6 +33,17 @@ def connectionState(wdfId):
 
 	\subsection{Client}
 
+		L'interface est développée en JavaScript et TypeScript en utilisant le framework Vue.js. Comme plusieurs de ses autres équivalents, Vue.js permet d'organiser le code en composants réutilisables. Le but étant de développer une one-page app pour des raisons de réactivité de l'interface. Un des avantages de ce type de framework est donc la possibilité de configurer un router.
+
+		\begin{wrapfigure}{r}{3cm}
+			\includegraphics[width=2.9cm]{images/design/loading_spinner}
+			\caption{Chargement des données}\label{i-loading}
+		\end{wrapfigure} 
+
+		Ceci permet à l'utilisateur d'avoir l'impression de naviguer entre plusieurs pages distinctes, alors que tout le processus prend place dans le framework lui-même, qui se charge de changer le contenu affiché sans nécessiter de requête supplémentaire au serveur.
+
+		Au lancement de la page, l'interface entière est donc chargée sur le navigateur, et l'ensemble des données de l'utilisateur est demandée au serveur. La figure~\ref{i-loading} montre le spinner affiché à l'utilisateur pendant le chargement.
+
 %
 %
 % WORDCLOUD
