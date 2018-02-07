@@ -40,6 +40,8 @@
 
 		Par exemple, une grande partie des pages d'un réseau social peuvent nécessiter la connexion de l'utilisateur pour être affichée.
 
+		De plus, il n'existe pas de méthode autre que empiriques pour juger de la qualité des résultats de ce type d'algorithmes. Nous nous attendons donc à des résultats imparfaits, mais allons tenter de juger au mieux leur efficacité malgré ceci.
+
 		\subsubsection{TF-IDF}
 
 			\paragraph{Résultats}
@@ -235,15 +237,9 @@
 
 				Le fonctionnement de LDA est décrit à la section \ref{analyse-lda}. Le tableau~\ref{resultats-lda} montre un résumé des résultats que l'on peut récupérer précédent tableau. Sur les 100 topics générés par le modèle, on a pu estimer qu'au final 65 de ceux-ci sont des topics potentiellement désirables, et décrivant un thème commun et sensé.
 
-				Bien que ceci laisse un tiers des topics comme étant potentiellement inutiles ou indésirables, ce résultat montre tout de même qu'une partie conséquente des utilisateurs peut être retrouvée. Notons qu'un nombre final de topic sensé de 100\% n'est pas le but recherché, et serait même totalement utopique : Il est impossible de définir précisément qu'est-ce qu'un topic, ou même définir quelle page web parle de quel topic, ou même encore combien de topics différents une page web touche.
+				\FloatBarrier
 
-				De plus, il semble fort probable que certains topics soient définis autour de concepts qui se présentent dans des proportions semblables à des centres d'intérêts, mais qui forment des topics qui ont peu de sens. Comme le concept de temps par exemple, ou de géographie, qui constituent tous deux des topics dans notre modèle.
-
-				Cependant le modèle serait tout à fait améliorable. En effet, le jeu de données que nous disposons est fortement influencé en quantité par les intérêts des quelques utilisateurs, et LDA possède encore plusieurs paramètres modifiables, qui pourraient amener à des résultats encore meilleurs.
-
-\FloatBarrier
-
-				\begin{table}[h]
+\begin{table}[h]
 \centering
 \caption{Résumé des résultats de LDA}
 \label{resultats-lda}
@@ -254,6 +250,45 @@
 \textbf{avec un topic sensé}        & 65 \\
 \end{tabular}
 \end{table}
+
+				Bien que ceci laisse un tiers des topics comme étant potentiellement inutiles ou indésirables, ce résultat montre tout de même qu'une partie conséquente des utilisateurs peut être retrouvée. Notons qu'un nombre final de topic sensé de 100\% n'est pas le but recherché, et serait même totalement utopique : Il est impossible de définir précisément qu'est-ce qu'un topic, ou même définir quelle page web parle de quel topic, ou même encore combien de topics différents une page web touche.
+
+				De plus, il semble fort probable que certains topics soient définis autour de concepts qui se présentent dans des proportions semblables à des centres d'intérêts, mais qui forment des topics qui ont peu de sens. Comme le concept de temps par exemple, ou de géographie, qui constituent tous deux des topics dans notre modèle.
+
+				\subparagraph{Exemple}
+
+					Certains topics non retenus générés sont tout de même surprenants, et nous pouvons nous poser la question comment ceux-ci ont été généré. Par exemple, regardons le topic "de, la, le, nutzt, kommentare" qui semble plutôt étrange car il contient des déterminants. Intéressons-nous aux URLs qui présentent ce topic avec une probabilité supérieure à 0.5. Le tableau~\ref{r-exemple1} montre la liste des URLs concernées.
+
+					\begin{table}[]
+\centering
+\begin{tabular}{ll}
+\textbf{URL}                                          & \textbf{Probabilité} \\ \hline
+\scriptsize \url{http://www.transformice.com/tutorials/index.php}       & 0.735             \\
+\scriptsize \url{https://play.google.com/books/reader}                  & 0.643             \\
+\scriptsize \url{https://www.facebook.com/mieletfleur/}                 & 0.632             \\
+\scriptsize \url{https://www.transformice.com/}                         & 0.620             \\
+\scriptsize \url{https://www.facebook.com/herominutebuzz/}              & 0.618             \\
+\scriptsize \url{http://www.20min.ch/schweiz/}                          & 0.563             \\
+\scriptsize \url{https://www.buecher.de/shop/bilderbuecher/mats-und...} & 0.525       
+\end{tabular}
+\caption{URLs possédant le topic "De, la, le, nutzt, kommentare" avec >0.5 de probabilité}
+\label{r-exemple1}
+\end{table}
+
+				En regardant les données enregistrées dans la base ainsi que le contenu des pages de ces URLs, des caractéristiques semblables émergent. Tout d'abord, il s'agit de pages affichant du texte en plusieurs langues, ou empruntant des mots à une langue différente. Etant donné que notre algorithme part du principe que le texte de chaque page est exprimé en une langue donnée, la présence de mots d'autre langue que celle détectée influence la détection des mots importants dans les documents concernés. Ainsi, ici nous pouvons voir que la langue principale de ces pages est autre que français (généralement allemand, ici), et c'est la raison pour laquelle des mots comme "de" ou "la" prennent une importance trop élevée. D'habitude, ces mots sont filtrés à l'aide d'une liste de stopwords. Mais ici, ceux-ci sont pris en compte et influencent les résultats dans une direction non souhaitée.
+
+				Il s'agit là de la mise en évidence d'une des imperfections du système, mais d'autres cas se cumulent à celui-ci. On peut citer par exemple les cas dans lesquels :
+				\begin{itemize}
+					\item L'URL accédée nécessite une connexion de la part de l'utilisateur. Dans ce cas, notre serveur ne verra probablement qu'un contenu très restreint semblable à "Merci de vous connecter", biaisant l'importance de ces mots.
+					\item L'URL accédée a un contenu dynamique qui varie fortement au fur et à mesure du temps. Dans ce cas, notre serveur n'accordera d'importance qu'à la dernière version en date, et ne traitera les mots que de la dernière version de la page.
+					\item L'URL accédée nécessite des paramètres d'accès, comme \texttt{?search=Test}. Dans ce cas, l'extension ignore volontairement ces paramètres et il se peut que la page renvoie une erreur à notre serveur si ces paramètres ne sont pas présents. Dans ce cas, tout accès à ces URLs résultera en un biais vers les mots d'erreur de la page.
+					\item L'URL accédée présente un contenu qui n'est principalement pas du texte. Par exemple, la page pourrait afficher une vidéo, et ne montrer que quelques boutons d'actions comme "Play", "Pause" ou "S'abonner". Dans ce cas, notre algorithme se concentre sur ces quelques mots, qui auront une importance biaisée dans la génération de topics. 
+				\end{itemize}
+				Notons qu'ils ne s'agit que d'exemples et que la cette liste n'est pas exhaustive. Nous avons conscience que des solutions existent pour pallier à certains de ces différents cas, mais les solutions à déployer demandaient trop d'efforts pour être raisonnablement implémentées dans le cadre de ce projet.
+
+				Des solutions ont déjà été implémentées pour parer à des problèmes survenus initialement. Par exemple, notre serveur, en plus de simplement télécharger le contenu de la page web, simule son comportement au chargement initial avec l'exécution de JavaScript. Cette technique nous a déjà permis de nous rapprocher du résultat visuel final auxquels accèdent les utilisateurs.
+
+			Cependant le modèle lui-même serait tout à fait améliorable. En effet, le jeu de données que nous disposons est fortement influencé en quantité par les intérêts des quelques utilisateurs, et LDA possède encore plusieurs paramètres modifiables, qui pourraient amener à des résultats encore meilleurs.
 
 	\subsection{Vues}
 
@@ -269,11 +304,26 @@
 
 \section{Statistiques}
 
+	Un total de 10 utilisateurs volontaires ont installé l'extension, dont 8 d'entre eux ont été identifiés comme ayant une activité de navigation sur Chrome assez grande pour contribuer à l'étude. Bien que la taille de l'échantillon soit peu impressionnante, le fait que ceux-ci aient utilisé l'extension pendant environ 1 mois nous permet tout de même de montrer des statistiques.
+
+	En effet, la taille de la base de données finale est d'environ 4.5 Gio. La moitié de ces données sont le stockage du contenu des pages, l'autre moitié est remplie par des données sur les utilisateurs. Voici ce que nous pouvons dire sur ces données après les avoir analysées.
+
+	Tout d'abord, quelques statistiques générales. La figure~\ref{r-visionnage} montre le temps passé total à visualiser des pages par domaine. On remarque déjà à cette étape certaines tendances de notre audience.
+
+	\begin{figure}[!h]
+		\centering
+		\includegraphics[height=0.75\textwidth]{images/results/temps_total_visionnage}
+		\caption{Temps total de visionnage par domaine}
+		\label{r-visionnage}
+	\end{figure}
+
 	\subsection{Profiling}
 
-
+		Pour chacun des utilisateurs qui a renseigné ses centres d'intérêt dans son profil, nous nous sommes intéressé à la correspondance entre les profils que les utilisateurs ont renseigné, et les topics que nos algorithmes ont estimé être intéressants pour eux.
 
 	\subsection{Trackers}
+
+		Un total de 3'227'000 requêtes ont été enregistrées dans la table \texttt{pagerequests}, représentant environ 1 Gio de données. 
 
 	\subsection{Implications}
 
