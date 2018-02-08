@@ -458,11 +458,81 @@
 
 		\subsubsection{Résultats généraux}
 
-			Parmi les 8 utilisateurs aynat une activité enregistrée suffisante sur le serveur, 6 ont défini des centres d'intérêts et ont participé à la tâche d'assigner des centres d'intérêts aux topics proposés.
+			Parmi les 8 utilisateurs aynat une activité enregistrée suffisante sur le serveur, 6 ont défini des centres d'intérêts et ont participé à la tâche d'assigner des centres d'intérêts aux topics proposés. Le tableau~\ref{profiles-table} montre une série de mesures sur les données amassées des volontaires.
+
+			Voici comment se lit chaque colonne :
+			\begin{description}
+				\item[Personne] : Identifiant du volontaire.
+				\item[Tags] : Nombre de topics parmi son top20 associés à un centre d'intérêt
+				\item[Int(érêts)] : Nombre de centres d'intérêts renseignés sur le profil
+				\item[Temps] : Temps total de visualisation sur des pages, exprimé en heures
+				\item[Domaines] : Nombre de domaines différents visités
+				\item[Pages] : Nombre de pages différentes visitées
+				\item[Taux 1] : Nombre de pages différentes visitées
+				\item[Taux 2] : Taille moyenne de données envoyées par visite d'une page      
+			\end{description}
+
+			On remarque déjà ici que les six personnes présentent des données très différents, autant en activité générale (de 8 à 120 heures passées) ainsi qu'en satisfaction au niveau des topics générés (de 5\% à 64\% suivant la mesure). 
+
+			\begin{table}[]
+\centering
+\begin{tabular}{crrrrrrr}
+\multicolumn{1}{l}{\textbf{Personne}} & \multicolumn{1}{l}{\textbf{Tags}} & \multicolumn{1}{l}{\textbf{Int.}} & \multicolumn{1}{l}{\textbf{Temps}} & \multicolumn{1}{l}{\textbf{Domaines}} & \multicolumn{1}{l}{\textbf{Pages}} & \multicolumn{1}{l}{\textbf{Taux 1}} & \multicolumn{1}{l}{\textbf{Taux 2}} \\ \hline
+A & 1 & 8 & 11 & 161 & 551 & 5\% & 9,9\% \\
+B & 11 & 8 & 120 & 998 & 5778 & 55\% & 64,2\% \\
+C & 8 & 4 & 21 & 194 & 732 & 40\% & 47,4\% \\
+D & 7 & 5 & 25 & 193 & 1063 & 35\% & 54,0\% \\
+E & 3 & 6 & 8 & 84 & 462 & 15\% & 15,4\% \\
+F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
+\multicolumn{1}{l}{Moyenne} & 5,7 & 6,3 & 34 & 296 & 1519 & 28,3\% & 34,51\%
+\end{tabular}
+\caption{Tableau récapitulatif des statistiques sur les 6 personnes volontaires}
+\label{profiles-table}
+\end{table}
+
+\FloatBarrier
 
 		\subsubsection{Critique}
 
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.6\textwidth]{images/results/chart-1}
+				\caption{Taux d'association de topics par rapport au temps de visualisation avec courbe de tendance}
+				\label{chart-1}
+			\end{figure}
+
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.6\textwidth]{images/results/chart-2}
+				\caption{Taux d'association de topics par rapport au nombre de domaines différents visités avec courbe de tendance}
+				\label{chart-2}
+			\end{figure}
+
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.6\textwidth]{images/results/chart-3}
+				\caption{Taux d'association de topics par rapport au nombre de pages différentes avec courbe de tendance}
+				\label{chart-3}
+			\end{figure}
+
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.6\textwidth]{images/results/chart-4}
+				\caption{Taux d'association de topics par rapport au temps de visualisation avec courbe de tendance}
+				\label{chart-4}
+			\end{figure}
+
 		\subsubsection{Conclusion}
+
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.7\textwidth]{images/results/chart-5}
+				\caption{Taux d'association de topics, brut et pondéré, par rapport au temps de visualisation avec courbes de tendances}
+				\label{chart-5}
+			\end{figure}
+
+
+\clearpage
 
 	\subsection{Trackers}
 
@@ -472,7 +542,7 @@
 
 			Deux tableaux ont été compilés pour l'ensemble des requêtes analysées par le serveur. Un total de 1058 domaines différents ont été visités par les utilisateurs. Parmi ceux-ci, nous nous intéressons ici à ceux qui ont reçu un minimum de 4 visites de pages. En effet, nous cherchons ici à montrer des statistiques sur des domaines connus des utilisateurs, et donc nous nous restraignons aux domaines qui ont suscité un minimum d'intérêt des utilisateurs tout de même, et ne souhaitons pas voir de domaines de publicité ouvert aléatoirement par une pop-up, par exemple.
 
-\begin{table}[]
+\begin{table}[h]
 \centering
 \begin{tabular}{lllllll}
 \textbf{Domaine}          & \textbf{Visites} & \textbf{Req.} & \textbf{R/V} & \textbf{Taille [kB]} & \textbf{T/R} & \textbf{T/V} \\ \hline
@@ -517,34 +587,41 @@
 
 			\begin{table}[]
 \centering
-\begin{tabular}{lllllll}
-\textbf{Domaine}           & \textbf{Vu {[}sec{]}} & \textbf{Req.} & \textbf{R/sec} & \textbf{Taille {[}kB{]}} & \textbf{T/R} & \textbf{T/sec} \\ \hline
-\scriptsize \url{www.netflix.com}            & 58                    & 8212          & 142                  & 15551                    & 1939         & 268            \\
-\scriptsize \url{www.pythonforbeginners.com} & 31                    & 2623          & 85                   & 1235                     & 482          & 40             \\
-\scriptsize \url{newtab}                     & 335                   & 25741         & 77                   & 1296                     & 52           & 4              \\
-\scriptsize \url{www.lolking.net}            & 146                   & 8016          & 55                   & 3695                     & 472          & 25             \\
-\scriptsize \url{mtg.gamepedia.com}          & 31                    & 1181          & 38                   & 540                      & 468          & 17             \\
-\scriptsize \url{www.facebook.com}           & 12413                 & 242727        & 20                   & 166256                   & 701          & 13             \\
-\scriptsize \url{www.sabishiidesu.com}       & 75                    & 1146          & 15                   & 178                      & 159          & 2              \\
-\scriptsize \url{www.cabaneaidees.com}       & 46                    & 576           & 13                   & 93                       & 165          & 2              \\
-\scriptsize \url{www.androidcentral.com}     & 39                    & 515           & 13                   & 200                      & 397          & 5              \\
-\scriptsize \url{www.rightmove.co.uk}        & 143                   & 1861          & 13                   & 786                      & 432          & 5              \\
-\scriptsize \url{zattoo.com}                 & 196                   & 2432          & 12                   & 305                      & 128          & 2              \\
-\scriptsize \url{www.les-coccinelles.fr}     & 60                    & 658           & 11                   & 52                       & 81           & 1              \\
-\scriptsize \url{www.magicmadhouse.co.uk}    & 227                   & 2508          & 11                   & 1132                     & 462          & 5              \\
-\scriptsize \url{www.bestbuy.com}            & 37                    & 379           & 10                   & 268                      & 725          & 7              \\
-\scriptsize \url{euw.op.gg}                  & 15358                 & 147797        & 10                   & 40639                    & 282          & 3              \\
-\scriptsize \url{mlp.wikia.com}              & 135                   & 1393          & 10                   & 168                      & 124          & 1              \\
-\scriptsize \url{www.techrepublic.com}       & 75                    & 725           & 10                   & 295                      & 417          & 4              \\
-\scriptsize \url{fireemblem.wikia.com}       & 273                   & 2567          & 9                    & 466                      & 186          & 2              \\
-\scriptsize \url{www.upc.ch}                 & 70                    & 656           & 9                    & 244                      & 381          & 3              \\
-\scriptsize \url{www.usatoday.com}           & 63                    & 540           & 9                    & 594                      & 1127         & 9              \\       
+\begin{tabular}{llllllll}
+\textbf{Id} & \textbf{Domaine}           & \textbf{Vu{[}sec{]}} & \textbf{Req.} & \textbf{R/sec} & \textbf{Taille{[}kB{]}} & \textbf{T/R} & \textbf{T/sec} \\ \hline
+A & \scriptsize \url{www.netflix.com}            & 58                    & 8212          & 142                  & 15551                    & 1939         & 268            \\
+B & \scriptsize \url{www.pythonforbeginners.com} & 31                    & 2623          & 85                   & 1235                     & 482          & 40             \\
+C & \scriptsize \url{newtab}                     & 335                   & 25741         & 77                   & 1296                     & 52           & 4              \\
+D & \scriptsize \url{www.lolking.net}            & 146                   & 8016          & 55                   & 3695                     & 472          & 25             \\
+E & \scriptsize \url{mtg.gamepedia.com}          & 31                    & 1181          & 38                   & 540                      & 468          & 17             \\
+F & \scriptsize \url{www.facebook.com}           & 12413                 & 242727        & 20                   & 166256                   & 701          & 13             \\
+G & \scriptsize \url{www.sabishiidesu.com}       & 75                    & 1146          & 15                   & 178                      & 159          & 2              \\
+H & \scriptsize \url{www.cabaneaidees.com}       & 46                    & 576           & 13                   & 93                       & 165          & 2              \\
+I & \scriptsize \url{www.androidcentral.com}     & 39                    & 515           & 13                   & 200                      & 397          & 5              \\
+J & \scriptsize \url{www.rightmove.co.uk}        & 143                   & 1861          & 13                   & 786                      & 432          & 5              \\
+K & \scriptsize \url{zattoo.com}                 & 196                   & 2432          & 12                   & 305                      & 128          & 2              \\
+L & \scriptsize \url{www.les-coccinelles.fr}     & 60                    & 658           & 11                   & 52                       & 81           & 1              \\
+M & \scriptsize \url{www.magicmadhouse.co.uk}    & 227                   & 2508          & 11                   & 1132                     & 462          & 5              \\
+N & \scriptsize \url{www.bestbuy.com}            & 37                    & 379           & 10                   & 268                      & 725          & 7              \\
+O & \scriptsize \url{euw.op.gg}                  & 15358                 & 147797        & 10                   & 40639                    & 282          & 3              \\
+P & \scriptsize \url{mlp.wikia.com}              & 135                   & 1393          & 10                   & 168                      & 124          & 1              \\
+Q & \scriptsize \url{www.techrepublic.com}       & 75                    & 725           & 10                   & 295                      & 417          & 4              \\
+R & \scriptsize \url{fireemblem.wikia.com}       & 273                   & 2567          & 9                    & 466                      & 186          & 2              \\
+S & \scriptsize \url{www.upc.ch}                 & 70                    & 656           & 9                    & 244                      & 381          & 3              \\
+T & \scriptsize \url{www.usatoday.com}           & 63                    & 540           & 9                    & 594                      & 1127         & 9              \\       
 \end{tabular}
 \caption{Requêtes envoyées par visite sur une page d'un domaine}
 \label{trackers-2}
 \end{table}
 
-			La table~\ref{trackers-2} montre la liste des 20 domaines ayant envoyé le plus grand nombre de requêtes par temps de visualisation de page. Voici à quoi chaque colonne correspond :
+			\begin{figure}[!h]
+				\centering
+				\includegraphics[height=0.7\textwidth]{images/results/chart-trackers}
+				\caption{Visualisation de la fréquence et de la taille de l'envoie des données des domaines}
+				\label{trackers-vis}
+			\end{figure}
+
+			La table~\ref{trackers-2} montre la liste des 20 domaines ayant envoyé le plus grand nombre de requêtes par temps de visualisation de page. Reprenant les valeurs de cette table, la figure~\ref{trackers-vis} illustre que pendant que certains domaines lancent un nombre très élevé de requêtes, certains autres compensent en envoyant peu de requêtes, mais chargées d'informations. Voici à quoi chaque colonne de la table correspond :
 			\begin{description}
 				\item[Domaine] : Nom de domaine des pages
 				\item[Vu {[}sec{]}] : Temps en secondes passé à regarder la page
@@ -555,7 +632,7 @@
 				\item[T/sec] : Taille moyenne de données envoyées par seconde
 			\end{description}
 
-			On remarque que certains domaines se retrouvent à la fois dans le haut du classement des deux mesures : Nombre de visites, et temps de visualisation, comme par exemple \url{www.netflix.com}. Cependant, il est possible que l'estimation du temps passé sur ce domaine soit faussé.
+			On remarque que certains domaines se retrouvent à la fois dans le haut du classement des deux mesures des tableaux précédents : Nombre de visites, et temps de visualisation, comme par exemple \url{www.netflix.com}. Cependant, il est possible que l'estimation du temps passé sur ce domaine soit faussé.
 
 			En effet, notre algorithme compte l'utilisateur comme étant inactif après 30 secondes passées durant lesquelles il n'y a eu aucune interaction avec la fenêtre (mouvement de souris, clic, clavier etc). Ceci extplique sans doute pourquoi un site de visionnage de vidéo se retrouve en haut de cette liste, avec de plus un temps de visualisation qui semble extrêmement bas pour celui-ci. Notre algorithme a certainement compté le temps passé à regarder la vidéo comme étant inactif. Il aurait fallu faire une distinction, ou déterminer lorsque la page joue une vidéo et considérer ce temps comme étant de l'activité utilisateur.
 
