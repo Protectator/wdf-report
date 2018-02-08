@@ -53,7 +53,7 @@
 
 	\subsection{Données}\label{d-donnees}
 
-		Les possibilités de récolte de données depuis une extension de navigateur sont extrêmement nombreuses. Nous allons cependant nous concentrer sur l'amassage de données utiles à l'étude, et qui ne représentent pas une menace à l'intimité de l'utilisateur. Nous devons donc nous limiter à un set de données adéquat. 
+		Les possibilités de récolte de données depuis une extension de navigateur sont extrêmement nombreuses. Nous allons cependant nous concentrer sur l'amassage de données utiles à l'étude, et qui ne représentent pas une menace à l'intimité de l'utilisateur. Nous devons donc nous limiter à un set de données adéquat.
 
 		Voici les différents types d'informations que nous récoltons, et à quelles fins chaque type d'information est utilisé :
 
@@ -69,6 +69,18 @@
 			\end{figure}
 
 			La figure~\ref{d-url} montre que tous les paramètres de la requête ne sont pas conservés. Seuls le protocole (\texttt{http} ou \texttt{https}), le nom de domaine, l'éventuel numéro de port ainsi que le chemin d'accès à la ressource sont conservés. Nous évitons ainsi la possibilité de stocker des informations sensibles comme le nom d'utilisateur, qui peut parfois se trouver dans cette partie de l'URL de certains sites web.
+
+			De plus, nous savons déjà que certaines URLs ne seront pas utiles à notre étude. Par exemple, nous pouvons d'avance dire que les URLs menant à des pages dont le contenu est constitué de l'une de ces manières est peu adéquat à analyser :
+			\begin{itemize}
+				\item Du texte généré spécialement lorsque l'utilisateur est connecté à un compte, par exemple une page d'accueil d'un service
+				\item De contenu principalement autre que du texte, par exemple une page mettant en avant une vidéo
+				\item De contenu régénéré très fréquamment, par exemple une première page d'un site de news
+			\end{itemize}
+			
+			Nous décidons donc de définir une liste d'URLs que nous ne prendrons volontairement pas en compte lors de l'analyse. Le but de cette liste n'est bien sûr pas d'exhaustivement ignorer les sites dont le contenu textuel est très peu fiable ou présente très peu d'intérêt, mais d'améliorer la qualité possible des résultats en écartant certains cas dont nous pouvons raisonnablement dire qui apportent des biais par rapport à la réalité.
+
+			Ainsi, nous avons dressé une simple liste d'une dizaine de patterns d'URL que nous allons volontairement ignorer. Dans cette liste nous retrouvons des pages d'accueil de sites comme \texttt{\^{}https?://www.facebook.com/?\$} ou \linebreak
+			\texttt{\^{}https?://www.twitter.com/?\$}, mais également des sites de lecture de vidéo comme \texttt{\^{}https?://www.youtube.com} et d'autres cas plus spécifiques, comme les URLs ne pointant pas vers des ressources accessibles en HTTP ou HTTPS : \texttt{\^{}(?!http)}.
 
 		\subsubsection{Activité sur une page}
 

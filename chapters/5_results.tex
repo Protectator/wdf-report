@@ -292,15 +292,139 @@
 
 	\subsection{Vues}
 
+		Afin de se rendre compte d'un profil type généré par l'extension ainsi que ses représentations visuelles, nous nous intéressons ici au profil généré par le projet de moi-même. Nous allons passer en revue les différentes visualisations et les commenter. Le but est ici d'avoir un avis humain reflétant la précision et l'adéquation des données générées avec avec un profil; Il aurait été possible de mener ce questionnement sur n'importequel participant à l'étude, mais je prends exemple sur moi-même par commodité.
+
 		\subsubsection{Wordcloud}
+
+		La figure~\ref{critique-wordcloud} montre la vue de l'interface Wordcloud.
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/results/critique-wordcloud}
+			\caption{Vue de l'interface Wordcloud}
+			\label{critique-wordcloud}
+		\end{figure}
+
+		Tout d'abord visuellement, cette vue remplit son objectif qui est de donner très rapidement une information sur les mots les plus représentatifs de l'utilisateur. En effet, les mots qui sont jugés les plus représentatifs sont affichés en plus grand, et ce sont également ceux vers lesquels l'oeil se pose en premier.
+
+		Ensuite, les données représentées semblent correspondre avec la réalité de mon profil. Les mots que j'ai le plus consultés pendant la période durant laquelle j'ai conservé l'extension installée sont effectivement ceux qui sont le plus mis en valeur ici.
+
+		En conclusion, cette vue assez simple me semble convenir dans à peu près tous les aspects car elle remplit tout à fait son rôle. La seule amélioration possible reste le choix d'une librairie graphique différente, pouvant éventuellement éviter le chevauchement de certains mots, cas qui apparaît ici plusieurs fois de manière non dérangeante, mais tout de même remarquable.
+
+\FloatBarrier
 
 		\subsubsection{Topics List}
 
-		\subsubsection{Most watched and viewed}
+		La figure~\ref{critique-topics} montre la vue de l'interface Topics List.
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/results/critique-topics}
+			\caption{Vue de l'interface Topics List}
+			\label{critique-topics}
+		\end{figure}
+
+		On remarque ici que j'ai associé 5 des 8 meilleurs topics à certains de mes centres d'intérêt. Sur les 20 topics affichés sur la page, j'ai un total de 11 assignations. Ceci représente donc un taux de topics "corrects" légèrement supérieur à la moitié. Pour les 3 topics que j'ai laissé sans liens font ici :
+		\begin{itemize}
+			\item Représente un thème que je n'estime pas être important (account sign email)
+			\item Fait peu de sens en soi (amp log src)
+			\item Ne représente pas un thème auquel je m'identifie (anime girl manga)
+		\end{itemize}
+
+		En ce qui concerne le score d'intérêt estimé, seul le premier topic me parle vraiment, en le sens que je suis tout à fait d'accord et conscient que j'ai plus d'intérêt pour un topic défini par "comment reddit post" que les autres, probablement dû au fait de ma grande fréquentation du site reddit par rapport aux autres.
+
+		J'arrive donc à expliquer l'énorme différence d'intérêt entre ce premier topic et les autres, et je le trouve correct. En revanche, je trouve que les différences minimes de pourcentage entre les autres topics fait peu de sens ; Je n'arriverais pas moi-même à les classer par ordre d'importance. Leur donner une valeur aussi précise me semble donc inutile, selon moi.
+
+		Je trouve donc que les données représentées ici sont partiellement adéquates. Certaines d'entre elles sont pertinentes comme les mots des topics trouvés et une estimation de l'intérêt, même si les topics en eux-mêmes ne sont pas toujours corrects. En ce qui concerne la forme dont ces données sont présentées, je pense qu'une échelle avec une granularité diminuée serait moins confuse, par exemple un score de 1 à 5 pour chaque topic.
+
+		Au final, je pense qu'il serait possible d'améliorer cette vue par deux ces moyens :
+		\begin{itemize}
+			\item Meilleure détection des topics d'intérêt
+			\item Visualisation simplifiée du degré d'intérêt
+		\end{itemize}
+
+\FloatBarrier
+
+		\subsubsection{Most watched and visited}
+
+		La figure~\ref{critique-visited} montre la vue de l'interface Most Viewed, et la figure ~\ref{critique-watched} montre celle de l'interface Most Watched.
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/results/critique-mostvisited}
+			\caption{Vue de l'interface Most Visited}
+			\label{critique-visited}
+		\end{figure}
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/results/critique-mostwatched}
+			\caption{Vue de l'interface Most Watched}
+			\label{critique-watched}
+		\end{figure}
+
+		À l'inverse des autres, ces deux vues-ci présentent des données qui n'ont pas été interprétées, ou en tout cas très peu. Le nombre de visites des pages web ne m'étonnent pas ni leur le temps passé sur celles-ci, je peux donc dire que je pense que ces données sur moi sont correctes.
+
+		En ce qui concerne les "Keywords" trouvés, je trouve que plus de la moitié d'entre eux sont confus. Je trouve ceci dommage car je pense qu'il existe des meilleurs mots pour décrire les sites qui arrivent en tête des deux classements. Cependant, comme nous avons déjà expliqué dans un chapitre précédent les problèmes qui peuvent survenir pour détecter les mots idéaux sur certaines pages web, je remarque ici que les pages web que j'ai le plus visité sont des cas typiques de pages où il est difficile de déduire des mots clés idéaux.
+
+		En effet, il s'agit principalement de pages web qui demandent une connection (comme wdf.sdipi.ch et draw.io), de pages web qui ne présentent pas ou peu de contenu texte (comme google.ch/search ou youtube.com), ou encore de pages web qui nécessiteraient l'URL non tronquée pour être correctement affichées (comme google.ch/url).
+
+		Malheureusement, la plupart de ces cas ne semble pas montrer une résolution simple sans une acquisition de données supplémentaires. Il faudrait en effet que l'extension soit capable de voir le contenu effectivement affiché au client, et pas le contenu affiché de manière publique. Cette solution demanderait donc plus de données de la part de l'utilisateur, ce que nous avons volontairement évité.
+
+		Au final, cette vue montre des informations quantitatives correctes comme le temps ou le nombre de visites, mais l'évaluation des mots des pages est peu précis. Le potentiel d'amélioration de cette vue se trouve probablement dans l'acquisition de données utilisateur supplémentaires.
+
+\FloatBarrier
 
 		\subsubsection{History}
 
+		La figure~\ref{critique-history-topics} montre la vue de l'interface Wordcloud, et la figure ~\ref{critique-history-words} montre celle de l'interface Most Watched.
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/results/critique-history-topics}
+			\caption{Vue du premier graphique de l'interface History}
+			\label{critique-history-topics}
+		\end{figure}
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/results/critique-history-words}
+			\caption{Vue du deuxième graphique de l'interface History}
+			\label{critique-history-words}
+		\end{figure}
+
+		Tout d'abord visuellement, je pense que les vues montrent des tendances intéressantes, mais la quantité d'informations présentes entrave la lecture.
+
+		En effet, on peut voir rapidement qu'il y a eu une période de pause entre le 23 décembre et le 3 janvier dans les deux graphiques. Cependant, il reste difficile d'isoler une tendance particulière pour un topic ou un mot particulier à première vue. La version web permet toutefois de cacher ou d'afficher des séries de données en cliquant dessus, ce qui permet d'alléger les graphiques.
+
+		Je pense que l'information représentée est intéressante, mais qu'un travail supplémentaire sur la forme de la représentaiton pourrait valoir la peine. Par exemple, la possibilité de diminuer la granularité des points dans le temps, et de par exemple regrouper le temps passé à regarder certains mots ou topics peut être intéressant afin de voir plus clairement une tendance dans les deux visualisations.
+
+\FloatBarrier
+
 		\subsubsection{Trackers}
+
+		La figure~\ref{critique-trackers} montre la vue de la page "Most recieving" de l'interface Trackers.
+
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=1\textwidth]{images/results/critique-trackers}
+			\caption{Vue de l'interface Wordcloud}
+			\label{critique-trackers}
+		\end{figure}
+
+		La vue Trackers est celle qui présente le plus d'interactivité, et je me suis en effet pris au jeu d'essayer d'explorer les données en cachant certains domaines envoyant des données, puis certains autres domaines recevant les données, tout en vérifiant de temps en temps les détails de certains domaines.
+
+		Il est difficile de juger des données présentes ici, car nous n'avons pas d'élément de comparaison. Le but de la vue Trackers est plutôt de faire découvrir  à l'utilisateur des informations qu'il ignorait lui-même sur sa navigation. Il est donc nécessaire ici de faire confiance à l'extension sur le traitement correct des informations.
+
+		Visuellement et interactivement, je trouve que cette vue est particulièrement réussie. J'ai pu naviguer à travers elle et découvrir des nouvelles informations sur ma navigation de manière assez aisée et tout semble clair.
+
+		Les possibilités d'amélioration de cette vue sont principalement l'ajout d'une ou deux fonctionnalités supplémentaires d'ergonomie : Par exemple la possibilité de trier les domaines par colonne faciliterait un peu la synthèse des données présentées.
+
+		\subsubsection{Conclusion}
+
+			D'une manière générale, j'ai trouvé que les données représentées correspondent assez bien à mon profil, ou du moins à ce que j'imagine que ma navigation dévoile de mon profil. Des modifications et des améliorations dans la manière dont sont traitées les données peuvent sans aucun doute augmenter la fidélité apparente avec laquelle le profil est généré, car certaines informations déduites sont tout de même très imprécises, comme les keywords de mes pages les plus vues.
+
+			Cependant malgré les imperfections, je peux dire avec confiance que je me reconnais dans la plupart des informations qui me sont présentées vie l'interface.
 
 \section{Statistiques}
 
@@ -321,10 +445,30 @@
 
 		Pour chacun des utilisateurs qui a renseigné ses centres d'intérêt dans son profil, nous nous sommes intéressé à la correspondance entre les profils que les utilisateurs ont renseigné, et les topics que nos algorithmes ont estimé être intéressants pour eux.
 
+		\subsubsection{Résultats généraux}
+
+		\subsubsection{Critique}
+
+		\subsubsection{Conclusion}
+
 	\subsection{Trackers}
 
 		Un total de 3'227'000 requêtes ont été enregistrées dans la table \texttt{pagerequests}, représentant environ 1 Gio de données. 
 
-	\subsection{Implications}
+		\subsubsection{Requêtes envoyées}
 
-\section{Conclusion}
+			<Nombre de requêtes envoyées par visite, par URL>
+
+			<Nombre de requêtes envoyées par minute, par URL>
+
+		\subsubsection{Requêtes reçues}
+
+			<Nombre de requêtes reçues par visite, par URL>
+
+			<Nombre de requêtes reçues par minute, par URL>
+
+		\subsubsection{Autres statistiques}
+
+			<Trackers contacté par le + de domaines différents>
+
+			<Domaines envoyant la plus grosse quantité de donnéespar requête> 

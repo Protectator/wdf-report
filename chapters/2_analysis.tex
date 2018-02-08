@@ -244,40 +244,101 @@
 
 	Nous allons utliser le contenu des pages pour trouver des informations sur les centres d'intérêt de l'utilisateur. Pour ceci, nous avons besoin d'analyser et de tenter de comprendre le contenu des pages.
 
-	\subsection{Recherches}
+	\subsection{Keyword extraction}
 
-		Nous nous renseignons tout d'abord sur les méthodes existantes permettant de retirer des informations d'un contenu textuel. Une liste de publications scientifiques a été prise en compte pour le choix de méthodes à adopter.\cite{text-analysis-src4}\cite{text-analysis-src5}\cite{text-analysis-src6}
+		Le keyword extraction est le nom donné à un algorithme dont le but est de ressortir, parmi les mots d'un document, quels en sont les mots les plus représentatifs, ou les plus expressifs. Cette opération ne se fait généralement pas sur un seul document, mais sur un ensemble de documents, appelé corpus. Il s'agit d'une sous-catégorie des algorithmes de \gls{NLP}.
 
-		Etant donné qu'il s'agit ici d'entraîner des modèles à l'aides d'algorithmes non-supervisés, il n'existe pas de méthode efficace cartésienne pour prouver que nous obtenons des bons résultats à l'aide des modèles générés. Nous ne cherchons ici une vérité absolue, mais nous voulons trouver des modèles dans les pages parcourues par l'utilisateur. Les publications étudiées font donc également souvent appel à un jugement humain afin de définir si une méthode est adaptée ou non.
+		Dans notre cas, les techniques de keyword extraction que nous prenons en compte sont les techniques dites "non supervisées". Cela signifie que nous n'avons pas d'information à priori sur quels sont les mots qui vont être potentiellement importants dans le texte, et que nous laissons une complète liberté à l'algorithme.
 
-		Après l'observation de l'étude et des résultats présentés dans les publications, nous en ressortons que les méthodes donnant les résultats les plus satisfaisants pour notre objectif sont probablement les algorithmes TF-IDF ainsi que LDA. Nous allons donc utiliser ces deux méthodes pour la suite du projet.
+		Parmi les techniques de keyword extraction, on peut citer les plus connus : \gls{TF-IDF}, TextRank et \gls{RAKE}. Etant donné que ces algorithmes fonctionnent de manière semblable, il a fallu se pencher sur des études montrant leur efficacité afin de décider lequel de ceux-ci nous allons utiliser.
 
-	\subsection{TF-IDF}\label{analyse-tfidf}
+		\subsubsection{Recherche}
 
-		TF-IDF est une méthode attribuant un poids à chaque mot de chaque document d'un corpus. Ce poids mesure l'importance relative du mot dans ce document. Le nom "TF-IDF" signifie "Term Frequency - Inverse Document Frequency". Le poids final d'un mot dans un document se calcule en prenant en compte uniquement deux mesures :
-		\begin{description}
-			\item[TF] Term Frequency : La quantité d'apparition de ce mot dans ce document
-			\item[DF] Document Frequency : Le nombre de documents dans lequels ce mot apparaît
-		\end{description}
+			Etant donné qu'il s'agit ici d'entraîner des modèles à l'aides d'algorithmes non-supervisés, il n'existe pas de méthode efficace cartésienne pour prouver que nous obtenons des bons résultats à l'aide des modèles générés. Nous ne cherchons ici une vérité absolue, mais nous voulons trouver des modèles dans les pages parcourues par l'utilisateur. Les publications étudiées font donc également souvent appel à un jugement humain afin de définir si une méthode est adaptée ou non.
 
-		Le score final d'un mot multiplie le TF d'un mot à l'inverse de son DF. Celà signifie que pour avoir une grande importance dans un document, un mot sera typiquement :
-		\begin{itemize}
-			\item Présent de nombreuses fois dans ce document
-			\item Présent dans très peu d'autres documents
-		\end{itemize}
+			Un total de trois ressources a été étudié pour baser notre choix de la technique de keyword extraction à utiliser.
 
-		Le calcul des poids se fait sur l'ensemble du corpus, en une fois, car il nécessite que l'on connaisse le nombre d'occurences de chaque mot dans l'entièreté du corpus de documents. Il n'est donc pas possible de mettre à jour les poids de manière "online" en utilisant ce modèle.
+			\paragraph{Première étude}
+			
+				La première source\cite{text-analysis-src4} présente un cas concret où on cherche à classifier une série de documents connus à l'avance, présentant des sujets communs. Le but est de créer un modèle capable de reconnaître le thème de nouveaux documents  en créant un modèle à partir d'une liste de documents connus. Bien que la comparaison soit faite entre TF-IDF, RAKE et TextRank, le cas ici assez différent du nôtre. En effet, le cas décrit ici cherche à entraîner un modèle de manière supervisée. 
+
+				L'ensemble des documents en entrée est une liste de documents lus par l'auteur de l'article durant les 6 dernières années. Après avoir testé les trois algorithmes et comparé les différents résultats, la conclusion est que pour ce cas, TextRank et RAKE sont les algorithmes préférables. Le reproche est fait à TF-IDF de classer trop bas certains mots qui apparaissent dans de nombreux documents. Par exemple, nous savons que l'auteur a lu beaucoup de document sur JavaScript, et donc TF-IDF met un poids très faible à ce mot.
+
+				Cette conclusion est sensée, mais ce problème ne s'applique pas à notre cas. En effet, nous cherchons spécifiquement à avoir un éventail très large de pages afin d'éviter ce genre de cas. Egalement, notre entraînement ne sera pas supervisé, nous ne pourrons donc pas évaluer les résultats finaux de cette manière.
+
+			\paragraph{Deuxième étude}
+
+				La deuxième étude\cite{text-analysis-src5} se penche sur l'extraction automatisée et non supervisée de keywords, ce qui est cette fois très proche de notre cas. Cette fois-ci, la publication se base sur des méthodes statistiques pour tenter de prédire quel est l'algorithme le plus efficace pour le keywords extraction en comparant les résultats de ceux-ci avec l'avis d'humains auxquels ont demande d'exécuter la même tâche.
+
+				Sont comparées ici la méthode TF-IDF ainsi que certaines de ses variantes, et plusieurs méthodes basées sur l'utilisation de graphes (réferées simplement comme "Graph-based methods" à plusieurs endroits du texte).
+
+				Après une comparaison des résultats de chaque méthode avec les résultats trouvés par des humains, il est conclu que "Our results on the human transcripts show that the simple TFIDF based method is very competitive"\cite{text-analysis-src5}. Certaines variantes de TF-IDF où la position des mots dans une phrase ajoute un poids aux mots offre des scores très comparables à la méthode de base, mais les autres techniques ont montré des résultats plus faibles.
+
+			\paragraph{Troisième étude}
+
+				Le troisième document\cite{text-analysis-src6} est en réalité une question posée sur le site Quora, où des experts ont proposé une réponse à la question "What are the best keyword extraction algorithms for natural language processing and how can they be implemented in Python?".
+
+				Les trois méthodes populaires \gls{TF-IDF}, TextRank et \gls{RAKE} sont à nouveau citées, mais il ressort que RAKE et TF-IDF semble être consensuellement les méthodes les plus efficaces.
+
+			À la fin de l'analyse de ces sources, nous choisissons d'utiliser l'algorithme TF-IDF, qui semble être à la fois efficace et adapté à notre cas.
+
+		\subsection{TF-IDF}\label{analyse-tfidf}
+
+			TF-IDF est une méthode attribuant un poids à chaque mot de chaque document d'un corpus. Ce poids mesure l'importance relative du mot dans ce document. Le nom "TF-IDF" signifie "Term Frequency - Inverse Document Frequency". Le poids final d'un mot dans un document se calcule en prenant en compte uniquement deux mesures :
+			\begin{description}
+				\item[TF] Term Frequency : La quantité d'apparition de ce mot dans ce document
+				\item[DF] Document Frequency : Le nombre de documents dans lequels ce mot apparaît
+			\end{description}
+
+			Le score final d'un mot multiplie le TF d'un mot à l'inverse de son DF. Celà signifie que pour avoir une grande importance dans un document, un mot sera typiquement :
+			\begin{itemize}
+				\item Présent de nombreuses fois dans ce document
+				\item Présent dans très peu d'autres documents
+			\end{itemize}
+
+			Le calcul des poids se fait sur l'ensemble du corpus en une fois, car il nécessite que l'on connaisse le nombre d'occurences de chaque mot dans l'entièreté du corpus de documents. Il n'est donc pas possible de mettre à jour les poids de manière "online" en utilisant ce modèle.
+
+	\subsection{Topic Modeling}
+
+		Le topic modeling est un exercice différent de celui du keyword extraction. Nous ne cherchons plus ici à trouver les meilleurs mots parmi des textes, mais nous cherchons à les regrouper afin d'en former des thèmes, ou "topic"s.
+
+		Le but est cette fois de déterminer par des méthodes statistiques quels sont les thèmes communs à plusieurs documents, nous permettant ainsi de les regrouper. Ceci part du principe que nous appliquons l'apprentissage de l'algorithme sur un corpus de documents qui contient des textes qui ont effectivement des thèmes en commun. Ce qui est sans doute notre cas lorsque notre corpus est composé de pages web visitées par des utilisateurs.
+
+		\subsubsection{Recherche}
+
+			Etant donné que nous sommes dans le même cas que TF-IDF, à savoir en recherche d'un algorithme pour le cas d'un apprentissage non supervisé, la plupart des méthodes tentant de comparer des modèles se basent sur des mesures empiriques. Le jugement humain est à nouveau indispensable dans ce cas pour déterminer de l'adéquation d'un algorithme ou non avec les buts recherchés.
+
+			Nous recherchons ici une méthode relativement populaire car nous allons nous baser sur une librairie l'implémentant déjà. Il aurait été possible de développer nous-même ce module, mais nous avons estimé que les efforts à déployer pour ce faire étaient trop élevés pour justifier le temps passé.
+
+			Après quelques recherches sur le web, les méthodes les plus populaires semblent être LSA, pLSA et LDA\cite{stanford-topicmodel}. Cependant, les études comparatives entre ces méthodes semblent très rares, et les seules sources trouvées furent des déclarations de chercheurs. Voici les ressources ayant contribué au choix de la méthode :
+
+			\paragraph{Première source} 
+
+				La première source comparant ces algorithmes est une réponse à une question posée sur le site web Quora\cite{quora-topicmodel}. À la question "What's the difference between Latent Semantic Indexing (LSI) and Latent Dirichlet Allocation (LDA)?", la réponse votée le plus positivement par un consultant en NLP conclut "In practice, LSI is much faster to train than LDA, but has lower accuracy.".
+
+			\paragraph{Seconde source}
+
+				La deuxième source est une question posée sur le site Reddit, intitulée "LSA vs pLSA vs LDA"\cite{reddit-topicmodel}. L'auteur demande la différence et les avantages de chaque méthode, et une réponse résume chaque algorithme en une simple ligne :
+				\begin{quote}
+LSA -> uses SVD, and as a result the topics are assumed to be orthogonal.
+
+pLSA -> Treats topics as word distributions, uses probabilistic methods, and topics are allowed to be non-orthogonal.
+
+LDA -> similar to pLSA, but with dirichlet priors for the document-topic and topic-word distributions. This prevents over-fitting, and gives better results.
+				\end{quote}
+
+				Semblablement, le modèle LDA semble primer dans l'avis sur la qualité des résultats. Après une recherche de librairies, il se trouve que LDA possède une implémentation en Python, dans une librairie nommée gensim. Nous nous arrêtons donc sur ce choix, comme le modèle semble à la fois précis et adapté à notre cas d'utilisation avec Python.
 
 	\subsection{LDA}\label{analyse-lda}
 
-		Le topic modelling consiste, à partir d'un corpus de documents, à générer une liste probable de sujets ou topics communs à plusieurs document. LDA (de l'anglais Latent Dirichelet Allocation) est un modèle de topic modelling, et va nous permettre de révéler des topics relatifs aux pages visitées par les utilisateurs. Ici, un topic est définit par une liste de mots, et un poids associé à chaque mot pour le topic.
+		LDA (de l'anglais Latent Dirichelet Allocation) est un modèle de topic modelling, et va nous permettre de révéler des topics relatifs aux pages visitées par les utilisateurs. Ici, un topic est définit par une liste de mots, et un poids associé à chaque mot pour le topic.
 
-		La génération d'un modèle LDA prend plusieurs paramètres en entrée, mais le plus important pour nous est de définir un nombre de topics que nous souhaitons voir en sortie. On fixe ce nombre de topics, puis on lance l'apprentissage du modèle sur l'ensemble du corpus de documents, opération que peut durer plusieurs heures.
+			La génération d'un modèle LDA prend plusieurs paramètres en entrée, mais le plus important pour nous est de définir un nombre de topics que nous souhaitons voir en sortie. On fixe ce nombre de topics, puis on lance l'apprentissage du modèle sur l'ensemble du corpus de documents, opération que peut durer plusieurs heures.
 
-		À la fin de l'apprentissage, nous sommes en possession d'un modèle que nous pouvons questionner de plusieurs manières, par exemple :
-		\begin{itemize}
-			\item Quels sont les mots les plus contribuants à un topic ?
-			\item Quels sont les topics les plus probables pour un document ?
-		\end{itemize}
+			À la fin de l'apprentissage, nous sommes en possession d'un modèle que nous pouvons questionner de plusieurs manières, par exemple :
+			\begin{itemize}
+				\item Quels sont les mots les plus contribuants à un topic ?
+				\item Quels sont les topics les plus probables pour un document ?
+			\end{itemize}
 
-		Nous allons donc par exemple utiliser le modèle afin d'assigner des topics au contenu d'URLs, et ainsi tenter de trouver quels sont les thèmes communs aux pages visitées par un utilisateur.
+			Nous allons donc par exemple utiliser le modèle afin d'assigner des topics au contenu d'URLs, et ainsi tenter de trouver quels sont les thèmes communs aux pages visitées par un utilisateur.

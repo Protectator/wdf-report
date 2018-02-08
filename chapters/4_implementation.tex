@@ -15,6 +15,12 @@
 			\item[Client] Les étapes s'effectuant sur le "client" sont calculées dans le navigateur de l'utilisateur actuel.
 		\end{description}
 
+	\subsection{Offline}
+
+		Certains scripts doivent être lancées ponctuellement par l'administrateur afin d'exécuter des opérations coûteuses de calcul. Le lancement de ces opérations peut se faire manuellement, ou leur lancement peut être programmé à l'aide d'un script d'automatisation.
+
+		Chaque opération est lancée à l'aide d'un script Python3.6 indépendant, se trouvant dans un dossier nommé \texttt{/script}. Ceux-ci nécessitent généralement d'accéder à la base de données pour effectuer des opérations, il est donc nécessaire de leur fournir les identifiants de connexion à la base de données, ou de les laisser puiser dans le script de configuration à la racine du projet. 
+
 	\subsection{Serveur}
 
 		Le serveur est développé en Python3.6, et utilise le framework Flask. Flask permet de définir rapidement le comportement d'un serveur web basique en mappant des fonctions à des endpoints de l'API.
