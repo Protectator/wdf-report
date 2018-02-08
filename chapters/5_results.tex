@@ -290,7 +290,7 @@
 
 			Cependant le modèle lui-même serait tout à fait améliorable. En effet, le jeu de données que nous disposons est fortement influencé en quantité par les intérêts des quelques utilisateurs, et LDA possède encore plusieurs paramètres modifiables, qui pourraient amener à des résultats encore meilleurs.
 
-	\subsection{Vues}
+	\subsection{Vues et résultats}\label{evaluation-vues}
 
 		Afin de se rendre compte d'un profil type généré par l'extension ainsi que ses représentations visuelles, nous nous intéressons ici au profil généré par le projet de moi-même. Nous allons passer en revue les différentes visualisations et les commenter. Le but est ici d'avoir un avis humain reflétant la précision et l'adéquation des données générées avec avec un profil; Il aurait été possible de mener ce questionnement sur n'importequel participant à l'étude, mais je prends exemple sur moi-même par commodité.
 
@@ -424,7 +424,7 @@
 
 			D'une manière générale, j'ai trouvé que les données représentées correspondent assez bien à mon profil, ou du moins à ce que j'imagine que ma navigation dévoile de mon profil. Des modifications et des améliorations dans la manière dont sont traitées les données peuvent sans aucun doute augmenter la fidélité apparente avec laquelle le profil est généré, car certaines informations déduites sont tout de même très imprécises, comme les keywords de mes pages les plus vues.
 
-			Cependant malgré les imperfections, je peux dire avec confiance que je me reconnais dans la plupart des informations qui me sont présentées vie l'interface.
+			Cependant malgré les imperfections, je peux dire avec confiance que je me reconnais dans la plupart des informations qui me sont présentées vie l'interface. L'objectif de la création d'un profil correspondant à l'utilisateur est donc atteint, avec un potentiel d'amélioration certain.
 
 \section{Statistiques}
 
@@ -441,11 +441,24 @@
 		\label{r-visionnage}
 	\end{figure}
 
+
+%
+%
+%
+% PROFILING
+%
+%
+%
+
 	\subsection{Profiling}
 
 		Pour chacun des utilisateurs qui a renseigné ses centres d'intérêt dans son profil, nous nous sommes intéressé à la correspondance entre les profils que les utilisateurs ont renseigné, et les topics que nos algorithmes ont estimé être intéressants pour eux.
 
+		Une critique de l'ensemble des vues relatives à un profil se trouve à la section précédente \ref{evaluation-vues}. Nous allons nous intéresser ici aux statistiques générales et aux performances relevées des algorithmes que nous avons utilisé relatifs au profiling.
+
 		\subsubsection{Résultats généraux}
+
+			Parmi les 8 utilisateurs aynat une activité enregistrée suffisante sur le serveur, 6 ont défini des centres d'intérêts et ont participé à la tâche d'assigner des centres d'intérêts aux topics proposés.
 
 		\subsubsection{Critique}
 
