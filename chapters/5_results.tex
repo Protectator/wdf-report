@@ -453,22 +453,175 @@
 
 	\subsection{Trackers}
 
-		Un total de 3'227'000 requêtes ont été enregistrées dans la table \texttt{pagerequests}, représentant environ 1 Gio de données. 
+		Un total de 3'227'000 requêtes ont été enregistrées dans la table \texttt{pagerequests}, représentant environ 1 Gio de données dans la base. 
 
 		\subsubsection{Requêtes envoyées}
 
-			<Nombre de requêtes envoyées par visite, par URL>
+			Deux tableaux ont été compilés pour l'ensemble des requêtes analysées par le serveur. Un total de 1058 domaines différents ont été visités par les utilisateurs. Parmi ceux-ci, nous nous intéressons ici à ceux qui ont reçu un minimum de 4 visites de pages. En effet, nous cherchons ici à montrer des statistiques sur des domaines connus des utilisateurs, et donc nous nous restraignons aux domaines qui ont suscité un minimum d'intérêt des utilisateurs tout de même, et ne souhaitons pas voir de domaines de publicité ouvert aléatoirement par une pop-up, par exemple.
 
-			<Nombre de requêtes envoyées par minute, par URL>
+\begin{table}[]
+\centering
+\begin{tabular}{lllllll}
+\textbf{Domaine}          & \textbf{Visites} & \textbf{Req.} & \textbf{R/V} & \textbf{Taille [kB]} & \textbf{T/R} & \textbf{T/V} \\ \hline
+\scriptsize \url{www.diablofans.com}        & 14             & 28776         & 2055                           & 12472         & 444                     & 891                       \\
+\scriptsize \url{www.netflix.com}           & 4              & 8212          & 2053                           & 15551         & 1939                    & 3888                      \\
+\scriptsize \url{euw.op.gg}                 & 146            & 147797        & 1012                           & 40639         & 282                     & 278                       \\
+\scriptsize \url{www.youtube.com}           & 378            & 339450        & 898                            & 135113        & 408                     & 357                       \\
+\scriptsize \url{www.messenger.com}         & 34             & 19304         & 568                            & 14656         & 777                     & 431                       \\
+\scriptsize \url{inbox.google.com}          & 27             & 12431         & 460                            & 5096          & 420                     & 189                       \\
+\scriptsize \url{www.twitch.tv}             & 108            & 49048         & 454                            & 82062         & 1713                    & 760                       \\
+\scriptsize \url{fr-mg42.mail.yahoo.com}    & 4              & 1354          & 339                            & 562           & 425                     & 141                       \\
+\scriptsize \url{www.lolking.net}           & 24             & 8016          & 334                            & 3695          & 472                     & 154                       \\
+\scriptsize \url{www.facebook.com}          & 782            & 242727        & 310                            & 166256        & 701                     & 213                       \\
+\scriptsize \url{www.draw.io}               & 35             & 9861          & 282                            & 50311         & 5224                    & 1437                      \\
+\scriptsize \url{leagueoflegends.wikia.com} & 56             & 15423         & 275                            & 2307          & 153                     & 41                        \\
+\scriptsize \url{mlp.wikia.com}             & 6              & 1393          & 232                            & 168           & 124                     & 28                        \\
+\scriptsize \url{www.sabishiidesu.com}      & 5              & 1146          & 229                            & 178           & 159                     & 36                        \\
+\scriptsize \url{www.eclypsia.com}          & 9              & 2041          & 227                            & 1444          & 724                     & 160                       \\
+\scriptsize \url{www.france24.com}          & 10             & 2161          & 216                            & 2102          & 996                     & 210                       \\
+\scriptsize \url{web.whatsapp.com}          & 44             & 9240          & 210                            & 2557          & 283                     & 58                        \\
+\scriptsize \url{clips.twitch.tv}           & 45             & 9248          & 206                            & 6235          & 690                     & 139                       \\
+\scriptsize \url{www.pond5.com}             & 4              & 784           & 196                            & 279           & 364                     & 70                        \\                     
+\end{tabular}
+\caption{Requêtes envoyées par visite sur une page d'un domaine}
+\label{trackers-1}
+\end{table}
+
+			La table~\ref{trackers-1} montre la liste des 20 domaines ayant envoyé le plus grand nombre de requêtes par visite de page. Voici à quoi chaque colonne correspond :
+			\begin{description}
+				\item[Domaine] : Nom de domaine des pages
+				\item[Visites] : Nombre d'ouvertures d'URL appartenant à ce domaine
+				\item[Req(uêtes)] : Nombre total de requêtes émises par les pages de ce domaine
+				\item[R/V] : Nombre de requêtes émises par visite d'une page
+				\item[Taille] : Taille totale en kB de données utiles envoyées par le navigateur
+				\item[T/R] : Taille moyenne d'une requête
+				\item[T/V] : Taille moyenne de données envoyées par visite d'une page      
+			\end{description}
+
+			On peut remarquer que les domaines envoient des quantités de données très différentes, à la fois en nombre et en taille. Les pages qui donnent accès à des applications web tel que le visionnage de vidéo ou le chat semblent aussi envoyer un nombre conséquent d'informations, ce qui n'est pas totalement étonnant étant donné qu'il est nécessaire que l'application soit synchronisée à tout moment avec le serveur pour rester à jour.
+
+			Cependant, ce tableau révèle également certains autres domaines qui envoient un nombre suspect d'informations. Rapellons-nous ici qu'il ne s'agit toujours que de données potentiellement personnelles envoyées. Par exemple si un grand nombre d'images doit être chargé pour une page, il est normal que celle-ci émette un nombre élevé de requêtes.
+
+			\begin{table}[]
+\centering
+\begin{tabular}{lllllll}
+\textbf{Domaine}           & \textbf{Vu {[}sec{]}} & \textbf{Req.} & \textbf{R/sec} & \textbf{Taille {[}kB{]}} & \textbf{T/R} & \textbf{T/sec} \\ \hline
+\scriptsize \url{www.netflix.com}            & 58                    & 8212          & 142                  & 15551                    & 1939         & 268            \\
+\scriptsize \url{www.pythonforbeginners.com} & 31                    & 2623          & 85                   & 1235                     & 482          & 40             \\
+\scriptsize \url{newtab}                     & 335                   & 25741         & 77                   & 1296                     & 52           & 4              \\
+\scriptsize \url{www.lolking.net}            & 146                   & 8016          & 55                   & 3695                     & 472          & 25             \\
+\scriptsize \url{mtg.gamepedia.com}          & 31                    & 1181          & 38                   & 540                      & 468          & 17             \\
+\scriptsize \url{www.facebook.com}           & 12413                 & 242727        & 20                   & 166256                   & 701          & 13             \\
+\scriptsize \url{www.sabishiidesu.com}       & 75                    & 1146          & 15                   & 178                      & 159          & 2              \\
+\scriptsize \url{www.cabaneaidees.com}       & 46                    & 576           & 13                   & 93                       & 165          & 2              \\
+\scriptsize \url{www.androidcentral.com}     & 39                    & 515           & 13                   & 200                      & 397          & 5              \\
+\scriptsize \url{www.rightmove.co.uk}        & 143                   & 1861          & 13                   & 786                      & 432          & 5              \\
+\scriptsize \url{zattoo.com}                 & 196                   & 2432          & 12                   & 305                      & 128          & 2              \\
+\scriptsize \url{www.les-coccinelles.fr}     & 60                    & 658           & 11                   & 52                       & 81           & 1              \\
+\scriptsize \url{www.magicmadhouse.co.uk}    & 227                   & 2508          & 11                   & 1132                     & 462          & 5              \\
+\scriptsize \url{www.bestbuy.com}            & 37                    & 379           & 10                   & 268                      & 725          & 7              \\
+\scriptsize \url{euw.op.gg}                  & 15358                 & 147797        & 10                   & 40639                    & 282          & 3              \\
+\scriptsize \url{mlp.wikia.com}              & 135                   & 1393          & 10                   & 168                      & 124          & 1              \\
+\scriptsize \url{www.techrepublic.com}       & 75                    & 725           & 10                   & 295                      & 417          & 4              \\
+\scriptsize \url{fireemblem.wikia.com}       & 273                   & 2567          & 9                    & 466                      & 186          & 2              \\
+\scriptsize \url{www.upc.ch}                 & 70                    & 656           & 9                    & 244                      & 381          & 3              \\
+\scriptsize \url{www.usatoday.com}           & 63                    & 540           & 9                    & 594                      & 1127         & 9              \\       
+\end{tabular}
+\caption{Requêtes envoyées par visite sur une page d'un domaine}
+\label{trackers-2}
+\end{table}
+
+			La table~\ref{trackers-2} montre la liste des 20 domaines ayant envoyé le plus grand nombre de requêtes par temps de visualisation de page. Voici à quoi chaque colonne correspond :
+			\begin{description}
+				\item[Domaine] : Nom de domaine des pages
+				\item[Vu {[}sec{]}] : Temps en secondes passé à regarder la page
+				\item[Req(uêtes)] : Nombre total de requêtes émises par les pages de ce domaine
+				\item[R/sec] : Nombre de requêtes émises par seconde
+				\item[Taille] : Taille totale en kB de données utiles envoyées par le navigateur
+				\item[T/R] : Taille moyenne d'une requête
+				\item[T/sec] : Taille moyenne de données envoyées par seconde
+			\end{description}
+
+			On remarque que certains domaines se retrouvent à la fois dans le haut du classement des deux mesures : Nombre de visites, et temps de visualisation, comme par exemple \url{www.netflix.com}. Cependant, il est possible que l'estimation du temps passé sur ce domaine soit faussé.
+
+			En effet, notre algorithme compte l'utilisateur comme étant inactif après 30 secondes passées durant lesquelles il n'y a eu aucune interaction avec la fenêtre (mouvement de souris, clic, clavier etc). Ceci extplique sans doute pourquoi un site de visionnage de vidéo se retrouve en haut de cette liste, avec de plus un temps de visualisation qui semble extrêmement bas pour celui-ci. Notre algorithme a certainement compté le temps passé à regarder la vidéo comme étant inactif. Il aurait fallu faire une distinction, ou déterminer lorsque la page joue une vidéo et considérer ce temps comme étant de l'activité utilisateur.
+
+			Intéressant tout de même : Le nomaine \texttt{newtab} correspond à la page ouverte lorsqu'un nouvel onglet est ajouté. On remarque que cette page visiblement sans contenu envoie tout de même des requêtes.
+
+		\newpage
+
+		\FloatBarrier
 
 		\subsubsection{Requêtes reçues}
 
-			<Nombre de requêtes reçues par visite, par URL>
+			\paragraph{Nombre de requêtes} Le tableau~\ref{trackers-3} montre les domaines ayant reçu le plus grand nombre de requêtes de la part de domaines différents, et donc pouvant être potentiellement considérés comme des trackers. Voici à quoi chaque colonne correspond :
+			\begin{description}
+				\item[Domaine] : Nom de domaine des pages
+				\item[Requêtes] : Nombre de requêtes ayant contacté ce domaine
+				\item[Taille{[}MB{]}] : Taille totale des requêtes envoyées vers ce domaine, en MB.
+			\end{description}
 
-			<Nombre de requêtes reçues par minute, par URL>
+			Nous avons donc avec ce tableau la liste des sites ayant reçu beaucoup de données. Il s'agit d'une information à interpréter à nouveau, car nous ne sommes pas en possession des données qui ont été transmises, nous savons uniquement leur quantité. Bien qu'il ne s'agisse pas forcément d'informations personnelles, ces domaines ont tout de même reçu une importante quantité de données avec lesquelles il est potentiellement possible de déterminer des habitudes et autres traits d'un utilisateur.
 
-		\subsubsection{Autres statistiques}
+		\begin{table}[]
+\centering
+\begin{tabular}{lll}
+\textbf{Domaine}                     & \textbf{Requêtes} & \textbf{Taille {[}MB{]}} \\ \hline
+\scriptsize \url{www.youtube.com}                      & 100724            & 98                       \\
+\scriptsize \url{static.xx.fbcdn.net}                  & 97245             & 22                       \\
+\scriptsize \url{e.reddit.com}                         & 61425             & 59                       \\
+\scriptsize \url{i.ytimg.com}                          & 45215             & 7                        \\
+\scriptsize \url{www.redditstatic.com}                 & 40093             & 18                       \\
+\scriptsize \url{www.google.ch}                        & 33824             & 27                       \\
+\scriptsize \url{www.facebook.com}                     & 32833             & 114                      \\
+\scriptsize \url{video.fgva1-1.fna.fbcdn.net}          & 31928             & 2                        \\
+\scriptsize \url{d1u5p3l4wpay3k.cloudfront.net}        & 28037             & 2                        \\
+\scriptsize \url{scontent.fgva1-1.fna.fbcdn.net}       & 26768             & 5                        \\
+\scriptsize \url{yt3.ggpht.com}                        & 22661             & 3                        \\
+\scriptsize \url{www.google-analytics.com}             & 19519             & 7                        \\
+\scriptsize \url{b.thumbs.redditmedia.com}             & 17650             & 6                        \\
+\scriptsize \url{cdn.discordapp.com}                   & 17021             & 4                        \\
+\scriptsize \url{s3-fr.gladiatus.gameforge.com}        & 16854             & 11                       \\
+\scriptsize \url{opgg-static.akamaized.net}            & 15713             & 4                        \\
+\scriptsize \url{static-cdn.jtvnw.net}                 & 15554             & 3                        \\
+\scriptsize \url{r3---sn-oxu2a0n-b85l.googlevideo.com} & 14570             & 3                        \\
+\scriptsize \url{scontent-frx5-1.xx.fbcdn.net}         & 14339             & 3                        \\
+\scriptsize \url{video-frx5-1.xx.fbcdn.net}            & 14154             & 1                        \\
+\scriptsize \url{www.google.com}                       & 13748             & 11                      
+\end{tabular}
+\caption{Domaines ayant reçu le plus de requêtes provenant de domaines différents}
+\label{trackers-3}
+\end{table}
 
-			<Trackers contacté par le + de domaines différents>
+			\paragraph{Domaines différents} Le tableau~\ref{trackers-4} montre les domaines ayant été contacté par le plus grand nombre de domaines différents. Les colonnes de ce tableau sont assez explicited. Nous remarquons ici qu'en tête du classement, nous avons un domaine dont nous sommes certain qu'il s'agisse d'un tracker : \url{www.google-analytics.com}. La plupart des places suivantes sont également occupées par d'autres sous-domaines de Google.
 
-			<Domaines envoyant la plus grosse quantité de donnéespar requête> 
+			En dehors de quelques exceptions comme des domaines appartenant à Facebook, il est évident que Google est le possesseur de de presque tous les domaines les plus contactés. Nous estimons donc que la mesure "Nombre de domaines différents ayant contacté ce domaine" est un très bon indicateur d'un potentiel tracker. Cette conclusion confirme sans surprise cette intuition initiale.
+
+		\begin{table}[]
+\centering
+\begin{tabular}{ll}
+\textbf{Domaine}               & \textbf{Domaines l'ayant contacté} \\ \hline
+\scriptsize \url{www.google-analytics.com}       & 713                               \\
+\scriptsize \url{fonts.gstatic.com}              & 661                               \\
+\scriptsize \url{fonts.googleapis.com}           & 578                               \\
+\scriptsize \url{www.google.com}                 & 444                               \\
+\scriptsize \url{stats.g.doubleclick.net}        & 343                               \\
+\scriptsize \url{connect.facebook.net}           & 316                               \\
+\scriptsize \url{ajax.googleapis.com}            & 300                               \\
+\scriptsize \url{www.facebook.com}               & 297                               \\
+\scriptsize \url{googleads.g.doubleclick.net}    & 252                               \\
+\scriptsize \url{www.gstatic.com}                & 247                               \\
+\scriptsize \url{www.googletagmanager.com}       & 238                               \\
+\scriptsize \url{apis.google.com}                & 228                               \\
+\scriptsize \url{maxcdn.bootstrapcdn.com}        & 214                               \\
+\scriptsize \url{ssl.gstatic.com}                & 203                               \\
+\scriptsize \url{staticxx.facebook.com}          & 199                               \\
+\scriptsize \url{www.google.ch}                  & 168                               \\
+\scriptsize \url{accounts.google.com}            & 166                               \\
+\scriptsize \url{securepubads.g.doubleclick.net} & 165                               \\
+\scriptsize \url{pagead2.googlesyndication.com}  & 163                               \\
+\scriptsize \url{adservice.google.com}           & 157                              
+\end{tabular}
+\caption{Domaines ayant été contacté par le plus grand nombre de domaines différents}
+\label{trackers-4}
+\end{table}
