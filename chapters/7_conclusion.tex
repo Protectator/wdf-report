@@ -4,36 +4,49 @@
 %                               %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Conclusion du projet}
 
-	\subsection{Délivrables}
+\section{Conclusion technique}
 
-		Ce projet est passé par plusieurs étapes distinctes qui ont mené à la production de plusieurs délivrables :
+	Passons en revue les objectifs initiaux du projet afin d'évaluer les résultats obtenus. Reprenons donc les objectifs présentés au début du projet, au chapitre~\ref{objectifs} :
+
+	\paragraph{Définir un profil utilisateur selon des critères de préférence, d’intérêt, d’habitude, d’opinion, etc.}
+
+		Nous avons accompli la définition initiale du profil d'un utilisateur en lui demendant de choisir ses intérêts parmi une liste hiérarchisée d'une centaine de centres d'intérêts. Cet objectif a été accompli de manière simple en implémentant le choix d'intérêts parmi une liste adaptée que nous avons repris d'une source externe. Nous nous sommes donc intéressés particulièrement aux intérêts de l'utilisateur, et avons laissé de côté les aspects plus personnels comme ses opinions et orientations.
+
+	\paragraph{Construire le profil d'un utilisateur en se basant sur sa navigation Internet ainsi que sur les métadonnées (durée de consultation des pages, heure de consultation, etc.). Des algorithmes de machine learning seront utilisés pour apprendre les profils en se basant sur des collections de profils annotées}
+
+		Pour commencer, nous n'avons pas utilisé de collections de profils annotées. Nous avons crée notre propre collection de profils en implémentant un outil qui, en plus de récolter des informations sur l'utilisateur, lui demande certaines informations personelles, et nous permet d'évaluer et valider notre propre modèle de profils.
+
+		La construction du profil de l'utilisateur se base en effet sur sa nagivation Internet, ainsi que sur certaines données supplémentaires de sa navigation : Le nombre de consultations des pages web, le temps d'activité de l'utilisateur sur les pages web visitées ainsi que le contenu publique des pages Web visitées.
+
+		Nous utilisons plusieurs algorithmes de Machine Learning, dans la sous-catégorie de l'apprentissage automatique non supervisé. Nous faisons appel à un algorithme d'extraction de mots-clé (qui se nomme \gls{TF-IDF}) pour reconnaître les mots importants de chaque page web, et également un algorithme de topic modeling (nommé \gls{LDA}) dans le but d'apprendre les thèmes des pages visitées par l'utilisateur.
+	
+		Nous avons donc répondu à l'objectif initial, mais avons utilisé une méthodologie légèrement différente que celle prévue initialement. Cet objectif a pris plus d'importance que l'idée initiale, et avons en effet généré des résultats supplémentaires comme l'interface de visualisation destinée à l'utilisateur.
+
+	\paragraph{Identifier des trackers qui ont la possibilité de construire des profiles utilisateurs en intégrant des données de plusieurs sources}
+
+		Nous avons enregistré et identifié des trackers qui ont des possibilités de construction de profils, mais n'avons pas intégré d'autres types de données dans l'analyse. L'importance de cette tâche s'est réduite durant le projet au bénéfice de l'objectif précédent, qui a vu des résultats grandissants et un potentiel intéressant plus élevé.
+
+		L'importance de cette partie s'est trouvée réduite durant le projet après une réévaluation des intérêts en jeu. L'objectif initial a donc été partiellement rempli, car celui-ci s'est trouvé aminci après un certain temps.
+
+	\subsection{Réalisations}
+
+		Au cours de ce projet, nous avons pu réaliser avec succès :
 		\begin{itemize}
-			\item Analyse des besoins
-			\item Analyse des technologies
-			\item Truc 1
-			\item Truc 2
+			\item Un état de l'art des techniques de tracking actuelles, ainsi que certaines méthodologies d'extraction de données permettant la génération de profils d'utilisateurs.
+			\item Une solution complète de récolte, d'agrégation et d'analyse automatique de données de navigation web d'utilisateurs. Cette solution comprend également une interface permettant aux utilisateurs de consulter à tout moment les données que nous avons récoltées sur lui, ainsi que les plusieurs facettes du profil que nous avons généré à partir de ses données.
+			\item Une analyse, alimentée par les données récoltées, révélant une parties des possibitlés de génération de profils d'utilisateurs en se basant sur leur navigation web.
 		\end{itemize}
-		Chacune de ces étapes nous a amené à produire une itération supplémentaire contenant des nouveautés fonctionnelles.
 
-	\subsection{Conclusion générale}
+		L'ensemble de ces réalisations s'est articlé autour de la volonté de mettre en lumière le potentiel de détection de traits personnels de profils d'utilisateurs naviguant sur le Web. Chaque partie énoncée du projet contribue à sa manière à cet objectif.
 
-		Blabla
-		\begin{itemize}
-			\item Truc 1
-			\item Truc 2
-		\end{itemize}
-		
+\section{Travaux futurs}
 
-	\subsection{Perspectives}
-
-		Le projet dans son état final contient plusieurs pages non implémentées :
-
-		\begin{itemize}
-			\item Truc 1
-			\item Truc 2
-		\end{itemize}
+	Blabla
+	\begin{itemize}
+		\item Truc 1
+		\item Truc 2
+	\end{itemize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                    %

@@ -66,7 +66,7 @@
 }
 
 % link
-\usepackage{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 
 % glossary
 \usepackage[automake]{glossaries}
@@ -88,6 +88,8 @@
 \usepackage{rotating}
 
 \usepackage{longtable}
+
+\usepackage{csquotes}
 
 \newcommand\MyLBrace[2]{%
   \left.\rule{0pt}{#1}\right\}\text{#2}}

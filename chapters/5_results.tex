@@ -468,8 +468,8 @@
 				\item[Temps] : Temps total de visualisation sur des pages, exprimé en heures
 				\item[Domaines] : Nombre de domaines différents visités
 				\item[Pages] : Nombre de pages différentes visitées
-				\item[Taux 1] : Nombre de pages différentes visitées
-				\item[Taux 2] : Taille moyenne de données envoyées par visite d'une page      
+				\item[Taux 1] : Taux d'association, pourcentage de topics associés à des centres d'intérêts
+				\item[Taux 2] : Taux pondéré, pourcentage pondéré de topics associés à des centres d'intérêts
 			\end{description}
 
 			On remarque déjà ici que les six personnes présentent des données très différents, autant en activité générale (de 8 à 120 heures passées) ainsi qu'en satisfaction au niveau des topics générés (de 5\% à 64\% suivant la mesure). 
@@ -494,12 +494,26 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 
 		\subsubsection{Critique}
 
+			Tentons à présent de donner du sens aux observations tirées de ces données. Nous voulons vérifier que notre modèle fonctionne, et savoir dans quelle mesure celui-ci est précis. Tout d'abord, nous pouvons nous intéresser à une statistique relativement explicite : Sachant que la page "Topics List" donne le top 20 des topics estimés intéresser l'utilisateur, regardons combien de topics est-ce que les utilisateurs ont associé avec leur centre d'intérêt. 
+
+			\paragraph{Taux d'association} La figure~\ref{chart-1} montre une nuage de points où chaque point est un utilisateur. En abscisse se trouve le temps total en minutes que l'utilisateur a passé à visiter des pages web, et en ordonnée se trouve le pourcentage de topics parmi les 20 qu'il a associté à des centres d'intérêts. En clair se trouve une courbe de tendance pour les points du graphe.
+
 			\begin{figure}[!h]
 				\centering
 				\includegraphics[height=0.6\textwidth]{images/results/chart-1}
 				\caption{Taux d'association de topics par rapport au temps de visualisation avec courbe de tendance}
 				\label{chart-1}
 			\end{figure}
+
+			Malgré le fait qu'aucun des utilisateurs soit proche d'associer l'entièreté des topics (le meilleur est à 11/20 topics, soit 55\%), on remarque une tendence certaine à afficher un meilleur taux d'association plus l'utilisateur a passé de temps à visiter des sites web. Ceci est plutôt rassurant, car il s'agit en effet du résultat que l'on attend de manière instinctive.
+
+			L'algorithme a besoin d'un nombre conséquent de données pour être capable de discerner les préférences et les sujets pouvant intéresser un utilisateur. Plus le nombre de données est grand, plus l'algorithme sera capable de différencer un utilisateur des autres, et donc plus on s'attend à ce que les topics montrés à cet utilisateur soit pertinents à ses propres intérêts.
+
+			La variance entre les moins bons et lers meilleurs résultats est ici assez grande. L'utilisateur ayant trouvé le moins d'associations est à 1/20 topics, soit 5\%. Etant donné que les résultats sont beaucoup plus satisfaisants pour le meilleur utilisateur, il est raisonnable de penser qu'un minimum de données en entrée soit nécessaire afin d'atteindre un résultat satisfaisant. Dans des expériences futures, on pourrait par exemple situer ce minimum de temps de visualisation quelque part entre le plus faible (8 heures) et le plus élevé (120 heures).
+
+			Cependant, comme le montrent les figures~\ref{chart-2} et~\ref{chart-3}, le temps de visualisation n'est pas forcément la seule méthode d'évaluer la performance des algorithmes. Nous n'allons ici pas calculer un nouveau top 20 pour les utilisateurs d'une manière différente, car celà aurait demandé que les utilisateurs participent une nouvelle fois à l'associations des nouveaux topics sortis. Ce n'est malheureusement pas possible car non prévu initialement, et que la phase de récolte des données est à présent terminée.
+			
+			Nous allons donc nous contenter de projeter ces données sur des abscisses différentes afin de voir si la tendence est similaire. La figure~\ref{chart-2} montre donc à nouveau le pourcentage de topics associés pour chaque utilisateur en fonction cette fois-ci du nombre de domaines différents qu'ils ont visité au total. La figure~\ref{chart-3} montre elle en abscisse le nombre de pages web différentes visitées par l'utilisateur.
 
 			\begin{figure}[!h]
 				\centering
@@ -515,6 +529,16 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 				\label{chart-3}
 			\end{figure}
 
+			Sur les deux graphes, la tendance est similaire. Certains des points sont légèrement déplacés car les utilisateurs ont certainement des manières différentes de naviguer sur le web, mais la tendance générale reste que plus notre algorithme dispose de données, plus celui-ci est capable d'afficher des résultats correspondants aux utilisateurs.
+
+			Malgré ceci, nous avons jusqu'ici compté chacun des 20 topics comme également important au résultat final de l'utilisateur. Alors qu'en pratique, nous affichons une barre ainsi qu'un indice d'intérêt estimé, entre 0\% et 100\% par intérêt. Le top 20 est d'ailleurs constitué d'après cette mesure. Il serait bien à présent d'en prendre compte lors de la mesure de la correspondance entre les topics trouvés et les associations de l'utilisateur.
+
+			\paragraph{Taux pondéré}\label{taux2} C'est pourquoi nous allons nous intéresser à nouvelle mesure intéressante : le taux d'associations, pondéré par l'estimation d'intérêt que l'algorithme associe à chaque topic. Nous allons donc prendre chaque topic en compte non plus équitablement, mais de manière pondérée par l'estimation d'intérêt montrée par l'interface. À titre de rappel,  cette estimation d'intérêt par topic par utilisateur est calculée en multipliant la probabilité des topics détectés sur les pages que l'utilisateur a visitées, multiplié par le temps que l'utilisateur a passé sur ces pages.
+
+			Ainsi avec cette nouvelle valeur, nous pouvons une nouvelle fois nous intéresser à la tendance de l'évolution de la satisfaction de l'algorithme par rapport à l'utilisateur en fonction de l'augmentation de la quantité de données.
+
+			La figure~\ref{chart-4} montre une mesure du taux pondéré d'association des topics de chaque utilisateur en fonction du temps total qu'il a passé à visualiser des pages web.
+
 			\begin{figure}[!h]
 				\centering
 				\includegraphics[height=0.6\textwidth]{images/results/chart-4}
@@ -522,14 +546,43 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 				\label{chart-4}
 			\end{figure}
 
+			On remarque une nouvelle fois que quelques données ont changé, mais que la tendance reste toujours positive. 
+
+			Sur les 6 utilisateurs, un seul cas présente une correspondance moins bonne en utilisant le taux pondéré, passant de 20\% à 16.4\%, les 5 autres se sont améliorés. Ceci résulte en une nette amélioration du taux moyen de correspondance : Celui-ci est passé de 28.3\% avec la mesure non pondérée, à 34.51\% avec la mesure pondérée. Nous avons donc gagné 6\% de taux moyen de "correspondance" entre les centres d'intérêts d'un utilisateur et les topics qu'il a associés. Cette pondération est donc bénéfique à la mesure des topics d'intérêts aux utilisateurs. Egalement, la fourchette des mesures s'est améliorée :
+			\begin{itemize}
+				\item Les taux non pondérés sont situés entre 5\% et 55\% de correspondance.
+				\item Les taux pondérés sont situés entre 9.9\% et 64.2\%.
+			\end{itemize}
+
 		\subsubsection{Conclusion}
+
+			Pour résumer la manière dont notre algorithme évolue au fur et à mesure de l'augmentation des données disponibles, ainsi que pour justifier l'utilisation d'une pondération, nous pouvons représenter les données de génération de topics des profils par la figure~\ref{chart-5}, qui assemble en une vue les figures précédented~\ref{chart-1} et~\ref{chart-4}.
 
 			\begin{figure}[!h]
 				\centering
-				\includegraphics[height=0.7\textwidth]{images/results/chart-5}
+				\includegraphics[height=0.65\textwidth]{images/results/chart-5}
 				\caption{Taux d'association de topics, brut et pondéré, par rapport au temps de visualisation avec courbes de tendances}
 				\label{chart-5}
-			\end{figure}
+			\end{figure}{}
+
+			En jetant un coup d'oeil à l'échelle des ordonnées, nous pouvons voir ici que nous sommes loin d'avoir des résultats absolument corrects, avec une moyenne finale d'une correspondance d'environ 34.5\% entre les topics générés pour l'utilisateur et ses centres d'intérêt, comme le montre la table~\ref{profiles-table}.
+
+			Cependant, il est bien de se rendre compt en prenant du recul qu'une correspondance de 100\% entre les topics générés et les centres d'intérêt de l'utilisateur est utopique.
+			Le fait qu'un utilisateur navigue sur une page peut simplement signifier de la curiosité passagère par exemple, sans que cette page présente effectivement des topics qu'il a signalé comme centre d'intérêts. De plus, tous les modèles entraînés pour atteindre ces résultats sont non supervisés, signifiant qu'il est pratiquement impossible d'estimer leur performance sans y ajouter une composante humaine, subjective.
+
+			Un taux de 100\% dans cette mesure ne serait donc pas simplement utopique, mais elle serait également très certainement fausse, car elle aurait d'une manière négligé ou surpassé toutes les décisions humaines imprévisibles. Nous n'avons ici essayé de mesurer les performances de notre méthodologie d'une manière cartésienne, même si celle-ci s'y prête peu du fait la nature des données elles-mêmes.
+
+			Au final, nous voyons tout de même que notre algorithme est à la fois capable de générer des topics qui correspondent à certains centres d'intérêts des utilisateurs plus celui-ci possède de données de navigation, et que la méthodologie de pondération utilisée pour générer et estimer l'intérêt de ces topics fait sens car les résultats surpassent ceux lorsque nous ne pondérons pas les résultats.
+
+			Nous pouvons donc dire que les résultats que nous observons ici sont satisfaisants car ils sont en ligne avec les objectifs de la partie de génération de profil du projet : Nous sommes capables de générer un profil approximatif d'une personne en se basant uniquement sur ses données de navigation, en les combinant avec des données publiquement accessibles (le contenu des pages) et en y appliquant soigneusement une suite d'algorithmes.
+
+%
+%
+%
+% TRACKERS
+%
+%
+%
 
 
 \clearpage
@@ -544,7 +597,7 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 
 \begin{table}[h]
 \centering
-\begin{tabular}{lllllll}
+\begin{tabular}{lrrrrrr}
 \textbf{Domaine}          & \textbf{Visites} & \textbf{Req.} & \textbf{R/V} & \textbf{Taille [kB]} & \textbf{T/R} & \textbf{T/V} \\ \hline
 \scriptsize \url{www.diablofans.com}        & 14             & 28776         & 2055                           & 12472         & 444                     & 891                       \\
 \scriptsize \url{www.netflix.com}           & 4              & 8212          & 2053                           & 15551         & 1939                    & 3888                      \\
@@ -587,7 +640,7 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 
 			\begin{table}[]
 \centering
-\begin{tabular}{llllllll}
+\begin{tabular}{llrrrrrr}
 \textbf{Id} & \textbf{Domaine}           & \textbf{Vu{[}sec{]}} & \textbf{Req.} & \textbf{R/sec} & \textbf{Taille{[}kB{]}} & \textbf{T/R} & \textbf{T/sec} \\ \hline
 A & \scriptsize \url{www.netflix.com}            & 58                    & 8212          & 142                  & 15551                    & 1939         & 268            \\
 B & \scriptsize \url{www.pythonforbeginners.com} & 31                    & 2623          & 85                   & 1235                     & 482          & 40             \\
@@ -655,7 +708,7 @@ T & \scriptsize \url{www.usatoday.com}           & 63                    & 540  
 
 		\begin{table}[]
 \centering
-\begin{tabular}{lll}
+\begin{tabular}{lrr}
 \textbf{Domaine}                     & \textbf{Requêtes} & \textbf{Taille {[}MB{]}} \\ \hline
 \scriptsize \url{www.youtube.com}                      & 100724            & 98                       \\
 \scriptsize \url{static.xx.fbcdn.net}                  & 97245             & 22                       \\
@@ -671,15 +724,9 @@ T & \scriptsize \url{www.usatoday.com}           & 63                    & 540  
 \scriptsize \url{www.google-analytics.com}             & 19519             & 7                        \\
 \scriptsize \url{b.thumbs.redditmedia.com}             & 17650             & 6                        \\
 \scriptsize \url{cdn.discordapp.com}                   & 17021             & 4                        \\
-\scriptsize \url{s3-fr.gladiatus.gameforge.com}        & 16854             & 11                       \\
-\scriptsize \url{opgg-static.akamaized.net}            & 15713             & 4                        \\
-\scriptsize \url{static-cdn.jtvnw.net}                 & 15554             & 3                        \\
-\scriptsize \url{r3---sn-oxu2a0n-b85l.googlevideo.com} & 14570             & 3                        \\
-\scriptsize \url{scontent-frx5-1.xx.fbcdn.net}         & 14339             & 3                        \\
-\scriptsize \url{video-frx5-1.xx.fbcdn.net}            & 14154             & 1                        \\
-\scriptsize \url{www.google.com}                       & 13748             & 11                      
+\scriptsize \url{s3-fr.gladiatus.gameforge.com}        & 16854             & 11                       \\                  
 \end{tabular}
-\caption{Domaines ayant reçu le plus de requêtes provenant de domaines différents}
+\caption{15 domaines ayant reçu le plus de requêtes provenant de domaines différents}
 \label{trackers-3}
 \end{table}
 
@@ -690,7 +737,7 @@ T & \scriptsize \url{www.usatoday.com}           & 63                    & 540  
 		\begin{table}[]
 \centering
 \begin{tabular}{ll}
-\textbf{Domaine}               & \textbf{Domaines l'ayant contacté} \\ \hline
+\textbf{Domaine contacté}               & \textbf{Domaines d'origine} \\ \hline
 \scriptsize \url{www.google-analytics.com}       & 713                               \\
 \scriptsize \url{fonts.gstatic.com}              & 661                               \\
 \scriptsize \url{fonts.googleapis.com}           & 578                               \\
@@ -705,13 +752,8 @@ T & \scriptsize \url{www.usatoday.com}           & 63                    & 540  
 \scriptsize \url{apis.google.com}                & 228                               \\
 \scriptsize \url{maxcdn.bootstrapcdn.com}        & 214                               \\
 \scriptsize \url{ssl.gstatic.com}                & 203                               \\
-\scriptsize \url{staticxx.facebook.com}          & 199                               \\
-\scriptsize \url{www.google.ch}                  & 168                               \\
-\scriptsize \url{accounts.google.com}            & 166                               \\
-\scriptsize \url{securepubads.g.doubleclick.net} & 165                               \\
-\scriptsize \url{pagead2.googlesyndication.com}  & 163                               \\
-\scriptsize \url{adservice.google.com}           & 157                              
+\scriptsize \url{staticxx.facebook.com}          & 199                               \\                         
 \end{tabular}
-\caption{Domaines ayant été contacté par le plus grand nombre de domaines différents}
+\caption{15 domaines ayant été contacté par le plus grand nombre de domaines différents}
 \label{trackers-4}
 \end{table}
