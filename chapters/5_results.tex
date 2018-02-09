@@ -24,7 +24,7 @@
 
 			Une fois que l'utilisateur a défini des centres d'intérêt, il peut donner des informations sur les topics que nous lui suggérons sur la page Topics List (voir section \ref{topicslist}). La figure~\ref{choice} montre la fenêtre déroulante de sélection d'un centre d'intérêt pour un topic donné.
 
-			Il est demandé aux utilisateurs d'ajouter une association entre un topic et un intérêt lorsque cela semble lui faire sens. Ainsi, nous pouvons savoir quels topics de l'utilisateur nous avons réussi à identifier. En effet, lorsqu'un utilisateur associe un centre d'intérêt à un topic, celà signifie non seulement que le topic trouvé a du sens en soi, mais en plus qu'il est intéressant pour l'utilisateur.
+			Il est demandé aux utilisateurs d'ajouter une association entre un topic et un intérêt lorsque cela semble lui faire sens. Ainsi, nous pouvons savoir quels topics de l'utilisateur nous avons réussi à identifier. En effet, lorsqu'un utilisateur associe un centre d'intérêt à un topic, cela signifie non seulement que le topic trouvé a du sens en soi, mais en plus qu'il est intéressant pour l'utilisateur.
 
 			Sur l'échantillon de 8 personnes actives, 6 personnes ont ajouté des associations aux 20 topics proposés sur leur page. 
 
@@ -51,7 +51,7 @@
 				Intéressons-nous donc aux mots ayant le plus de poids trouvés pour les 20 pages les plus regardées, par exemple. Le tableau\ref{table-tfidf} illustre les 20 pages les plus regardées avec leurs mots associés, ainsi que plusieurs étapes amenant à une estimation finale de l'adéquation des mots trouvés avec le contenu de la page. Voici comment se lit le tableau :
 				\begin{description}
 					\item[URL] URL de la page concernée. Certaines URLs trop longues ont été raccourcies ici
-					\item[Mot 1, 2, 3] 3 meilleurs mots dans l'orrdre décroissant décrivant la page selon TF-IDF.
+					\item[Mot 1, 2, 3] 3 meilleurs mots dans l’ordre décroissant décrivant la page selon TF-IDF.
 					\item[Pub(lique)] Est-ce que la page nécessite une connexion afin d'accéder à son contenu principal.
 					\item[Con(tenu)] Est-ce que le principal contenu de la page est textuel ?
 					\item[Mot] Est-ce que chacun des mots trouvés sur la page fait sens dans une langue connue ?
@@ -113,7 +113,7 @@
 
 			\paragraph{Résultats}
 
-				Dans la première semaine de récolte des résultats, une recherche empirique sur les paramètres à fournir au modèle a été effectuée. Le paramètre du nombre de topics a été fixé à 100; cela semblait un bon compromis, car 50 générait un nombre de trop restreint pour définir de manière assez précise quels étaient les thèmes d'un utisilateur, et 200 générait beaucoup de topics qui n'avaient pas de sens en eux-mêmes.
+				Dans la première semaine de récolte des résultats, une recherche empirique sur les paramètres à fournir au modèle a été effectuée. Le paramètre du nombre de topics a été fixé à 100; cela semblait un bon compromis, car 50 générait un nombre de trop restreint pour définir de manière assez précise quels étaient les thèmes d'un utilisateur, et 200 générait beaucoup de topics qui n'avaient pas de sens en eux-mêmes.
 
 				Le tableau\ref{table-lda} montre l'ensemble des 100 topics générés, ainsi que plusieurs étapes amenant à une estimation finale de la pertinence tu thème trouvé. Voici comment se lit le tableau :
 				\begin{description}
@@ -275,7 +275,7 @@
 \label{r-exemple1}
 \end{table}
 
-				En regardant les données enregistrées dans la base ainsi que le contenu des pages de ces URLs, des caractéristiques semblables émergent. Tout d'abord, il s'agit de pages affichant du texte en plusieurs langues, ou empruntant des mots à une langue différente. Etant donné que notre algorithme part du principe que le texte de chaque page est exprimé en une langue donnée, la présence de mots d'autre langue que celle détectée influence la détection des mots importants dans les documents concernés. Ainsi, ici nous pouvons voir que la langue principale de ces pages est autre que français (généralement allemand, ici), et c'est la raison pour laquelle des mots comme "de" ou "la" prennent une importance trop élevée. D'habitude, ces mots sont filtrés à l'aide d'une liste de stopwords. Mais ici, ceux-ci sont pris en compte et influencent les résultats dans une direction non souhaitée.
+				En regardant les données enregistrées dans la base ainsi que le contenu des pages de ces URLs, des caractéristiques semblables émergent. Tout d'abord, il s'agit de pages affichant du texte en plusieurs langues, ou empruntant des mots à une langue différente. Etant donné que notre algorithme part du principe que le texte de chaque page est exprimé en une langue donnée, la présence de mots d'autre langue que celle détectée influence la détection des mots importants dans les documents concernés. Ainsi, ici nous pouvons voir que la langue principale de ces pages est autre que français (généralement allemand, ici), et c'est la raison pour laquelle des mots comme "de" ou "la" prennent une importance trop élevée. D'habitude, ces mots sont filtrés à l'aide d'une liste de \gls{stopword}s. Mais ici, ceux-ci sont pris en compte et influencent les résultats dans une direction non souhaitée.
 
 				Il s'agit là de la mise en évidence d'une des imperfections du système, mais d'autres cas se cumulent à celui-ci. On peut citer par exemple les cas dans lesquels :
 				\begin{itemize}
@@ -292,7 +292,7 @@
 
 	\subsection{Vues et résultats}\label{evaluation-vues}
 
-		Afin de se rendre compte d'un profil type généré par l'extension ainsi que ses représentations visuelles, nous nous intéressons ici au profil généré par le projet de moi-même. Nous allons passer en revue les différentes visualisations et les commenter. Le but est ici d'avoir un avis humain reflétant la précision et l'adéquation des données générées avec avec un profil; Il aurait été possible de mener ce questionnement sur n'importequel participant à l'étude, mais je prends exemple sur moi-même par commodité.
+		Afin de se rendre compte d'un profil type généré par l'extension ainsi que ses représentations visuelles, nous nous intéressons ici au profil généré par le projet de moi-même. Nous allons passer en revue les différentes visualisations et les commenter. Le but est ici d'avoir un avis humain reflétant la précision et l'adéquation des données générées avec avec un profil; Il aurait été possible de mener ce questionnement sur n’importe-quel participant à l'étude, mais je prends exemple sur moi-même par commodité.
 
 		\subsubsection{Wordcloud}
 
@@ -305,7 +305,7 @@
 			\label{critique-wordcloud}
 		\end{figure}
 
-		Tout d'abord visuellement, cette vue remplit son objectif qui est de donner très rapidement une information sur les mots les plus représentatifs de l'utilisateur. En effet, les mots qui sont jugés les plus représentatifs sont affichés en plus grand, et ce sont également ceux vers lesquels l'oeil se pose en premier.
+		Tout d'abord visuellement, cette vue remplit son objectif qui est de donner très rapidement une information sur les mots les plus représentatifs de l'utilisateur. En effet, les mots qui sont jugés les plus représentatifs sont affichés en plus grand, et ce sont également ceux vers lesquels l’œil se pose en premier.
 
 		Ensuite, les données représentées semblent correspondre avec la réalité de mon profil. Les mots que j'ai le plus consultés pendant la période durant laquelle j'ai conservé l'extension installée sont effectivement ceux qui sont le plus mis en valeur ici.
 
@@ -367,7 +367,7 @@
 
 		En ce qui concerne les "Keywords" trouvés, je trouve que plus de la moitié d'entre eux sont confus. Je trouve ceci dommage car je pense qu'il existe des meilleurs mots pour décrire les sites qui arrivent en tête des deux classements. Cependant, comme nous avons déjà expliqué dans un chapitre précédent les problèmes qui peuvent survenir pour détecter les mots idéaux sur certaines pages web, je remarque ici que les pages web que j'ai le plus visité sont des cas typiques de pages où il est difficile de déduire des mots clés idéaux.
 
-		En effet, il s'agit principalement de pages web qui demandent une connection (comme wdf.sdipi.ch et draw.io), de pages web qui ne présentent pas ou peu de contenu texte (comme google.ch/search ou youtube.com), ou encore de pages web qui nécessiteraient l'URL non tronquée pour être correctement affichées (comme google.ch/url).
+		En effet, il s'agit principalement de pages web qui demandent une connexion (comme wdf.sdipi.ch et draw.io), de pages web qui ne présentent pas ou peu de contenu texte (comme google.ch/search ou youtube.com), ou encore de pages web qui nécessiteraient l'URL non tronquée pour être correctement affichées (comme google.ch/url).
 
 		Malheureusement, la plupart de ces cas ne semble pas montrer une résolution simple sans une acquisition de données supplémentaires. Il faudrait en effet que l'extension soit capable de voir le contenu effectivement affiché au client, et pas le contenu affiché de manière publique. Cette solution demanderait donc plus de données de la part de l'utilisateur, ce que nous avons volontairement évité.
 
@@ -397,7 +397,7 @@
 
 		En effet, on peut voir rapidement qu'il y a eu une période de pause entre le 23 décembre et le 3 janvier dans les deux graphiques. Cependant, il reste difficile d'isoler une tendance particulière pour un topic ou un mot particulier à première vue. La version web permet toutefois de cacher ou d'afficher des séries de données en cliquant dessus, ce qui permet d'alléger les graphiques.
 
-		Je pense que l'information représentée est intéressante, mais qu'un travail supplémentaire sur la forme de la représentaiton pourrait valoir la peine. Par exemple, la possibilité de diminuer la granularité des points dans le temps, et de par exemple regrouper le temps passé à regarder certains mots ou topics peut être intéressant afin de voir plus clairement une tendance dans les deux visualisations.
+		Je pense que l'information représentée est intéressante, mais qu'un travail supplémentaire sur la forme de la représentation pourrait valoir la peine. Par exemple, la possibilité de diminuer la granularité des points dans le temps, et de par exemple regrouper le temps passé à regarder certains mots ou topics peut être intéressant afin de voir plus clairement une tendance dans les deux visualisations.
 
 \FloatBarrier
 
@@ -458,12 +458,12 @@
 
 		\subsubsection{Résultats généraux}
 
-			Parmi les 8 utilisateurs aynat une activité enregistrée suffisante sur le serveur, 6 ont défini des centres d'intérêts et ont participé à la tâche d'assigner des centres d'intérêts aux topics proposés. Le tableau~\ref{profiles-table} montre une série de mesures sur les données amassées des volontaires.
+			Parmi les 8 utilisateurs ayant une activité enregistrée suffisante sur le serveur, 6 ont défini des centres d'intérêts et ont participé à la tâche d'assigner des centres d'intérêts aux topics proposés. Le tableau~\ref{profiles-table} montre une série de mesures sur les données amassées des volontaires.
 
 			Voici comment se lit chaque colonne :
 			\begin{description}
 				\item[Personne] : Identifiant du volontaire.
-				\item[Tags] : Nombre de topics parmi son top20 associés à un centre d'intérêt
+				\item[Tags] : Nombre de topics parmi son top 20 associés à un centre d'intérêt
 				\item[Int(érêts)] : Nombre de centres d'intérêts renseignés sur le profil
 				\item[Temps] : Temps total de visualisation sur des pages, exprimé en heures
 				\item[Domaines] : Nombre de domaines différents visités
@@ -496,7 +496,7 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 
 			Tentons à présent de donner du sens aux observations tirées de ces données. Nous voulons vérifier que notre modèle fonctionne, et savoir dans quelle mesure celui-ci est précis. Tout d'abord, nous pouvons nous intéresser à une statistique relativement explicite : Sachant que la page "Topics List" donne le top 20 des topics estimés intéresser l'utilisateur, regardons combien de topics est-ce que les utilisateurs ont associé avec leur centre d'intérêt. 
 
-			\paragraph{Taux d'association} La figure~\ref{chart-1} montre une nuage de points où chaque point est un utilisateur. En abscisse se trouve le temps total en minutes que l'utilisateur a passé à visiter des pages web, et en ordonnée se trouve le pourcentage de topics parmi les 20 qu'il a associté à des centres d'intérêts. En clair se trouve une courbe de tendance pour les points du graphe.
+			\paragraph{Taux d'association} La figure~\ref{chart-1} montre une nuage de points où chaque point est un utilisateur. En abscisse se trouve le temps total en minutes que l'utilisateur a passé à visiter des pages web, et en ordonnée se trouve le pourcentage de topics parmi les 20 qu'il a associé à des centres d'intérêts. En clair se trouve une courbe de tendance pour les points du graphe.
 
 			\begin{figure}[!h]
 				\centering
@@ -505,15 +505,15 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 				\label{chart-1}
 			\end{figure}
 
-			Malgré le fait qu'aucun des utilisateurs soit proche d'associer l'entièreté des topics (le meilleur est à 11/20 topics, soit 55\%), on remarque une tendence certaine à afficher un meilleur taux d'association plus l'utilisateur a passé de temps à visiter des sites web. Ceci est plutôt rassurant, car il s'agit en effet du résultat que l'on attend de manière instinctive.
+			Malgré le fait qu'aucun des utilisateurs soit proche d'associer l'entièreté des topics (le meilleur est à 11/20 topics, soit 55\%), on remarque une tendance certaine à afficher un meilleur taux d'association plus l'utilisateur a passé de temps à visiter des sites web. Ceci est plutôt rassurant, car il s'agit en effet du résultat que l'on attend de manière instinctive.
 
-			L'algorithme a besoin d'un nombre conséquent de données pour être capable de discerner les préférences et les sujets pouvant intéresser un utilisateur. Plus le nombre de données est grand, plus l'algorithme sera capable de différencer un utilisateur des autres, et donc plus on s'attend à ce que les topics montrés à cet utilisateur soit pertinents à ses propres intérêts.
+			L'algorithme a besoin d'un nombre conséquent de données pour être capable de discerner les préférences et les sujets pouvant intéresser un utilisateur. Plus le nombre de données est grand, plus l'algorithme sera capable de différencier un utilisateur des autres, et donc plus on s'attend à ce que les topics montrés à cet utilisateur soit pertinents à ses propres intérêts.
 
-			La variance entre les moins bons et lers meilleurs résultats est ici assez grande. L'utilisateur ayant trouvé le moins d'associations est à 1/20 topics, soit 5\%. Etant donné que les résultats sont beaucoup plus satisfaisants pour le meilleur utilisateur, il est raisonnable de penser qu'un minimum de données en entrée soit nécessaire afin d'atteindre un résultat satisfaisant. Dans des expériences futures, on pourrait par exemple situer ce minimum de temps de visualisation quelque part entre le plus faible (8 heures) et le plus élevé (120 heures).
+			La variance entre les moins bons et les meilleurs résultats est ici assez grande. L'utilisateur ayant trouvé le moins d'associations est à 1/20 topics, soit 5\%. Etant donné que les résultats sont beaucoup plus satisfaisants pour le meilleur utilisateur, il est raisonnable de penser qu'un minimum de données en entrée soit nécessaire afin d'atteindre un résultat satisfaisant. Dans des expériences futures, on pourrait par exemple situer ce minimum de temps de visualisation quelque part entre le plus faible (8 heures) et le plus élevé (120 heures).
 
-			Cependant, comme le montrent les figures~\ref{chart-2} et~\ref{chart-3}, le temps de visualisation n'est pas forcément la seule méthode d'évaluer la performance des algorithmes. Nous n'allons ici pas calculer un nouveau top 20 pour les utilisateurs d'une manière différente, car celà aurait demandé que les utilisateurs participent une nouvelle fois à l'associations des nouveaux topics sortis. Ce n'est malheureusement pas possible car non prévu initialement, et que la phase de récolte des données est à présent terminée.
+			Cependant, comme le montrent les figures~\ref{chart-2} et~\ref{chart-3}, le temps de visualisation n'est pas forcément la seule méthode d'évaluer la performance des algorithmes. Nous n'allons ici pas calculer un nouveau top 20 pour les utilisateurs d'une manière différente, car cela aurait demandé que les utilisateurs participent une nouvelle fois à l'association des nouveaux topics sortis. Ce n'est malheureusement pas possible car non prévu initialement, et que la phase de récolte des données est à présent terminée.
 			
-			Nous allons donc nous contenter de projeter ces données sur des abscisses différentes afin de voir si la tendence est similaire. La figure~\ref{chart-2} montre donc à nouveau le pourcentage de topics associés pour chaque utilisateur en fonction cette fois-ci du nombre de domaines différents qu'ils ont visité au total. La figure~\ref{chart-3} montre elle en abscisse le nombre de pages web différentes visitées par l'utilisateur.
+			Nous allons donc nous contenter de projeter ces données sur des abscisses différentes afin de voir si la tendance est similaire. La figure~\ref{chart-2} montre donc à nouveau le pourcentage de topics associés pour chaque utilisateur en fonction cette fois-ci du nombre de domaines différents qu'ils ont visité au total. La figure~\ref{chart-3} montre elle en abscisse le nombre de pages web différentes visitées par l'utilisateur.
 
 			\begin{figure}[!h]
 				\centering
@@ -556,7 +556,7 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 
 		\subsubsection{Conclusion}
 
-			Pour résumer la manière dont notre algorithme évolue au fur et à mesure de l'augmentation des données disponibles, ainsi que pour justifier l'utilisation d'une pondération, nous pouvons représenter les données de génération de topics des profils par la figure~\ref{chart-5}, qui assemble en une vue les figures précédented~\ref{chart-1} et~\ref{chart-4}.
+			Pour résumer la manière dont notre algorithme évolue au fur et à mesure de l'augmentation des données disponibles, ainsi que pour justifier l'utilisation d'une pondération, nous pouvons représenter les données de génération de topics des profils par la figure~\ref{chart-5}, qui assemble en une vue les figures précédentes~\ref{chart-1} et~\ref{chart-4}.
 
 			\begin{figure}[!h]
 				\centering
@@ -565,9 +565,9 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 				\label{chart-5}
 			\end{figure}{}
 
-			En jetant un coup d'oeil à l'échelle des ordonnées, nous pouvons voir ici que nous sommes loin d'avoir des résultats absolument corrects, avec une moyenne finale d'une correspondance d'environ 34.5\% entre les topics générés pour l'utilisateur et ses centres d'intérêt, comme le montre la table~\ref{profiles-table}.
+			En jetant un coup d’œil à l'échelle des ordonnées, nous pouvons voir ici que nous sommes loin d'avoir des résultats absolument corrects, avec une moyenne finale d'une correspondance d'environ 34.5\% entre les topics générés pour l'utilisateur et ses centres d'intérêt, comme le montre la table~\ref{profiles-table}.
 
-			Cependant, il est bien de se rendre compt en prenant du recul qu'une correspondance de 100\% entre les topics générés et les centres d'intérêt de l'utilisateur est utopique.
+			Cependant, il est bien de se rendre compte en prenant du recul qu'une correspondance de 100\% entre les topics générés et les centres d'intérêt de l'utilisateur est utopique.
 			Le fait qu'un utilisateur navigue sur une page peut simplement signifier de la curiosité passagère par exemple, sans que cette page présente effectivement des topics qu'il a signalé comme centre d'intérêts. De plus, tous les modèles entraînés pour atteindre ces résultats sont non supervisés, signifiant qu'il est pratiquement impossible d'estimer leur performance sans y ajouter une composante humaine, subjective.
 
 			Un taux de 100\% dans cette mesure ne serait donc pas simplement utopique, mais elle serait également très certainement fausse, car elle aurait d'une manière négligé ou surpassé toutes les décisions humaines imprévisibles. Nous n'avons ici essayé de mesurer les performances de notre méthodologie d'une manière cartésienne, même si celle-ci s'y prête peu du fait la nature des données elles-mêmes.
@@ -593,7 +593,7 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 
 		\subsubsection{Requêtes envoyées}
 
-			Deux tableaux ont été compilés pour l'ensemble des requêtes analysées par le serveur. Un total de 1058 domaines différents ont été visités par les utilisateurs. Parmi ceux-ci, nous nous intéressons ici à ceux qui ont reçu un minimum de 4 visites de pages. En effet, nous cherchons ici à montrer des statistiques sur des domaines connus des utilisateurs, et donc nous nous restraignons aux domaines qui ont suscité un minimum d'intérêt des utilisateurs tout de même, et ne souhaitons pas voir de domaines de publicité ouvert aléatoirement par une pop-up, par exemple.
+			Deux tableaux ont été compilés pour l'ensemble des requêtes analysées par le serveur. Un total de 1058 domaines différents ont été visités par les utilisateurs. Parmi ceux-ci, nous nous intéressons ici à ceux qui ont reçu un minimum de 4 visites de pages. En effet, nous cherchons ici à montrer des statistiques sur des domaines connus des utilisateurs, et donc nous nous restreignons aux domaines qui ont suscité un minimum d'intérêt des utilisateurs tout de même, et ne souhaitons pas voir de domaines de publicité ouvert aléatoirement par une pop-up, par exemple.
 
 \begin{table}[h]
 \centering
@@ -636,7 +636,7 @@ F & 4 & 7 & 17 & 145 & 527 & 20\% & 16,1\% \\ \hline
 
 			On peut remarquer que les domaines envoient des quantités de données très différentes, à la fois en nombre et en taille. Les pages qui donnent accès à des applications web tel que le visionnage de vidéo ou le chat semblent aussi envoyer un nombre conséquent d'informations, ce qui n'est pas totalement étonnant étant donné qu'il est nécessaire que l'application soit synchronisée à tout moment avec le serveur pour rester à jour.
 
-			Cependant, ce tableau révèle également certains autres domaines qui envoient un nombre suspect d'informations. Rapellons-nous ici qu'il ne s'agit toujours que de données potentiellement personnelles envoyées. Par exemple si un grand nombre d'images doit être chargé pour une page, il est normal que celle-ci émette un nombre élevé de requêtes.
+			Cependant, ce tableau révèle également certains autres domaines qui envoient un nombre suspect d'informations. Rappelons-nous ici qu'il ne s'agit toujours que de données potentiellement personnelles envoyées. Par exemple si un grand nombre d'images doit être chargé pour une page, il est normal que celle-ci émette un nombre élevé de requêtes.
 
 			\begin{table}[]
 \centering
@@ -687,9 +687,9 @@ T & \scriptsize \url{www.usatoday.com}           & 63                    & 540  
 
 			On remarque que certains domaines se retrouvent à la fois dans le haut du classement des deux mesures des tableaux précédents : Nombre de visites, et temps de visualisation, comme par exemple \url{www.netflix.com}. Cependant, il est possible que l'estimation du temps passé sur ce domaine soit faussé.
 
-			En effet, notre algorithme compte l'utilisateur comme étant inactif après 30 secondes passées durant lesquelles il n'y a eu aucune interaction avec la fenêtre (mouvement de souris, clic, clavier etc). Ceci extplique sans doute pourquoi un site de visionnage de vidéo se retrouve en haut de cette liste, avec de plus un temps de visualisation qui semble extrêmement bas pour celui-ci. Notre algorithme a certainement compté le temps passé à regarder la vidéo comme étant inactif. Il aurait fallu faire une distinction, ou déterminer lorsque la page joue une vidéo et considérer ce temps comme étant de l'activité utilisateur.
+			En effet, notre algorithme compte l'utilisateur comme étant inactif après 30 secondes passées durant lesquelles il n'y a eu aucune interaction avec la fenêtre (mouvement de souris, clic, clavier etc). Ceci explique sans doute pourquoi un site de visionnage de vidéo se retrouve en haut de cette liste, avec de plus un temps de visualisation qui semble extrêmement bas pour celui-ci. Notre algorithme a certainement compté le temps passé à regarder la vidéo comme étant inactif. Il aurait fallu faire une distinction, ou déterminer lorsque la page joue une vidéo et considérer ce temps comme étant de l'activité utilisateur.
 
-			Intéressant tout de même : Le nomaine \texttt{newtab} correspond à la page ouverte lorsqu'un nouvel onglet est ajouté. On remarque que cette page visiblement sans contenu envoie tout de même des requêtes.
+			Intéressant tout de même : Le domaine \texttt{newtab} correspond à la page ouverte lorsqu'un nouvel onglet est ajouté. On remarque que cette page visiblement sans contenu envoie tout de même des requêtes.
 
 		\newpage
 
@@ -730,7 +730,7 @@ T & \scriptsize \url{www.usatoday.com}           & 63                    & 540  
 \label{trackers-3}
 \end{table}
 
-			\paragraph{Domaines différents} Le tableau~\ref{trackers-4} montre les domaines ayant été contacté par le plus grand nombre de domaines différents. Les colonnes de ce tableau sont assez explicited. Nous remarquons ici qu'en tête du classement, nous avons un domaine dont nous sommes certain qu'il s'agisse d'un tracker : \url{www.google-analytics.com}. La plupart des places suivantes sont également occupées par d'autres sous-domaines de Google.
+			\paragraph{Domaines différents} Le tableau~\ref{trackers-4} montre les domaines ayant été contacté par le plus grand nombre de domaines différents. Les colonnes de ce tableau sont assez explicites. Nous remarquons ici qu'en tête du classement, nous avons un domaine dont nous sommes certain qu'il s'agisse d'un tracker : \url{www.google-analytics.com}. La plupart des places suivantes sont également occupées par d'autres sous-domaines de Google.
 
 			En dehors de quelques exceptions comme des domaines appartenant à Facebook, il est évident que Google est le possesseur de de presque tous les domaines les plus contactés. Nous estimons donc que la mesure "Nombre de domaines différents ayant contacté ce domaine" est un très bon indicateur d'un potentiel tracker. Cette conclusion confirme sans surprise cette intuition initiale.
 

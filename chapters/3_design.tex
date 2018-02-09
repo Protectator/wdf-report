@@ -43,7 +43,7 @@
 			\label{d-architecture}
 		\end{figure}
 
-		La figure \ref{d-architecture} schématise la récolte de données effectuée par l'etension.
+		La figure \ref{d-architecture} schématise la récolte de données effectuée par l’extension.
 		\begin{enumerate}
 			\item L'utilisateur entre une URL dans son navigateur
 			\item Le navigateur accède à la ressource concernée
@@ -59,7 +59,7 @@
 
 		\subsubsection{Visite d'une URL}
 			
-			Lorsque l'utilisateur accèds à une nouvelle URL dans son navigateur, qu'il s'agisse d'un clic sur un lien ou d'une entrée dans la barre d'adresse, l'extension enregistre une partie de l'URL accédée ainsi que la date d'accès. Pour des raisons de protection de la vie privée, seule une partie de l'URL est conservée et envoyée au serveur.
+			Lorsque l'utilisateur accède à une nouvelle URL dans son navigateur, qu'il s'agisse d'un clic sur un lien ou d'une entrée dans la barre d'adresse, l'extension enregistre une partie de l'URL accédée ainsi que la date d'accès. Pour des raisons de protection de la vie privée, seule une partie de l'URL est conservée et envoyée au serveur.
 
 			\begin{figure}[h]
 				\centering
@@ -74,7 +74,7 @@
 			\begin{itemize}
 				\item Du texte généré spécialement lorsque l'utilisateur est connecté à un compte, par exemple une page d'accueil d'un service
 				\item De contenu principalement autre que du texte, par exemple une page mettant en avant une vidéo
-				\item De contenu régénéré très fréquamment, par exemple une première page d'un site de news
+				\item De contenu régénéré très fréquemment, par exemple une première page d'un site de news
 			\end{itemize}
 			
 			Nous décidons donc de définir une liste d'URLs que nous ne prendrons volontairement pas en compte lors de l'analyse. Le but de cette liste n'est bien sûr pas d'exhaustivement ignorer les sites dont le contenu textuel est très peu fiable ou présente très peu d'intérêt, mais d'améliorer la qualité possible des résultats en écartant certains cas dont nous pouvons raisonnablement dire qui apportent des biais par rapport à la réalité.
@@ -84,7 +84,7 @@
 
 		\subsubsection{Activité sur une page}
 
-			À tout moment, l'utilisateur a probablement plusieurs onglets ou plusieurs fenêtres de navigateur ouvertes. Nous souhaitons nous intéresser à quelle page est actuellement en train d'être parcourure par l'utilisateur. À cette fin, nous détectons les évènements sur la page web : Appui sur une touche, ou clic de souris par exemple. Dès lors qu'il se passe plus de 30 secondes sans aucun évènement de la part de l'utilisateur, nous estimons qu'il ne regarde plus activement la page. Ce temps passé à s'insétresser à chaque page est également envoyé au serveur central toutes les 30 secondes.
+			À tout moment, l'utilisateur a probablement plusieurs onglets ou plusieurs fenêtres de navigateur ouvertes. Nous souhaitons nous intéresser à quelle page est actuellement en train d'être parcourue par l'utilisateur. À cette fin, nous détectons les événements sur la page web : Appui sur une touche, ou clic de souris par exemple. Dès lors qu'il se passe plus de 30 secondes sans aucun événement de la part de l'utilisateur, nous estimons qu'il ne regarde plus activement la page. Ce temps passé à s'intéresser à chaque page est également envoyé au serveur central toutes les 30 secondes.
 
 		\subsubsection{Requêtes du navigateur}
 
@@ -126,11 +126,11 @@
 
 		L'extension de navigateur est sans aucun doute la partie la plus simple du projet. Etant donné que nous avons décidé d'héberger l'interface utilisateur sur un serveur différent, l'extension ne va principalement s'occuper que de récupérer les données de l'utilisateur et les transmettre à notre serveur.
 
-		Etant donné qu'une extension de navigateur n'est disponible que pour un type de navigateur à la fois, la question du suport de plusieurs navigateurs s'est posée. D'après le site populaire \texttt{w3schools.com}\cite{browser-stats}, Google Chrome représente plus de 75\% des visites au moins de décembre 2017. Nous décidons donc de ne pas adapter le code de l'extension pour plusieurs types de navigateurs, car nous estimons que le gain en utilisateurs serait insuffisant pour justifier le développement supplémentaire.
+		Etant donné qu'une extension de navigateur n'est disponible que pour un type de navigateur à la fois, la question du support de plusieurs navigateurs s'est posée. D'après le site populaire \texttt{w3schools.com}\cite{browser-stats}, Google Chrome représente plus de 75\% des visites au moins de décembre 2017. Nous décidons donc de ne pas adapter le code de l'extension pour plusieurs types de navigateurs, car nous estimons que le gain en utilisateurs serait insuffisant pour justifier le développement supplémentaire.
 
 		L'extension sera donc développée pour le navigateur Google Chrome, en utilisant l'API JavaScript que celui-ci met à disposition. Les fonctionnalités implémentées sont la récolte et l'envoi des types de données décrites à la section \ref{d-donnees}.
 
-		L'extension proposera également à l'utilisateur d'accéder à l'interface grâce à un lien, ainsi que la possibilité de se "lier" ce navigateur au profil d'un autre navigateur existant, en entrant son ancien identificateur. Ceci permet à un utilisateur de profiter d'un seul profil au travers de plusieurs machines posédant l'extension, par exemple. 
+		L'extension proposera également à l'utilisateur d'accéder à l'interface grâce à un lien, ainsi que la possibilité de se "lier" ce navigateur au profil d'un autre navigateur existant, en entrant son ancien identificateur. Ceci permet à un utilisateur de profiter d'un seul profil au travers de plusieurs machines possédant l'extension, par exemple. 
 
 	\subsection{Serveur}
 
@@ -154,9 +154,9 @@
 
 			\paragraph{Récolte continuelle\label{d-recolte}}
 
-				Afin que le serveur soit capable de supporter une certaine charge d'utilisateurs, il est nécessaire que celui-ci recoive un nombre réduit de requêtes de la part des clients. Pour cette raison, l'extension ne contacte le serveur qu'une seule fois toutes les 30 secondes afin de le tenir informaé des évènement ayant eu lieu.
+				Afin que le serveur soit capable de supporter une certaine charge d'utilisateurs, il est nécessaire que celui-ci reçoive un nombre réduit de requêtes de la part des clients. Pour cette raison, l'extension ne contacte le serveur qu'une seule fois toutes les 30 secondes afin de le tenir informé des événements ayant eu lieu.
 
-				Le serveur va donc pouvoir exposer une API simple : L'extension contactera toujours le même endpoint, et chaque requête contiendra la liste des informations concernant les évènements qui se sont passés chez le client.
+				Le serveur va donc pouvoir exposer une API simple : L'extension contactera toujours le même endpoint, et chaque requête contiendra la liste des informations concernant les événements qui se sont passés chez le client.
 
 				Lorsque nous détectons qu'utilisateur visite une URL pour la première fois, le serveur va télécharger le contenu de cette page. Notre serveur ouvre un navigateur virtuel afin de simuler le chargement complet de la page - y compris l'exécution de scripts - et enregistre le contenu final de la page dans la base de données.
 
@@ -170,7 +170,7 @@
 				Une série d'opérations est ensuite effectuée sur le contenu de la page, afin de le rendre utilisable par les prochains algorithmes. La figure~\ref{d-download-page} montre les étapes qui entrent en compte dans le pré-traitement du contenu :
 
 				\begin{description}
-					\item[1. Téléchargement] Le serveur lance, dans un navigateur virtual, le téléchargement de la page ainsi que l'exécution des scripts présents sur celle-ci. Une fois la page complètement chargée, on conserve le DOM de la page chargée.
+					\item[1. Téléchargement] Le serveur lance, dans un navigateur virtuel, le téléchargement de la page ainsi que l'exécution des scripts présents sur celle-ci. Une fois la page complètement chargée, on conserve le DOM de la page chargée.
 					\item[2. Nettoyage] À partir du HTML de la page, on ne cherche à garder que le texte de celle-ci, sans balise. Un parseur enlève toutes les balises \texttt{<script>} et \texttt{<style>}, puis ne garde que le contenu des éléments restants.
 					\item[3. [FR/EN] Lemmatisation] Un détecteur de langue nous renseigne sur la langue du texte. Si celui-ci est en anglais ou en français, nous lemmatisons chaque mot du texte. Ce processus analyse lexicalement les mots présents, et tente de ramener chaque mot à dans une forme plus simple pour le représenter. Par exemple, le temps des verbes est changé en infinitif, et les noms communs perdent leur pluriel. La liste complète des traitements effectuée est en réalité bien plus longue, et propre à la langue du texte.
 					\item[3/4. Enregistrement] Si le texte n'est pas dans une langue supportée par la lemmatisation, ou après la lemmatisation du texte anglais ou français, celui-ci est enregistré dans la base de données. Tous les traitements futurs sur le contenu de la page se feront sur cette version-ci.
@@ -214,7 +214,7 @@
 
 				\subparagraph{TF-IDF}
 
-					TF-IDF est une méthode permettant de détecter quels sont les mots les plus importants dans un document parmi l'ensemble d'un cropus. La méthode consiste purement en l'analyse de la fréquence de chaque mot dans chaque document, et ne s'occupe absolument pas de la signification des mots.
+					TF-IDF est une méthode permettant de détecter quels sont les mots les plus importants dans un document parmi l'ensemble d'un corpus. La méthode consiste purement en l'analyse de la fréquence de chaque mot dans chaque document, et ne s'occupe absolument pas de la signification des mots.
 
 				\subparagraph{LDA}
 
@@ -224,7 +224,7 @@
 
 				Comme mentionné précédemment, quelques informations de chaque requête du navigateur du client sont enregistrées. Ces données n'ont pas besoin d'un traitement particulier.
 
-				Etant donné que nous nous intéressont particulièrement à leur quantité, nous n'allons principalement que les compter. Cependant dû au fait de leur énorme quantité, il nous est nécessaire de pré-calculer certaines sommes avant de les servir à l'interface.
+				Etant donné que nous nous intéressons particulièrement à leur quantité, nous n'allons principalement que les compter. Cependant dû au fait de leur énorme quantité, il nous est nécessaire de pré-calculer certaines sommes avant de les servir à l'interface.
 
 		\subsubsection{API}
 
@@ -273,7 +273,7 @@
 			\end{tabular}
 		
 		\subsubsection{Table \texttt{users}}\label{table-users}
-			La table \texttt{users} sert à stocker les tuilisateurs enregistrés sur l'extension.
+			La table \texttt{users} sert à stocker les utilisateurs enregistrés sur l'extension.
 
 			\begin{tabular}{rl}
 				\textbf{Colonne} & \textbf{Description} \\
@@ -460,11 +460,11 @@
 
 		L'interface a connu de nombreuses versions au fur et à mesure du projet. Cependant, le thème et le but commun de ces pages n'a pas changé : Montrer à l'utilisateur les informations qu'il révèle, ainsi que des possibles utilisations de celles-ci. Le design initial des visualisation était très visuel et varié et a progressé vers des pages plus utilitaires.
 
-		L'interface se divise en trois onglets distincs, chacun tentant de représenter une partie des informations : Settings, Profil, et Trackers.
+		L'interface se divise en trois onglets distincts, chacun tentant de représenter une partie des informations : Settings, Profil, et Trackers.
 
 		\subsubsection{Settings}
 
-			La page Settings laisse la possibilité à l'utilisateur de resneigner ces centres d'intérêt en les sélectionneant parmi une liste d'une centaine d'entre-eux. Cette centaine d'intérêts sont ceux que Google utilise pour "classifier" les visiteurs de sites web utilisant Google Analytics, nous estimons donc que ces intérêts font sens. 
+			La page Settings laisse la possibilité à l'utilisateur de renseigner ces centres d'intérêt en les sélectionnant parmi une liste d'une centaine d'entre-eux. Cette centaine d'intérêts sont ceux que Google utilise pour "classifier" les visiteurs de sites web utilisant Google Analytics, nous estimons donc que ces intérêts font sens. 
 
 		\subsubsection{Profil}
 
@@ -529,6 +529,6 @@
 
 			\paragraph{Topics graph}
 
-				Le "topics graph" cherche à rassembler les mots en thèmes, et monte d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquamment. À chaque thème est lié un ou plusieurs mots, qui reprèsentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
+				Le "topics graph" cherche à rassembler les mots en thèmes, et monte d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquemment. À chaque thème est lié un ou plusieurs mots, qui représentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
 
 				Le but de cette visualisation est de montrer que nous pouvons déduire des thèmes et ainsi montrer un traitement plus fin des intérêts de l'utilisateur, que simplement additionner une liste de mots. Dans le marketing, les thèmes découverts pourraient être utilisés pour labelliser les utilisateurs à qui faire apparaître une publicité.

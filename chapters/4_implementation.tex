@@ -10,7 +10,7 @@
 
 		Dans cette section se trouveront des schémas représentant des algorithmes. Les étapes de ceux-ci peuvent être exécutés à trois moments différents, indiqué sur leurs schémas :
 		\begin{description}
-			\item[Offline] Les étapes effectuées "offline" recquièrent une intervention de l'administrateur. C'est à lui de décider quand ces traitements doivent intervenir car ils ne peuvent pas être effectuées pendant que le serveur fonctionne.
+			\item[Offline] Les étapes effectuées "offline" requièrent une intervention de l'administrateur. C'est à lui de décider quand ces traitements doivent intervenir car ils ne peuvent pas être effectuées pendant que le serveur fonctionne.
 			\item[Serveur] Les étapes effectuées sur le "serveur" sont calculées pendant que le serveur est en ligne, typiquement lorsque celui-ci reçoit une requête.
 			\item[Client] Les étapes s'effectuant sur le "client" sont calculées dans le navigateur de l'utilisateur actuel.
 		\end{description}
@@ -23,7 +23,7 @@
 
 	\subsection{Serveur}
 
-		Le serveur est développé en Python3.6, et utilise le framework Flask. Flask permet de définir rapidement le comportement d'un serveur web basique en mappant des fonctions à des endpoints de l'API.
+		Le serveur est développé en Python3.6, et utilise le framework Flask. Flask permet de définir rapidement le comportement d'un serveur web basique en mappant des fonctions à des \gls{endpoint}s de l'API.
 
 		Par exemple, à l'aide d'une combinaison de décorateurs fournis par Flask et crées par nous-même, nous pouvons très facilement spécifier le comportement d'une méthode. La figure~\ref{i-code-server} montre le peu de code nécessaire pour définir l'endpoint de vérification de la connexion de l'utilisateur.
 
@@ -145,7 +145,7 @@ def connectionState(wdfId):
 
 	\subsection{Concept}
 
-		Le "Topics List" cherche à rassembler les mots en thèmes, et montre d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquamment. À chaque thème est lié un ou plusieurs mots, qui reprèsentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
+		Le "Topics List" cherche à rassembler les mots en thèmes, et montre d'une manière plus synthétique les thèmes estimés que l'utilisateur parcourt fréquemment. À chaque thème est lié un ou plusieurs mots, qui représentent le thème d'une manière générale. Chaque cercle du graphe représente soit un thème, soit un mot.
 
 		Le but de cette visualisation est de montrer que nous pouvons déduire des thèmes et ainsi montrer un traitement plus fin des intérêts de l'utilisateur, que simplement additionner une liste de mots. Dans le marketing, les thèmes découverts pourraient être utilisés pour labelliser les utilisateurs à qui faire apparaître une publicité.
 
@@ -286,7 +286,7 @@ def connectionState(wdfId):
 
 			\item[G] On s'occupe ensuite du traitement du nombre d'ouvertures de chaque page. On ne conserve également que les 10 plus ouvertes d'entre-elles pour des raisons visuelles, elles sont alors affichées dans la liste.
 
-			\item[H] Ensuite, on agrèger le nombre d'ouvertures par domaine plutôt que par page, afin d'avoir une vue d'ensemble. On additionne donc le temps passé à regarder les pages d'un même domaine.
+			\item[H] Ensuite, on agréger le nombre d'ouvertures par domaine plutôt que par page, afin d'avoir une vue d'ensemble. On additionne donc le temps passé à regarder les pages d'un même domaine.
 
 			\item[I] On trie la nouvelle liste de domaines crée par leur temps total de visualisation, et on ne garde également que les 10 premiers d'entre-eux pour les afficher.
 		\end{description}
@@ -314,7 +314,7 @@ def connectionState(wdfId):
 
 	\subsection{Concept}
 
-		La page "History" permet de montrer à l'utilisateur la variation de ses habitudes au cours du temps durant lequel il a utilisé l'extension. Deux graphiques sont présents sur cette page : Le premier montre la tendence à visiter des pages relatées à certains topics, et l'autre montre la tendence dans la visite de pages contenant certains mots particuliers. Le but est ici de détecter d'éventuels intérêts passagers dans le temps.
+		La page "History" permet de montrer à l'utilisateur la variation de ses habitudes au cours du temps durant lequel il a utilisé l'extension. Deux graphiques sont présents sur cette page : Le premier montre la tendance à visiter des pages relatées à certains topics, et l'autre montre la tendance dans la visite de pages contenant certains mots particuliers. Le but est ici de détecter d'éventuels intérêts passagers dans le temps.
 
 		La figure~\ref{history_images} montre la différence entre la vue imaginée et le résultat final.
 
@@ -370,7 +370,7 @@ def connectionState(wdfId):
 
 			Finalement, on somme le temps passé sur chaque "topic". Le résultat de ce calcul sur toutes les pages va nous donner l'"intérêt" final de l'utilisateur pour un topic particulier. On ne gardera ici que les 8 topics avec le plus grand intérêt estimé.
 
-			\item[K] Finalement, pour chacun des 8 topics retenus, on affiche leur intérêt journalier (qui est la même somme que précédamment, mais agrégée par jour au lieu de toute la période) sur le premier graphique, "Topics history".
+			\item[K] Finalement, pour chacun des 8 topics retenus, on affiche leur intérêt journalier (qui est la même somme que précédemment, mais agrégée par jour au lieu de toute la période) sur le premier graphique, "Topics history".
 		\end{description}
 
 		\begin{figure}[!h]
@@ -398,7 +398,7 @@ def connectionState(wdfId):
 
 		La vue "Trackers" comporte deux pages liées à une seule source de données. Le but est de montrer à l'utilisateur que lorsqu'une page web est visitée, des informations peuvent tout de même être transmises à d'autres domaines.
 
-		La première vue de l'interface, "Most Sending", montre quels sont les domaines qui contactent beacoup des domaines différents. Il peut ainsi voir sur cette vue quels sont les serveurs qui sont contactés lorsqu'il accède à une page web.
+		La première vue de l'interface, "Most Sending", montre quels sont les domaines qui contactent beaucoup des domaines différents. Il peut ainsi voir sur cette vue quels sont les serveurs qui sont contactés lorsqu'il accède à une page web.
 
 		L'inverse est possible également. Grâce à la deuxième vue "Most recieving" il est possible de découvrir quels sont les domaines - trackers potentiels - qui sont fréquemment contactés par d'autres pages web. Chaque vue donne donc un point de vue différent sur le flux des données lorsque l'utilisateur parcourt le web.
 
@@ -439,14 +439,14 @@ def connectionState(wdfId):
 
 		Une seule source de données est nécessaire à constituer cette visualisation :
 		\begin{description}
-			\item[Requêtes pré-calculées] : Nombre de requêtes entre chahque domaine. Ces données sont stockées dans la table \texttt{precalc\_trackers} (figure \ref{table-precalc-trackers}).
+			\item[Requêtes pré-calculées] : Nombre de requêtes entre chaque domaine. Ces données sont stockées dans la table \texttt{precalc\_trackers} (figure \ref{table-precalc-trackers}).
 		\end{description}
 
 		\FloatBarrier
 
 	\subsection{Traitement}
 
-		Peu de traitements entrent en jue dans la génération de la page Trackers. Il s'agit principalement de calculer la somme d'une liste de domaines. Ceci est illustré par la figure~\ref{trackers_algo} :
+		Peu de traitements entrent en jeu dans la génération de la page Trackers. Il s'agit principalement de calculer la somme d'une liste de domaines. Ceci est illustré par la figure~\ref{trackers_algo} :
 		\begin{description}
 			\item[A] On additionne le nombre de requêtes faite pour un domaine vers un autre domaine, et on enregistre le total pour chaque paire par utilisateur. Toutes ces données sont pré-calculées avant le lancement du serveur. Il s'agit de calculer le nombre de requêtes de chaque domaine vers chaque autre domaine pour chaque utilisateur. La nécessité de pré-calculer ces données vient de leur quantité brute. Les compter sur le moment pour chaque requête demande trop de temps.
 
@@ -454,7 +454,7 @@ def connectionState(wdfId):
 
 			\item[C] On cherche ici les domaines ayant reçu le plus de requêtes. Nous allons donc effectuer regrouper les requêtes faites par leur nom de domaine de destination, et effectuer la somme des autres mesures.
 
-			\item[D] Inversément à l'étape précédente, on cherche cette fois les domaines ayant envoyé le plus de requêtes. Nous allons regrouper les requêtes par leur domaine d'envoie, et effectuer la somme des autres mesures.
+			\item[D] Inversement à l'étape précédente, on cherche cette fois les domaines ayant envoyé le plus de requêtes. Nous allons regrouper les requêtes par leur domaine d'envoi, et effectuer la somme des autres mesures.
 
 			\item[E] Les deux listes obtenues aux étapes précédentes sont alors affichées dans leur page correspondante.
 
@@ -502,7 +502,7 @@ def connectionState(wdfId):
 
 		Une seule source de données est nécessaire à constituer cette visualisation :
 		\begin{description}
-			\item[Requêtes pré-calculées] : Nombre de requêtes entre chahque domaine. Ces données sont stockées dans la table \texttt{precalc\_trackers} (figure \ref{table-precalc-trackers}).
+			\item[Requêtes pré-calculées] : Nombre de requêtes entre chaque domaine. Ces données sont stockées dans la table \texttt{precalc\_trackers} (figure \ref{table-precalc-trackers}).
 		\end{description}
 
 	\subsection{Traitement}
@@ -556,7 +556,7 @@ def connectionState(wdfId):
 			\label{settings_image}
 		\end{figure}
 
-		Une fois que l'utilisateur a défini des centres d'intérêt, il peut donner des informations sur la page Topics (voir section \ref{topicslist}). Les centres d'intérêts choisis sur la page Settings sont donc "simplement" utilisés pour définir quels seront les choix de centres d'intérets possibles sur la page Topics List. La figure~\ref{choice} montre la fenêtre déroulante de sélection d'un centre d'intérêt pour un topic donné.
+		Une fois que l'utilisateur a défini des centres d'intérêt, il peut donner des informations sur la page Topics (voir section \ref{topicslist}). Les centres d'intérêts choisis sur la page Settings sont donc "simplement" utilisés pour définir quels seront les choix de centres d’intérêts possibles sur la page Topics List. La figure~\ref{choice} montre la fenêtre déroulante de sélection d'un centre d'intérêt pour un topic donné.
 
 		\begin{figure}[!h]
 			\centering
@@ -565,7 +565,7 @@ def connectionState(wdfId):
 			\label{choice}
 		\end{figure}
 
-		Il est demandé aux utilisateurs d'ajouter une association entre un topic et un intérêt lorsque cela semble lui faire sens. Ainsi, nous pouvons savoir quels topics de l'utilisateur nous avons réussi à identifier. En effet, lorsqu'un utilisateur associe un centre d'intérêt à un topic, celà signifie non seulement que le topic trouvé a du sens en soi, mais en plus qu'il est intéressant pour l'utilisateur.
+		Il est demandé aux utilisateurs d'ajouter une association entre un topic et un intérêt lorsque cela semble lui faire sens. Ainsi, nous pouvons savoir quels topics de l'utilisateur nous avons réussi à identifier. En effet, lorsqu'un utilisateur associe un centre d'intérêt à un topic, cela signifie non seulement que le topic trouvé a du sens en soi, mais en plus qu'il est intéressant pour l'utilisateur.
 
 	\subsection{Données}
 
@@ -586,11 +586,11 @@ def connectionState(wdfId):
 
 			\item[B] On envoie la liste des centres d'intérêts et de leur nom au client
 
-			\item[C] On envoie également la liste des centres d'intérets que l'utilisateur a déjà renseignés, afin de les afficher directement comme étant entrés dans le formulaire.
+			\item[C] On envoie également la liste des centres d’intérêts que l'utilisateur a déjà renseignés, afin de les afficher directement comme étant entrés dans le formulaire.
 
 			\item[E] L'utilisateur peut donc changer ses centres d'intérêts, puis envoyer sa nouvelle liste au serveur.
 
-			\item[F] Les nouveaux centres d'intérêts sont donc enregistrés, et la nouvelle liste est envoyée une fois supplémentaire cu lient, reprenant au point C de l'algorithme.
+			\item[F] Les nouveaux centres d'intérêts sont donc enregistrés, et la nouvelle liste est envoyée une fois supplémentaire au lient, reprenant au point C de l'algorithme.
 
 		\end{description}
 
