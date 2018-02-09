@@ -46,16 +46,24 @@ def connectionState(wdfId):
 
 	\subsection{Client}
 
-		L'interface est développée en JavaScript et TypeScript en utilisant le framework Vue.js. Comme plusieurs de ses autres équivalents, Vue.js permet d'organiser le code en composants réutilisables. Le but étant de développer une one-page app pour des raisons de réactivité de l'interface. Un des avantages de ce type de framework est donc la possibilité de configurer un router.
-
 		\begin{wrapfigure}{r}{3cm}
 			\includegraphics[width=2.9cm]{images/design/loading_spinner}
 			\caption{Chargement des données}\label{i-loading}
 		\end{wrapfigure} 
 
+		L'interface est développée en JavaScript et TypeScript en utilisant le framework Vue.js. Comme plusieurs de ses autres équivalents, Vue.js permet d'organiser le code en composants réutilisables. Le but étant de développer une one-page app pour des raisons de réactivité de l'interface. Un des avantages de ce type de framework est donc la possibilité de configurer un router.
+
 		Ceci permet à l'utilisateur d'avoir l'impression de naviguer entre plusieurs pages distinctes, alors que tout le processus prend place dans le framework lui-même, qui se charge de changer le contenu affiché sans nécessiter de requête supplémentaire au serveur.
 
+		\begin{figure}[!h]
+			\centering
+			\includegraphics[width=7cm]{images/design/date_filter}
+			\caption{Formulaire du filtre de dates}\label{i-filter}
+		\end{figure}
+
 		Au lancement de la page, l'interface entière est donc chargée sur le navigateur, et l'ensemble des données de l'utilisateur est demandée au serveur. La figure~\ref{i-loading} montre le spinner affiché à l'utilisateur pendant le chargement.
+
+		Sur les pages de Profil, l'utilisateur a ensuite la possibilité de filtrer les données affichées par date. La figure~\ref{i-filter} montre le formulaire du filtre de données que l'utilisateur peut décider d'activer. Une fois activé après la sélection d'une date de début et d'une date de fin, la page entière se recharge en demandant au serveur le nouveau jeu de données correspondant aux dates entrées. Il s'agit d'un paramètre de recherche supplémentaire passé aux endpoints.
 
 %
 %
@@ -66,7 +74,6 @@ def connectionState(wdfId):
 \section{Wordcloud}
 
 	\subsection{Concept}
-git status
 		Le wordcloud montre à l'utilisateur la liste des mots qu'il lit le plus fréquemment. Le visualisation est un amassage de mots de différentes tailles, placés d'une manière aléatoire sur un rectangle. Les mots les plus lus ont une taille plus grande afin d'attirer l'attention de l'utilisateur.
 
 		Cette visualisation cherche à donner très rapidement une impression générale des thèmes que l'utilisateur parcourt lors de sa navigation.
